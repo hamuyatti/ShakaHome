@@ -15,3 +15,8 @@ dependencyResolutionManagement {
 rootProject.name = "shakaHome"
 include ':app'
 include ':data:api'
+include ':data:db'
+include ':data:repository'
+include ':presentation:ui'
+include ':presentation:viewmodel'
+include ':model'
