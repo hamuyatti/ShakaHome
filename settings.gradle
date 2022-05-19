@@ -16,3 +16,4 @@ rootProject.name = "shakaHome"
 include ':app'
 include ':data:api'
 include ':data:db'
+include ':presentation:ui'
