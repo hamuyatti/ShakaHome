@@ -19,7 +19,6 @@
             <option value="$PROJECT_DIR$/presentation" />
             <option value="$PROJECT_DIR$/presentation/ui" />
             <option value="$PROJECT_DIR$/presentation/viewmodel" />
-            <option value="$PROJECT_DIR$/repository" />
           </set>
         </option>
       </GradleProjectSettings>
