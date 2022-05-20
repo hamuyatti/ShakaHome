@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/data/db" />
             <option value="$PROJECT_DIR$/data/repository" />
             <option value="$PROJECT_DIR$/domein" />
+            <option value="$PROJECT_DIR$/domein/iRepository" />
             <option value="$PROJECT_DIR$/domein/usecase" />
             <option value="$PROJECT_DIR$/model" />
             <option value="$PROJECT_DIR$/presentation" />
