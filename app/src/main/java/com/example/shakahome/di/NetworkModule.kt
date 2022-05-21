@@ -1,6 +1,7 @@
 package com.example.shakahome.di
 
 import com.example.data.api.Api
+import com.example.data.api.StreamerInfoRemoteDataSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -42,4 +43,10 @@ object NetworkModule {
     fun providesApi(
         retrofit: Retrofit
     ): Api = retrofit.create(Api::class.java)
+
+    @Provides
+    @Singleton
+    fun providesStreamerInfoDataSource(
+        api: Api
+    )  = StreamerInfoRemoteDataSource(api = api)
 }
