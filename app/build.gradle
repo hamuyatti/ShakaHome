@@ -36,6 +36,8 @@ android {
 dependencies {
     implementation project(':presentation:ui')
     implementation project(':presentation:viewmodel')
+    implementation project(':domein:usecase')
+    implementation project(':domein:iRepository')
     implementation project(':model')
     implementation project(':data:db')
     implementation project(':data:api')
