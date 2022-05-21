@@ -14,6 +14,6 @@ interface Api {
     )
     @GET
     fun fetchStreamerInfo(
-        @Query("login") StreamerId: Int
+        @Query("login") StreamerId: Int = 49207184
     ):Response<StreamerInfo>
 }

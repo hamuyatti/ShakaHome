@@ -1,5 +1,6 @@
 package com.example.shakahome.di
 
+import com.example.data.api.Api
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -35,4 +36,10 @@ object NetworkModule {
             .addConverterFactory(format.asConverterFactory(contentType))
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun providesApi(
+        retrofit: Retrofit
+    ): Api = retrofit.create(Api::class.java)
 }
