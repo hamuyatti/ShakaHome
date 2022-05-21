@@ -6,7 +6,7 @@ sealed interface StreamerInfoUiState{
     object Empty : StreamerInfoUiState
     object IsLoading : StreamerInfoUiState
     data class Success(val streamerInfo: StreamerInfo) : StreamerInfoUiState
-    data class Error(val throwable: Throwable)
+    data class Error(val throwable: Throwable) : StreamerInfoUiState
 }
 
 
