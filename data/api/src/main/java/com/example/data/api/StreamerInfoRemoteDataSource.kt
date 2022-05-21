@@ -1,6 +1,12 @@
 package com.example.data.api
 
-class StreamerInfoRemoteDataSource(
+import com.example.model.StreamerInfo
+import retrofit2.Response
 
+class StreamerInfoRemoteDataSource(
+    private val api: Api
 ) {
+    fun fetchStreamerInfo(): Response<StreamerInfo> {
+        return api.fetchStreamerInfo()
+    }
 }
