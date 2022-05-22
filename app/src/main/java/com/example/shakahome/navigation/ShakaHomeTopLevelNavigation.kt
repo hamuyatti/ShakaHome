@@ -33,7 +33,7 @@ data class TopLevelDestination(
     val iconTextId: Int
 )
 
-val TOP_LEVEL_DESTINATION = listOf(
+val TOP_LEVEL_DESTINATIONS = listOf(
     TopLevelDestination(
         route = ReportDestination.route,
         selectedIcon = Icons.Filled.Upcoming,
