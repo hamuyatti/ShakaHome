@@ -2,6 +2,8 @@ package com.example.ui.thema
 
 import androidx.compose.ui.graphics.Color
 
+/** nowinandroidから拝借　なので使ってない内容も多々あります  **/
+
 val Blue10 = Color(0xFF001F29)
 val Blue20 = Color(0xFF003544)
 val Blue30 = Color(0xFF004D61)

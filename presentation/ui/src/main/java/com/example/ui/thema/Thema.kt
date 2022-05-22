@@ -12,6 +12,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
 
+/** nowinandroidから拝借　なので使ってない内容も多々あります  **/
+
 private val LightDefaultColorScheme = lightColorScheme(
     primary = Purple40,
     onPrimary = Color.White,
