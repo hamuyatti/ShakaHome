@@ -1,13 +1,16 @@
-package com.example.data.api.repository
+package com.example.repository
 
 import com.example.data.api.StreamerInfoRemoteDataSource
 import com.example.irepository.StreamerInfoRepository
 import com.example.model.StreamerInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class StreamerInfoRepositoryImpl(
     private val streamerInfoRemoteDataSource: StreamerInfoRemoteDataSource
 ) : StreamerInfoRepository {
-    override fun fetchStreamerInfo(): StreamerInfo {
-        return streamerInfoRemoteDataSource.fetchStreamerInfo()
+    override suspend fun fetchStreamerInfo(): StreamerInfo =
+        withContext(Dispatchers.IO){
+            streamerInfoRemoteDataSource.fetchStreamerInfo()
     }
 }
