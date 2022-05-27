@@ -15,6 +15,7 @@ fun ShakaHomeTopAppBar(
     onActionClick: () -> Unit = {},
     actionIcon: ImageVector,
     actionIconContentDescription: String?,
+    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(id = titleRes)) },
@@ -26,6 +27,8 @@ fun ShakaHomeTopAppBar(
                     tint = MaterialTheme.colorScheme.onSurface
                 )
             }
-        }
+        },
+        modifier = modifier,
+        colors = colors
     )
 }
