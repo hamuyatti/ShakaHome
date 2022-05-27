@@ -9,6 +9,7 @@ object InfoNavigation : ShakaHomeNavigationDestination {
     override val destination: String = "info_destination"
 }
 
+//参考にしたアプリのままwindowSizeClassを持ってきたけど、一旦使わなそう
 fun NavGraphBuilder.infoGraph(
     windowSizeClass: WindowSizeClass
 ){
