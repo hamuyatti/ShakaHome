@@ -48,5 +48,5 @@ object NetworkModule {
     @Singleton
     fun providesStreamerInfoDataSource(
         api: Api
-    )  = StreamerInfoRemoteDataSource(api = api)
+    ) = StreamerInfoRemoteDataSource(api = api)
 }
