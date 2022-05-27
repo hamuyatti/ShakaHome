@@ -14,16 +14,17 @@ import com.example.ui.thema.ShakaHomeTheme
 
 @Composable
 fun ShakaHomeTopAppBar(
-    @StringRes titleRes: Int,
-    actionIcon: ImageVector,
-    actionIconContentDescription: String?,
     modifier: Modifier = Modifier,
+    @StringRes titleRes: Int,
+    actionIcon: ImageVector? = null,
+    actionIconContentDescription: String? = null,
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
     onActionClick: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(id = titleRes)) },
         actions = {
+            actionIcon ?: return@CenterAlignedTopAppBar
             IconButton(onClick = onActionClick) {
                 Icon(
                     imageVector = actionIcon,
