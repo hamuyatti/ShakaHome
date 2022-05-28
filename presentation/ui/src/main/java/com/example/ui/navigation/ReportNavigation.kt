@@ -3,6 +3,7 @@ package com.example.ui.navigation
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.ui.report.ForReportRoute
 
 object ReportDestination : ShakaHomeNavigationDestination{
     override val route: String = "report_route"
@@ -13,6 +14,6 @@ fun NavGraphBuilder.reportGraph(
     windowSizeClass: WindowSizeClass
 ){
     composable(route = ReportDestination.route){
-
+        ForReportRoute()
     }
 }

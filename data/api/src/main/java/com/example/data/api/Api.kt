@@ -12,8 +12,8 @@ interface Api {
         "Authorization: Bearer 0vvi1ikhyic6c2rq8flw1ukwp0pb2w",
         "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
     )
-    @GET
+    @GET("users")
     fun fetchStreamerInfo(
         @Query("login") StreamerId: Int = 49207184
-    ):StreamerInfo
+    ): Response<StreamerInfo>
 }

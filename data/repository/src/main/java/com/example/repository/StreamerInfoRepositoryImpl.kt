@@ -10,7 +10,7 @@ class StreamerInfoRepositoryImpl(
     private val streamerInfoRemoteDataSource: StreamerInfoRemoteDataSource
 ) : StreamerInfoRepository {
     override suspend fun fetchStreamerInfo(): StreamerInfo =
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             streamerInfoRemoteDataSource.fetchStreamerInfo()
-    }
+        }
 }

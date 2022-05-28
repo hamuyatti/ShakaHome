@@ -1,12 +1,10 @@
-
-
 package com.example.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usecase.FetchStreamerInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -26,13 +24,17 @@ class StreamerInfoViewModel @Inject constructor(
         fetchStreamerInfo()
     }
 
-    private fun fetchStreamerInfo() {
-        runCatching {
-            viewModelScope.launch {
-                _uiState.update { StreamerInfoUiState.Success(useCase()) }
+    fun fetchStreamerInfo() {
+        viewModelScope.launch {
+            runCatching {
+                coroutineScope {
+                    launch {
+                        _uiState.update { StreamerInfoUiState.Success(useCase()) }
+                    }
+                }
+            }.onFailure { e ->
+                _uiState.update { StreamerInfoUiState.Error(e) }
             }
-        }.onFailure { e ->
-            _uiState.update { StreamerInfoUiState.Error(e) }
         }
     }
 

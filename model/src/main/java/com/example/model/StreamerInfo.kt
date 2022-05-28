@@ -1,5 +1,8 @@
 package com.example.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class StreamerInfo(
     val id: String,
     val login: String,

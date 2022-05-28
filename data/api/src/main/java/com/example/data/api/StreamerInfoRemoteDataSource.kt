@@ -7,6 +7,6 @@ class StreamerInfoRemoteDataSource(
     private val api: Api
 ) {
     fun fetchStreamerInfo(): StreamerInfo {
-        return api.fetchStreamerInfo()
+        return api.fetchStreamerInfo().body()!!
     }
 }
