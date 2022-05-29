@@ -27,11 +27,9 @@ class StreamerInfoViewModel @Inject constructor(
     fun fetchStreamerInfo() {
         viewModelScope.launch {
             runCatching {
-                coroutineScope {
-                    launch {
-                        _uiState.update { StreamerInfoUiState.Success(useCase()) }
-                    }
-                }
+                StreamerInfoUiState.Success(useCase())
+            }.onSuccess {
+                _uiState.update { it }
             }.onFailure { e ->
                 _uiState.update { StreamerInfoUiState.Error(e) }
             }
