@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,9 +29,12 @@ class StreamerInfoViewModel @Inject constructor(
         viewModelScope.launch {
             runCatching {
                 StreamerInfoUiState.Success(useCase())
+                Timber.d("来てる0")
             }.onSuccess {
+                Timber.d("来てる1")
                 _uiState.update { it }
             }.onFailure { e ->
+                Timber.d("来てる${e.message}")
                 _uiState.update { StreamerInfoUiState.Error(e) }
             }
         }
