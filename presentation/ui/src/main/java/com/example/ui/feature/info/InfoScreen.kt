@@ -12,13 +12,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.ui.utils.Center
 import com.example.ui.utils.SimpleProgressBar
 import com.example.viewmodel.StreamerInfoUiState
 import com.example.viewmodel.StreamerInfoViewModel
+import timber.log.Timber
 
 @Composable
 fun ForInfoRoute(
@@ -79,9 +83,26 @@ private fun LazyListScope.feed(
 
         is StreamerInfoUiState.Error -> {}
         is StreamerInfoUiState.Success -> {
-            item{
-                Center {
-                    Text(text = "成功")
+            item {
+                Column{
+                    Text(text = "名前", textAlign = TextAlign.Center)
+                    Text(text = uiState.streamerInfo.displayName)
+                    Text(text = "オフライン画像", textAlign = TextAlign.Center)
+                    AsyncImage(
+                        model = uiState.streamerInfo.offlineImageUrl,
+                        contentDescription = "offline",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                    )
+                    Text(text = "プロフィール画像", textAlign = TextAlign.Center)
+                    AsyncImage(
+                        model = uiState.streamerInfo.profileImageUrl,
+                        contentDescription = "online",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                    )
                 }
             }
         }
