@@ -1,4 +1,4 @@
-package com.example.ui.report
+package com.example.ui.feature.report
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api

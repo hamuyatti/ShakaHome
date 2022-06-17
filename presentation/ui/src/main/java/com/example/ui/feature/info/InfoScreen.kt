@@ -1,22 +1,24 @@
-package com.example.ui.info
+package com.example.ui.feature.info
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
+import com.example.ui.utils.Center
 import com.example.ui.utils.SimpleProgressBar
 import com.example.viewmodel.StreamerInfoUiState
 import com.example.viewmodel.StreamerInfoViewModel
@@ -53,35 +55,57 @@ fun InfoScreen(
                     WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
                 ),
             )
-        },containerColor = Color.Transparent
+        }, containerColor = Color.Transparent
     ) { innerPadding ->
-        innerPadding
         LazyColumn(
-            Modifier.fillMaxSize()
+            modifier
+                .fillMaxHeight()
+                .padding(innerPadding)
         ) {
-            Feed(uiState)
+            feed(uiState)
         }
     }
 }
 
 
-private fun LazyListScope.Feed(
-    streamerInfoUiState: StreamerInfoUiState
+private fun LazyListScope.feed(
+    uiState: StreamerInfoUiState
 ) {
-    when (streamerInfoUiState) {
-        is StreamerInfoUiState.IsLoading -> {
-            item { SimpleProgressBar() }
+    when (uiState) {
+        is StreamerInfoUiState.Loading -> {
+            item {
+                Center {
+                    SimpleProgressBar()
+                }
+            }
         }
 
-        is StreamerInfoUiState.Error -> {
-
-        }
+        is StreamerInfoUiState.Error -> {}
         is StreamerInfoUiState.Success -> {
-
+            item {
+                Column{
+                    Text(text = "名前", textAlign = TextAlign.Center)
+                    Text(text = uiState.streamerInfo.baseInfo.displayName)
+                    Text(text = "オフライン画像", textAlign = TextAlign.Center)
+                    AsyncImage(
+                        model = uiState.streamerInfo.baseInfo.offlineImageUrl,
+                        contentDescription = "offline",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                    )
+                    Text(text = "プロフィール画像", textAlign = TextAlign.Center)
+                    AsyncImage(
+                        model = uiState.streamerInfo.baseInfo.profileImageUrl,
+                        contentDescription = "online",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                    )
+                }
+            }
         }
-        is StreamerInfoUiState.Empty -> {
-
-        }
+        is StreamerInfoUiState.Empty -> {}
     }
 
 }
