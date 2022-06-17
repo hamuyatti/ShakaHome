@@ -1,6 +1,7 @@
 package com.example.shakahome.di
 
 import com.example.irepository.StreamerBaseInfoRepository
+import com.example.irepository.StreamerFollowInfoRepository
 import com.example.usecase.FetchStreamerInfoUseCase
 import dagger.Module
 import dagger.Provides
@@ -15,6 +16,7 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideFetchStreamerInfoUseCase(
-        streamerBaseInfoRepository: StreamerBaseInfoRepository
-    ) = FetchStreamerInfoUseCase(streamerBaseInfoRepository)
+        streamerBaseInfoRepository: StreamerBaseInfoRepository,
+        streamerFollowInfoRepository: StreamerFollowInfoRepository
+    ) = FetchStreamerInfoUseCase(streamerBaseInfoRepository, streamerFollowInfoRepository)
 }

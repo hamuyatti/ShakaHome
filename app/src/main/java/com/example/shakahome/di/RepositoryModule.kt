@@ -1,7 +1,7 @@
 package com.example.shakahome.di
 
 import com.example.data.api.StreamerFollowInfoRemoteDataSource
-import com.example.data.api.StreamerBaseInfoRemoteDataSource
+import com.example.data.api.StreamerInfoRemoteDataSource
 import com.example.irepository.StreamerFollowInfoRepository
 import com.example.repository.StreamerBaseInfoRepositoryImpl
 import com.example.irepository.StreamerBaseInfoRepository
@@ -18,7 +18,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideStreamerInfoRepository(
-        remoteDataSource: StreamerBaseInfoRemoteDataSource
+        remoteDataSource: StreamerInfoRemoteDataSource
     ): StreamerBaseInfoRepository {
         return StreamerBaseInfoRepositoryImpl(remoteDataSource)
     }

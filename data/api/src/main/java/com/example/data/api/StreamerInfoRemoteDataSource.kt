@@ -2,7 +2,7 @@ package com.example.data.api
 
 import com.example.model.StreamerBaseInfo
 
-class StreamerBaseInfoRemoteDataSource(
+class StreamerInfoRemoteDataSource(
     private val api: Api
 ) {
     fun fetchStreamerBaseInfo(): StreamerBaseInfo {

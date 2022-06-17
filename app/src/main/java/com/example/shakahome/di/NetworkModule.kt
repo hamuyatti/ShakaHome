@@ -2,7 +2,7 @@ package com.example.shakahome.di
 
 import com.example.data.api.Api
 import com.example.data.api.StreamerFollowInfoRemoteDataSource
-import com.example.data.api.StreamerBaseInfoRemoteDataSource
+import com.example.data.api.StreamerInfoRemoteDataSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -49,7 +49,7 @@ object NetworkModule {
     @Singleton
     fun providesStreamerInfoDataSource(
         api: Api
-    ) = StreamerBaseInfoRemoteDataSource(api = api)
+    ) = StreamerInfoRemoteDataSource(api = api)
 
     @Provides
     @Singleton
