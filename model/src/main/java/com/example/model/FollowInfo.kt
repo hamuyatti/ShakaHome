@@ -4,7 +4,15 @@ data class FollowInfo(
     val `data`: List<Data>,
     val pagination: Pagination,
     val total: Int
-)
+){
+    companion object{
+        fun dummyData(): FollowInfo {
+            return FollowInfo(
+
+            )
+        }
+    }
+}
 
 data class Data(
     val followed_at: String,
