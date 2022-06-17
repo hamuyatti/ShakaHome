@@ -85,10 +85,10 @@ private fun LazyListScope.feed(
             item {
                 Column{
                     Text(text = "名前", textAlign = TextAlign.Center)
-                    Text(text = uiState.streamerBaseInfo.displayName)
+                    Text(text = uiState.streamerInfo.baseInfo.displayName)
                     Text(text = "オフライン画像", textAlign = TextAlign.Center)
                     AsyncImage(
-                        model = uiState.streamerBaseInfo.offlineImageUrl,
+                        model = uiState.streamerInfo.baseInfo.offlineImageUrl,
                         contentDescription = "offline",
                         modifier = Modifier
                             .fillMaxWidth()
@@ -96,7 +96,7 @@ private fun LazyListScope.feed(
                     )
                     Text(text = "プロフィール画像", textAlign = TextAlign.Center)
                     AsyncImage(
-                        model = uiState.streamerBaseInfo.profileImageUrl,
+                        model = uiState.streamerInfo.baseInfo.profileImageUrl,
                         contentDescription = "online",
                         modifier = Modifier
                             .fillMaxWidth()

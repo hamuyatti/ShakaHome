@@ -55,4 +55,3 @@ private fun dummyDate(): FollowInfo {
         )
     )
 }
-}
