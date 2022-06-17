@@ -22,7 +22,6 @@ import com.example.ui.utils.Center
 import com.example.ui.utils.SimpleProgressBar
 import com.example.viewmodel.StreamerInfoUiState
 import com.example.viewmodel.StreamerInfoViewModel
-import timber.log.Timber
 
 @Composable
 fun ForInfoRoute(
@@ -86,10 +85,10 @@ private fun LazyListScope.feed(
             item {
                 Column{
                     Text(text = "名前", textAlign = TextAlign.Center)
-                    Text(text = uiState.streamerInfo.displayName)
+                    Text(text = uiState.streamerBaseInfo.displayName)
                     Text(text = "オフライン画像", textAlign = TextAlign.Center)
                     AsyncImage(
-                        model = uiState.streamerInfo.offlineImageUrl,
+                        model = uiState.streamerBaseInfo.offlineImageUrl,
                         contentDescription = "offline",
                         modifier = Modifier
                             .fillMaxWidth()
@@ -97,7 +96,7 @@ private fun LazyListScope.feed(
                     )
                     Text(text = "プロフィール画像", textAlign = TextAlign.Center)
                     AsyncImage(
-                        model = uiState.streamerInfo.profileImageUrl,
+                        model = uiState.streamerBaseInfo.profileImageUrl,
                         contentDescription = "online",
                         modifier = Modifier
                             .fillMaxWidth()

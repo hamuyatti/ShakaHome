@@ -1,10 +1,10 @@
 package com.example.shakahome.di
 
 import com.example.data.api.StreamerFollowInfoRemoteDataSource
-import com.example.data.api.StreamerInfoRemoteDataSource
+import com.example.data.api.StreamerBaseInfoRemoteDataSource
 import com.example.irepository.StreamerFollowInfoRepository
-import com.example.repository.StreamerInfoRepositoryImpl
-import com.example.irepository.StreamerInfoRepository
+import com.example.repository.StreamerBaseInfoRepositoryImpl
+import com.example.irepository.StreamerBaseInfoRepository
 import com.example.repository.StreamerFollowInfoRepositoryImpl
 import dagger.Module
 import dagger.Provides
@@ -18,9 +18,9 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideStreamerInfoRepository(
-        remoteDataSource: StreamerInfoRemoteDataSource
-    ): StreamerInfoRepository {
-        return StreamerInfoRepositoryImpl(remoteDataSource)
+        remoteDataSource: StreamerBaseInfoRemoteDataSource
+    ): StreamerBaseInfoRepository {
+        return StreamerBaseInfoRepositoryImpl(remoteDataSource)
     }
 
     @Provides

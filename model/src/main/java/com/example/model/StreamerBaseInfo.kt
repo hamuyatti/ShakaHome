@@ -1,10 +1,9 @@
 package com.example.model
 
 import kotlinx.serialization.Serializable
-import kotlin.math.log
 
 @Serializable
-data class StreamerInfo(
+data class StreamerBaseInfo(
     val id: Int,
     val login: String,
     val displayName: String,
@@ -17,8 +16,8 @@ data class StreamerInfo(
     val createdAt: String
 ) {
     companion object{
-        fun dummyData(): StreamerInfo {
-            return StreamerInfo(
+        fun dummyData(): StreamerBaseInfo {
+            return StreamerBaseInfo(
                 id = 49207184,
                 login = "fps_shaka",
                 displayName = "fps_shaka",
