@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
+import com.example.ui.utils.Center
 import com.example.ui.utils.SimpleProgressBar
 import com.example.viewmodel.StreamerInfoUiState
 import com.example.viewmodel.StreamerInfoViewModel
@@ -36,9 +37,6 @@ fun InfoScreen(
     onUpdate: () -> Unit,
     uiState: StreamerInfoUiState,
 ) {
-    Button(onClick = { onUpdate.invoke() }, modifier = Modifier.fillMaxSize()) {
-        Text(text = "おせ")
-    }
     Scaffold(
         topBar = {
             ShakaHomeTopAppBar(
@@ -54,35 +52,40 @@ fun InfoScreen(
                     WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
                 ),
             )
-        },containerColor = Color.Transparent
+        }, containerColor = Color.Transparent
     ) { innerPadding ->
-        innerPadding
         LazyColumn(
-            Modifier.fillMaxSize()
+            modifier
+                .fillMaxHeight()
+                .padding(innerPadding)
         ) {
-            Feed(uiState)
+            feed(uiState)
         }
     }
 }
 
 
-private fun LazyListScope.Feed(
-    streamerInfoUiState: StreamerInfoUiState
+private fun LazyListScope.feed(
+    uiState: StreamerInfoUiState
 ) {
-    when (streamerInfoUiState) {
-        is StreamerInfoUiState.IsLoading -> {
-            item { SimpleProgressBar() }
+    when (uiState) {
+        is StreamerInfoUiState.Loading -> {
+            item {
+                Center {
+                    SimpleProgressBar()
+                }
+            }
         }
 
-        is StreamerInfoUiState.Error -> {
-
-        }
+        is StreamerInfoUiState.Error -> {}
         is StreamerInfoUiState.Success -> {
-
+            item{
+                Center {
+                    Text(text = "成功")
+                }
+            }
         }
-        is StreamerInfoUiState.Empty -> {
-
-        }
+        is StreamerInfoUiState.Empty -> {}
     }
 
 }

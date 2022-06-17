@@ -27,14 +27,12 @@ class StreamerInfoViewModel @Inject constructor(
 
     fun fetchStreamerInfo() {
         viewModelScope.launch {
+            _uiState.update { StreamerInfoUiState.Loading }
             runCatching {
-                StreamerInfoUiState.Success(useCase())
-                Timber.d("来てる0")
-            }.onSuccess {
-                Timber.d("来てる1")
-                _uiState.update { it }
+                useCase()
+            }.onSuccess { info ->
+                _uiState.update { StreamerInfoUiState.Success(info) }
             }.onFailure { e ->
-                Timber.d("来てる${e.message}")
                 _uiState.update { StreamerInfoUiState.Error(e) }
             }
         }
