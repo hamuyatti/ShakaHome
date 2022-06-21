@@ -83,10 +83,22 @@ private fun LazyListScope.feed(
         is StreamerInfoUiState.Error -> {}
         is StreamerInfoUiState.Success -> {
             item {
-                Column{
-                    Text(text = "名前", textAlign = TextAlign.Center)
-                    Text(text = uiState.streamerInfo.baseInfo.displayName)
-                    Text(text = "オフライン画像", textAlign = TextAlign.Center)
+                Column {
+                    Text(
+                        text = "名前",
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        text = uiState.streamerInfo.baseInfo.displayName,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        text = "オフライン画像",
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                     AsyncImage(
                         model = uiState.streamerInfo.baseInfo.offlineImageUrl,
                         contentDescription = "offline",
@@ -94,7 +106,11 @@ private fun LazyListScope.feed(
                             .fillMaxWidth()
                             .height(200.dp)
                     )
-                    Text(text = "プロフィール画像", textAlign = TextAlign.Center)
+                    Text(
+                        text = "プロフィール画像",
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                     AsyncImage(
                         model = uiState.streamerInfo.baseInfo.profileImageUrl,
                         contentDescription = "online",
