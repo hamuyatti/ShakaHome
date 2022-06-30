@@ -20,19 +20,25 @@ class StreamerInfoViewModel @Inject constructor(
         MutableStateFlow(StreamerInfoUiState.Empty)
     val uiState = _uiState.asStateFlow()
 
+    private val _isRefreshing : MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     init {
         fetchStreamerInfo()
     }
 
     fun fetchStreamerInfo() {
+        _isRefreshing.update { true }
+        Timber.d("${isRefreshing.value}")
         viewModelScope.launch {
             _uiState.update { StreamerInfoUiState.Loading }
             runCatching {
                 useCase()
             }.onSuccess { info ->
-                Timber.d("${info}")
+                _isRefreshing.update { false }
                 _uiState.update { StreamerInfoUiState.Success(info) }
             }.onFailure { e ->
+                _isRefreshing.update { false }
                 _uiState.update { StreamerInfoUiState.Error(e) }
             }
         }
