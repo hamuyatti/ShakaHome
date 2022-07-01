@@ -16,9 +16,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.example.model.CarouselModel
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.ui.utils.Center
+import com.example.ui.utils.ImageCarousel
 import com.example.ui.utils.SimpleProgressBar
 import com.example.viewmodel.StreamerInfoUiState
 import com.example.viewmodel.StreamerInfoViewModel
@@ -106,30 +108,14 @@ private fun LazyListScope.feed(
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    Text(
-                        text = "オフライン画像",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    AsyncImage(
-                        model = uiState.streamerInfo.baseInfo.offlineImageUrl,
-                        contentDescription = "offline",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                    )
-                    Text(
-                        text = "プロフィール画像",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    AsyncImage(
-                        model = uiState.streamerInfo.baseInfo.profileImageUrl,
-                        contentDescription = "online",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                    )
+                    uiState.streamerInfo.baseInfo.let {
+                        ImageCarousel(
+                            info = listOf(
+                                CarouselModel(it.profileImageUrl, "プロフィール画像"),
+                                CarouselModel(it.offlineImageUrl, "オフライン画像"),
+                            )
+                        )
+                    }
                     Text(
                         text = "最近のフォロー",
                         textAlign = TextAlign.Center,
