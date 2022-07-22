@@ -77,21 +77,17 @@ fun InfoScreen(
             }, containerColor = Color.Transparent
         ) { innerPadding ->
             val context = LocalContext.current
-            LazyColumn(
-                modifier
-                    .fillMaxHeight()
-                    .padding(innerPadding)
-            ) {
-                feed(uiState, context)
-            }
+            Feed(uiState, context, innerPadding)
         }
     }
 }
 
-
-private fun LazyListScope.feed(
+@Composable
+private fun Feed(
     uiState: StreamerInfoUiState,
-    context: Context
+    context: Context,
+    innerPadding: PaddingValues,
+    modifier: Modifier = Modifier
 ) {
     when (uiState) {
         is StreamerInfoUiState.Loading -> {}
@@ -103,7 +99,7 @@ private fun LazyListScope.feed(
         is StreamerInfoUiState.Empty -> {}
 
         is StreamerInfoUiState.Success -> {
-            item {
+            Column(modifier = modifier.padding(innerPadding)) {
                 Column {
                     Text(
                         text = "名前",
@@ -124,25 +120,24 @@ private fun LazyListScope.feed(
                         )
                     }
                     Text(
+                        text = "フォロー総数",
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        text = uiState.streamerInfo.followInfo.total,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
                         text = "最近のフォロー",
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
-            }
-            items(uiState.streamerInfo.followInfo.FollowsInfo) {
-                Column {
-                    Text(
-                        text = it.toName,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = it.followedAt,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+                FollowList(
+                    followInfo = uiState.streamerInfo.followInfo.FollowsInfo,
+                )
             }
         }
     }

@@ -31,7 +31,7 @@ data class Pagination(
 fun FollowInfoResponse.asDomainModel(): FollowInfo {
     return FollowInfo(
         FollowsInfo = this.data,
-        total = this.total
+        total = this.total.toString()
     )
 }
 
