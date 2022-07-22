@@ -11,10 +11,10 @@ class StreamerFollowInfoRepositoryImpl(
 ) : StreamerFollowInfoRepository {
     override suspend fun fetchStreamerFollowInfo(): FollowInfo =
         withContext(Dispatchers.IO) {
-            if (BuildConfig.DEBUG) {
-                FollowInfo.dummyData()
-            } else {
+//            if (BuildConfig.DEBUG) {
+//                FollowInfo.dummyData()
+//            } else {
                 dataSource.fetchStreamerFollowInfo()
-            }
+//            }
         }
 }

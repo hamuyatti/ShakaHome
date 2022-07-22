@@ -1,5 +1,7 @@
 package com.example.ui.feature.info
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -11,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -73,12 +76,13 @@ fun InfoScreen(
                 )
             }, containerColor = Color.Transparent
         ) { innerPadding ->
+            val context = LocalContext.current
             LazyColumn(
                 modifier
                     .fillMaxHeight()
                     .padding(innerPadding)
             ) {
-                feed(uiState)
+                feed(uiState, context)
             }
         }
     }
@@ -86,12 +90,15 @@ fun InfoScreen(
 
 
 private fun LazyListScope.feed(
-    uiState: StreamerInfoUiState
+    uiState: StreamerInfoUiState,
+    context: Context
 ) {
     when (uiState) {
         is StreamerInfoUiState.Loading -> {}
 
-        is StreamerInfoUiState.Error -> {}
+        is StreamerInfoUiState.Error -> {
+            Toast.makeText(context, "エラーです", Toast.LENGTH_SHORT).show()
+        }
 
         is StreamerInfoUiState.Empty -> {}
 
@@ -139,5 +146,4 @@ private fun LazyListScope.feed(
             }
         }
     }
-
 }
