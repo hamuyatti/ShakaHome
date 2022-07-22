@@ -18,19 +18,21 @@ fun FollowList(
     LazyColumn(
         modifier
             .fillMaxHeight()
+            .fillMaxWidth()
             .padding(8.dp)
     ) {
         items(followInfo) {
-            Column {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = modifier.fillMaxWidth()
+            ) {
                 Text(
                     text = it.toName,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = it.followedAt,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
