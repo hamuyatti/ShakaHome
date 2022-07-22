@@ -11,12 +11,12 @@ import kotlinx.coroutines.withContext
 class StreamerBaseInfoRepositoryImpl(
     private val streamerInfoRemoteDataSource: StreamerInfoRemoteDataSource
 ) : StreamerBaseInfoRepository {
-    override suspend fun fetchStreamerBaseInfo(): StreamerBaseInfo =
+    override suspend fun fetchStreamerBaseInfo(useDummy: Boolean): StreamerBaseInfo =
         withContext(Dispatchers.IO) {
-            if(BuildConfig.DEBUG){
+            if (BuildConfig.DEBUG) {
                 delay(2000)
                 StreamerBaseInfo.dummyData()
-            }else{
+            } else {
                 streamerInfoRemoteDataSource.fetchStreamerBaseInfo()
             }
         }

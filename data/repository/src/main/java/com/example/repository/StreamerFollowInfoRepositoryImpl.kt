@@ -9,12 +9,12 @@ import kotlinx.coroutines.withContext
 class StreamerFollowInfoRepositoryImpl(
     private val dataSource: StreamerFollowInfoRemoteDataSource
 ) : StreamerFollowInfoRepository {
-    override suspend fun fetchStreamerFollowInfo(): FollowInfo =
+    override suspend fun fetchStreamerFollowInfo(useDummy : Boolean ): FollowInfo =
         withContext(Dispatchers.IO) {
-//            if (BuildConfig.DEBUG) {
-//                FollowInfo.dummyData()
-//            } else {
+            if (useDummy) {
+                FollowInfo.dummyData()
+            } else {
                 dataSource.fetchStreamerFollowInfo()
-//            }
+            }
         }
 }

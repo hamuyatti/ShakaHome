@@ -1,15 +1,19 @@
 package com.example.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class FollowInfo(
     val `data`: List<Data>,
     val pagination: Pagination,
     val total: Int
 ) {
     companion object {
-        fun dummyData(): FollowInfo = dummyDate()
+        fun dummyData(): FollowInfo = dummyData()
     }
 }
 
+@Serializable
 data class Data(
     val followedAt: String,
     val fromId: String,
@@ -20,11 +24,12 @@ data class Data(
     val toName: String
 )
 
+@Serializable
 data class Pagination(
     val cursor: String
 )
 
-private fun dummyDate(): FollowInfo {
+private fun dummyData(): FollowInfo {
     return FollowInfo(
         total = 163,
         data = listOf(

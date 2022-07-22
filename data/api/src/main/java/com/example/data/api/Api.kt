@@ -14,7 +14,7 @@ interface Api {
         "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
     )
     @GET("users")
-    fun fetchStreamerBaseInfo(
+    suspend fun fetchStreamerBaseInfo(
         @Query("login") StreamerId: Int = 49207184
     ): Response<StreamerBaseInfo>
 
@@ -23,7 +23,7 @@ interface Api {
         "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
     )
     @GET("users")
-    fun fetchStreamerFollowInfo(
+    suspend fun fetchStreamerFollowInfo(
         @Query("from_id") StreamerId: Int = 49207184
     ): Response<FollowInfo>
 
