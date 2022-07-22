@@ -1,10 +1,10 @@
-package com.example.model
+package com.example.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class StreamerBaseInfo(
+data class StreamerBaseInfoResponseContent(
     val id: Int,
     val login: String,
     @SerialName("display_name")val displayName: String,

@@ -1,6 +1,7 @@
 package com.example.data.api
 
-import com.example.model.StreamerBaseInfoResponse
+import com.example.model.response.StreamerBaseInfoResponse
+
 
 class StreamerInfoRemoteDataSource(
     private val api: Api

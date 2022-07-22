@@ -2,7 +2,7 @@ package com.example.repository
 
 import com.example.data.api.StreamerInfoRemoteDataSource
 import com.example.irepository.StreamerBaseInfoRepository
-import com.example.model.StreamerBaseInfoResponse
+import com.example.model.response.StreamerBaseInfoResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

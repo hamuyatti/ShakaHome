@@ -1,10 +1,11 @@
-package com.example.model
+package com.example.model.response
 
+import com.example.model.domain.StreamerBaseInfo
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class StreamerBaseInfoResponse(
-    val `data`: List<StreamerBaseInfo>
+    val `data`: List<StreamerBaseInfoResponseContent>
 )
 
 fun StreamerBaseInfoResponse.asDomainModel(): StreamerBaseInfo {

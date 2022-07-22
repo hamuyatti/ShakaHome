@@ -1,4 +1,4 @@
-package com.example.model
+package com.example.model.domain
 
 data class StreamerInfo(
     val baseInfo: StreamerBaseInfo,

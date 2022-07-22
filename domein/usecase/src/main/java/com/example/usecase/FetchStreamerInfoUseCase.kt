@@ -2,8 +2,8 @@ package com.example.usecase
 
 import com.example.irepository.StreamerFollowInfoRepository
 import com.example.irepository.StreamerBaseInfoRepository
-import com.example.model.StreamerInfo
-import com.example.model.asDomainModel
+import com.example.model.domain.StreamerInfo
+import com.example.model.response.asDomainModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 

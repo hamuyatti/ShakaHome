@@ -1,6 +1,6 @@
-package com.example.model
+package com.example.model.response
 
-import android.icu.text.RelativeDateTimeFormatter
+import com.example.model.domain.FollowInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -8,22 +8,6 @@ import kotlinx.serialization.Serializable
 data class FollowInfoResponse(
     val `data`: List<EachFollowInfo>,
     val pagination: Pagination,
-    val total: Int
-) {
-    companion object {
-        fun dummyData(): FollowInfoResponse = dummyData()
-    }
-}
-
-fun FollowInfoResponse.asDomainModel(): FollowInfo {
-    return FollowInfo(
-        FollowsInfo = this.data,
-        total = this.total
-    )
-}
-
-data class FollowInfo(
-    val FollowsInfo: List<EachFollowInfo>,
     val total: Int
 )
 
@@ -42,6 +26,14 @@ data class EachFollowInfo(
 data class Pagination(
     val cursor: String
 )
+
+
+fun FollowInfoResponse.asDomainModel(): FollowInfo {
+    return FollowInfo(
+        FollowsInfo = this.data,
+        total = this.total
+    )
+}
 
 private fun dummyData(): FollowInfoResponse {
     return FollowInfoResponse(

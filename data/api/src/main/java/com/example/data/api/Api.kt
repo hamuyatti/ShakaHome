@@ -1,7 +1,7 @@
 package com.example.data.api
 
-import com.example.model.FollowInfoResponse
-import com.example.model.StreamerBaseInfoResponse
+import com.example.model.response.FollowInfoResponse
+import com.example.model.response.StreamerBaseInfoResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
