@@ -29,7 +29,6 @@ class StreamerInfoViewModel @Inject constructor(
 
     fun fetchStreamerInfo() {
         _isRefreshing.update { true }
-        Timber.d("${isRefreshing.value}")
         viewModelScope.launch {
             _uiState.update { StreamerInfoUiState.Loading }
             runCatching {

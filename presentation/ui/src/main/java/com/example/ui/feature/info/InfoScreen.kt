@@ -130,7 +130,7 @@ private fun LazyListScope.feed(
                     )
                 }
             }
-            items(uiState.streamerInfo.followInfo.data) {
+            items(uiState.streamerInfo.followInfo.FollowsInfo) {
                 Column {
                     Text(
                         text = it.toName,

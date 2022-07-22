@@ -1,7 +1,7 @@
 package com.example.data.api
 
-import com.example.model.FollowInfo
-import com.example.model.StreamerBaseInfo
+import com.example.model.FollowInfoResponse
+import com.example.model.StreamerBaseInfoResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -10,21 +10,21 @@ import retrofit2.http.Query
 interface Api {
 
     @Headers(
-        "Authorization: Bearer 0vvi1ikhyic6c2rq8flw1ukwp0pb2w",
+        "Authorization: Bearer vr3yz2e59jscxrzfvoa6219lwsw2by",
         "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
     )
     @GET("users")
     suspend fun fetchStreamerBaseInfo(
-        @Query("login") StreamerId: Int = 49207184
-    ): Response<StreamerBaseInfo>
+        @Query("id") streamerId: Int = 49207184
+    ): Response<StreamerBaseInfoResponse>
 
     @Headers(
-        "Authorization: Bearer 0vvi1ikhyic6c2rq8flw1ukwp0pb2w",
+        "Authorization: Bearer vr3yz2e59jscxrzfvoa6219lwsw2by",
         "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
     )
-    @GET("users")
+    @GET("users/follows")
     suspend fun fetchStreamerFollowInfo(
-        @Query("from_id") StreamerId: Int = 49207184
-    ): Response<FollowInfo>
+        @Query("from_id") streamerId: Int = 49207184
+    ): Response<FollowInfoResponse>
 
 }

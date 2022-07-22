@@ -3,6 +3,7 @@ package com.example.usecase
 import com.example.irepository.StreamerFollowInfoRepository
 import com.example.irepository.StreamerBaseInfoRepository
 import com.example.model.StreamerInfo
+import com.example.model.asDomainModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
@@ -15,8 +16,8 @@ class FetchStreamerInfoUseCase(
         val baseInfoAsync = async { baseInfoRepository.fetchStreamerBaseInfo() }
         val followInfoAsync = async { followInfoRepository.fetchStreamerFollowInfo() }
         return@coroutineScope StreamerInfo.from(
-            baseInfo = baseInfoAsync.await(),
-            followInfo = followInfoAsync.await()
+            baseInfo = baseInfoAsync.await().asDomainModel(),
+            followInfo = followInfoAsync.await().asDomainModel()
         )
     }
 }
