@@ -1,11 +1,11 @@
 package com.example.data.api
 
-import com.example.model.FollowInfo
+import com.example.model.response.FollowInfoResponse
 
 class StreamerFollowInfoRemoteDataSource(
     private val api: Api
 ) {
-    fun fetchStreamerFollowInfo(): FollowInfo {
+    suspend fun fetchStreamerFollowInfo(): FollowInfoResponse {
         return api.fetchStreamerFollowInfo().body()!!
     }
 }

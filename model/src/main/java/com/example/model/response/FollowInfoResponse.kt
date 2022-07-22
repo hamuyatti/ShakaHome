@@ -1,34 +1,45 @@
-package com.example.model
+package com.example.model.response
 
-data class FollowInfo(
-    val `data`: List<Data>,
+import com.example.model.domain.FollowInfo
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class FollowInfoResponse(
+    val `data`: List<EachFollowInfo>,
     val pagination: Pagination,
     val total: Int
-) {
-    companion object {
-        fun dummyData(): FollowInfo = dummyDate()
-    }
-}
-
-data class Data(
-    val followedAt: String,
-    val fromId: String,
-    val fromLogin: String,
-    val fromName: String,
-    val toId: String,
-    val toLogin: String,
-    val toName: String
 )
 
+@Serializable
+data class EachFollowInfo(
+    @SerialName("followed_at") val followedAt: String,
+    @SerialName("from_id") val fromId: String,
+    @SerialName("from_login") val fromLogin: String,
+    @SerialName("from_name") val fromName: String,
+    @SerialName("to_id") val toId: String,
+    @SerialName("to_login") val toLogin: String,
+    @SerialName("to_name") val toName: String
+)
+
+@Serializable
 data class Pagination(
     val cursor: String
 )
 
-private fun dummyDate(): FollowInfo {
+
+fun FollowInfoResponse.asDomainModel(): FollowInfo {
     return FollowInfo(
+        FollowsInfo = this.data,
+        total = this.total.toString()
+    )
+}
+
+private fun dummyData(): FollowInfoResponse {
+    return FollowInfoResponse(
         total = 163,
         data = listOf(
-            Data(
+            EachFollowInfo(
                 fromId = "49207184",
                 fromLogin = "fps_shaka",
                 fromName = "fps_shaka",
@@ -37,7 +48,7 @@ private fun dummyDate(): FollowInfo {
                 toName = "ソバルト",
                 followedAt = "2022-06-13T02:02:32Z"
             ),
-            Data(
+            EachFollowInfo(
                 fromId = "49207184",
                 fromLogin = "fps_shaka",
                 fromName = "fps_shaka",

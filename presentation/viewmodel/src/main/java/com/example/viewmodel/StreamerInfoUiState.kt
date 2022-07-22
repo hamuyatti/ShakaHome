@@ -1,6 +1,6 @@
 package com.example.viewmodel
 
-import com.example.model.StreamerInfo
+import com.example.model.domain.StreamerInfo
 
 sealed interface StreamerInfoUiState{
     object Empty : StreamerInfoUiState
