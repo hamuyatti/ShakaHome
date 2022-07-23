@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +24,6 @@ class ReportViewModel @Inject constructor(
     private val _isRefreshing: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-
     init {
         fetchNowStreamingInfo()
     }
@@ -36,7 +36,11 @@ class ReportViewModel @Inject constructor(
                 useCase()
             }.onSuccess { info ->
                 _isRefreshing.update { false }
-                _uiState.update { ReportUiState.Success(info) }
+                if (info == null) {
+                    _uiState.update { ReportUiState.Empty }
+                } else {
+                    _uiState.update { ReportUiState.Success(info) }
+                }
             }.onFailure { e ->
                 _isRefreshing.update { false }
                 _uiState.update { ReportUiState.Error(e) }

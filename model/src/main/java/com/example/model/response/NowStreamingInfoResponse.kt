@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NowStreamingInfoResponse(
-    val `data`: List<NowStreamingInfoContent>,
-    val pagination: NowStreamingInfoPagination
+    val `data`: List<NowStreamingInfoContent>?,
+    val pagination: NowStreamingInfoPagination? = null
 )
 
 @Serializable
@@ -30,11 +30,11 @@ data class NowStreamingInfoContent(
 
 @Serializable
 data class NowStreamingInfoPagination(
-    val cursor: String
+    val cursor: String? = null
 )
 
-fun NowStreamingInfoResponse.asDomainModel(): NowStreamingInfo {
-    val info = this.data[0]
+fun NowStreamingInfoResponse.asDomainModel(): NowStreamingInfo? {
+    val info = this.data?.getOrNull(0) ?: return null
     return NowStreamingInfo(
         gameId = info.gameId,
         gameName = info.gameName,
