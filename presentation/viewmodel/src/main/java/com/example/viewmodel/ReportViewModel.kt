@@ -31,6 +31,7 @@ class ReportViewModel @Inject constructor(
     fun fetchNowStreamingInfo() {
         _isRefreshing.update { true }
         viewModelScope.launch {
+            useCase()
             _uiState.update { ReportUiState.Loading }
             runCatching {
                 useCase()

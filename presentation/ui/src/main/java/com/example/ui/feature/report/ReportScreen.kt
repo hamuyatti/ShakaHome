@@ -19,14 +19,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.model.CarouselModel
+import coil.compose.AsyncImage
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
-import com.example.ui.feature.info.FollowList
-import com.example.ui.utils.ImageCarousel
 import com.example.viewmodel.ReportUiState
 import com.example.viewmodel.ReportViewModel
-import com.example.viewmodel.StreamerInfoUiState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -118,6 +115,17 @@ private fun LazyListScope.NowStreamingInfo(
         is ReportUiState.Success -> {
             item {
                 Column(modifier = modifier.padding(innerPadding)) {
+                    Text(text = uiState.nowStreamingInfo.userName)
+                    Text(text = uiState.nowStreamingInfo.title)
+                    Text(text = uiState.nowStreamingInfo.viewerCount.toString())
+                    Text(text = uiState.nowStreamingInfo.startedAt)
+                    AsyncImage(
+                        model = uiState.nowStreamingInfo.thumbnailUrl,
+                        contentDescription = "",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                    )
 
                 }
             }

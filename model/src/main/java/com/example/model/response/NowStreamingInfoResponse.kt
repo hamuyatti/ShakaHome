@@ -3,6 +3,7 @@ package com.example.model.response
 import com.example.model.domain.NowStreamingInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.concurrent.timer
 
 @Serializable
 data class NowStreamingInfoResponse(
