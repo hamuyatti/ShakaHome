@@ -2,6 +2,7 @@ package com.example.data.api
 
 import com.example.model.response.FollowInfoResponse
 import com.example.model.response.NowStreamingInfoResponse
+import com.example.model.response.PastVideosResponse
 import com.example.model.response.StreamerBaseInfoResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -35,6 +36,15 @@ interface Api {
     @GET("streams")
     suspend fun fetchNowStreamingInfo(
         @Query("user_id") streamerId: Int = 49207184
-    ) : Response<NowStreamingInfoResponse>
+    ): Response<NowStreamingInfoResponse>
+
+    @Headers(
+        "Authorization: Bearer vr3yz2e59jscxrzfvoa6219lwsw2by",
+        "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
+    )
+    @GET("videos")
+    suspend fun fetchVideos(
+        @Query("user_id") streamerId: Int = 49207184
+    ): Response<PastVideosResponse>
 
 }
