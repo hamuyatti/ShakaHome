@@ -1,6 +1,7 @@
 package com.example.shakahome.di
 
 import com.example.irepository.NowStreamingInfoRepository
+import com.example.irepository.PastVideosRepository
 import com.example.irepository.StreamerBaseInfoRepository
 import com.example.irepository.StreamerFollowInfoRepository
 import com.example.usecase.FetchNowStreamingInfoUseCase
@@ -25,6 +26,7 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun providesFetchNowStreamingInfoUseCase(
-        nowStreamingInfoRepository: NowStreamingInfoRepository
-    ) = FetchNowStreamingInfoUseCase(nowStreamingInfoRepository)
+        nowStreamingInfoRepository: NowStreamingInfoRepository,
+        pastVideosRepository: PastVideosRepository
+    ) = FetchNowStreamingInfoUseCase(nowStreamingInfoRepository, pastVideosRepository)
 }
