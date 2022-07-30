@@ -22,7 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
-import com.example.viewmodel.ReportUiState
+import com.example.viewmodel.NowStreamingInfoUiState
 import com.example.viewmodel.ReportViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -32,7 +32,7 @@ fun ForReportRoute(
     modifier: Modifier = Modifier,
     viewModel: ReportViewModel = hiltViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.nowStreamingInfoUiState.collectAsState()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
 
     ReportScreen(
@@ -48,7 +48,7 @@ fun ReportScreen(
     modifier: Modifier = Modifier,
     isRefreshing: Boolean,
     onRefreshing: () -> Unit,
-    uiState: ReportUiState
+    uiState: NowStreamingInfoUiState
 ) {
     SwipeRefresh(
         modifier = modifier.fillMaxHeight(),
@@ -81,7 +81,6 @@ fun ReportScreen(
             ) {
                 NowStreamingInfo(
                     uiState = uiState,
-                    innerPadding = innerPadding,
                     context = context
                 )
             }
@@ -90,19 +89,18 @@ fun ReportScreen(
 }
 
 private fun LazyListScope.NowStreamingInfo(
-    uiState: ReportUiState,
-    innerPadding: PaddingValues,
+    uiState: NowStreamingInfoUiState,
     modifier: Modifier = Modifier,
     context: Context
 ) {
     when (uiState) {
-        is ReportUiState.Loading -> {}
+        is NowStreamingInfoUiState.Loading -> {}
 
-        is ReportUiState.Error -> {
+        is NowStreamingInfoUiState.Error -> {
             Toast.makeText(context, "エラーです", Toast.LENGTH_SHORT).show()
         }
 
-        is ReportUiState.Empty -> {
+        is NowStreamingInfoUiState.Empty -> {
             item {
                 Text(
                     text = "現在の放送はありません。",
@@ -112,16 +110,17 @@ private fun LazyListScope.NowStreamingInfo(
             }
         }
 
-        is ReportUiState.Success -> {
+        is NowStreamingInfoUiState.Success -> {
             item {
-                Column(modifier = modifier.padding(innerPadding)) {
+                Column(modifier = modifier.fillMaxWidth()) {
+                    Text(text = "現在の放送状況")
                     Text(text = uiState.nowStreamingInfo.userName)
                     Text(text = uiState.nowStreamingInfo.title)
                     Text(text = uiState.nowStreamingInfo.viewerCount.toString())
                     Text(text = uiState.nowStreamingInfo.startedAt)
                     AsyncImage(
                         model = uiState.nowStreamingInfo.thumbnailUrl,
-                        contentDescription = "",
+                        contentDescription = "aa",
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(200.dp)

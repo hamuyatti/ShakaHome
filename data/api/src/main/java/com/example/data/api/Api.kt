@@ -34,7 +34,7 @@ interface Api {
     )
     @GET("streams")
     suspend fun fetchNowStreamingInfo(
-        @Query("user_id") streamerId: Int = 48207184
+        @Query("user_id") streamerId: Int = 49207184
     ) : Response<NowStreamingInfoResponse>
 
 }
