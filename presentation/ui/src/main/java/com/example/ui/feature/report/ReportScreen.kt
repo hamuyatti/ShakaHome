@@ -123,11 +123,8 @@ private fun LazyListScope.NowStreamingInfo(
                             .fillMaxWidth()
                             .padding(8.dp),
                     ) {
-                        val urlComplementedWidth =
-                            uiState.nowStreamingInfo.thumbnailUrl.replace("{width}", "1280")
-                        val url = urlComplementedWidth.replace("{height}", "720")
                         AsyncImage(
-                            model = url,
+                            model = uiState.nowStreamingInfo.thumbnailUrl,
                             contentDescription = "aa",
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -139,7 +136,7 @@ private fun LazyListScope.NowStreamingInfo(
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )
-                        Row{
+                        Row {
                             Text(
                                 text = "視聴者数 ",
                             )
@@ -148,7 +145,7 @@ private fun LazyListScope.NowStreamingInfo(
                                 textAlign = TextAlign.Center
                             )
                         }
-                        Row{
+                        Row {
                             Text(
                                 text = uiState.nowStreamingInfo.startedAt,
                             )

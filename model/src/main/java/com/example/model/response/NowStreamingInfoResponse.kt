@@ -55,7 +55,7 @@ fun NowStreamingInfoResponse.asDomainModel(): NowStreamingInfo? {
         language = info.language,
         startedAt = utcToJtc(info.startedAt),
         tagIds = info.tagIds,
-        thumbnailUrl = info.thumbnailUrl,
+        thumbnailUrl = complementSize(info.thumbnailUrl),
         title = info.title,
         userId = info.userId,
         userLogin = info.userLogin,
@@ -71,4 +71,9 @@ private fun utcToJtc(utcTime: String): String {
     val jtc = dateTime.atZoneSameInstant(zoneId).toOffsetDateTime()
     val formatter = DateTimeFormatter.ofPattern("MM月dd日 HH:mm〜")
     return jtc.format(formatter)
+}
+
+private fun complementSize(url: String): String {
+    val urlComplementedWidth = url.replace("{width}", "1280")
+    return urlComplementedWidth.replace("{height}", "720")
 }
