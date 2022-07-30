@@ -5,10 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,8 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.ui.R
@@ -26,6 +25,7 @@ import com.example.viewmodel.NowStreamingInfoUiState
 import com.example.viewmodel.ReportViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import timber.log.Timber
 
 @Composable
 fun ForReportRoute(
@@ -37,8 +37,8 @@ fun ForReportRoute(
 
     ReportScreen(
         isRefreshing = isRefreshing,
-        onRefreshing = { viewModel.fetchNowStreamingInfo() },
-        uiState = state
+        onRefreshing = { viewModel.refresh() },
+        nowStreamingInfoUiState = state
     )
 }
 
@@ -48,7 +48,7 @@ fun ReportScreen(
     modifier: Modifier = Modifier,
     isRefreshing: Boolean,
     onRefreshing: () -> Unit,
-    uiState: NowStreamingInfoUiState
+    nowStreamingInfoUiState: NowStreamingInfoUiState
 ) {
     SwipeRefresh(
         modifier = modifier.fillMaxHeight(),
@@ -80,7 +80,7 @@ fun ReportScreen(
                     .padding(innerPadding)
             ) {
                 NowStreamingInfo(
-                    uiState = uiState,
+                    uiState = nowStreamingInfoUiState,
                     context = context
                 )
             }
@@ -88,6 +88,7 @@ fun ReportScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 private fun LazyListScope.NowStreamingInfo(
     uiState: NowStreamingInfoUiState,
     modifier: Modifier = Modifier,
@@ -112,20 +113,47 @@ private fun LazyListScope.NowStreamingInfo(
 
         is NowStreamingInfoUiState.Success -> {
             item {
-                Column(modifier = modifier.fillMaxWidth()) {
-                    Text(text = "現在の放送状況")
-                    Text(text = uiState.nowStreamingInfo.userName)
-                    Text(text = uiState.nowStreamingInfo.title)
-                    Text(text = uiState.nowStreamingInfo.viewerCount.toString())
-                    Text(text = uiState.nowStreamingInfo.startedAt)
-                    AsyncImage(
-                        model = uiState.nowStreamingInfo.thumbnailUrl,
-                        contentDescription = "aa",
-                        modifier = Modifier
+                Card(
+                    Modifier
+                        .padding(16.dp)
+                        .wrapContentSize()
+                ) {
+                    Column(
+                        modifier = modifier
                             .fillMaxWidth()
-                            .height(200.dp)
-                    )
-
+                            .padding(8.dp),
+                    ) {
+                        val urlComplementedWidth =
+                            uiState.nowStreamingInfo.thumbnailUrl.replace("{width}", "1280")
+                        val url = urlComplementedWidth.replace("{height}", "720")
+                        AsyncImage(
+                            model = url,
+                            contentDescription = "aa",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
+                        )
+                        Text(
+                            text = uiState.nowStreamingInfo.title,
+                            textAlign = TextAlign.Start,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Row{
+                            Text(
+                                text = "視聴者数 ",
+                            )
+                            Text(
+                                text = uiState.nowStreamingInfo.viewerCount.toString(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                        Row{
+                            Text(
+                                text = uiState.nowStreamingInfo.startedAt,
+                            )
+                        }
+                    }
                 }
             }
         }

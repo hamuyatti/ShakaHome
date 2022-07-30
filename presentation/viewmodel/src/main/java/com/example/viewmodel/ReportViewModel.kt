@@ -23,10 +23,14 @@ class ReportViewModel @Inject constructor(
     val isRefreshing = _isRefreshing.asStateFlow()
 
     init {
+        refresh()
+    }
+
+    fun refresh(){
         fetchNowStreamingInfo()
     }
 
-    fun fetchNowStreamingInfo() {
+    private fun fetchNowStreamingInfo() {
         _isRefreshing.update { true }
         viewModelScope.launch {
             useCase()

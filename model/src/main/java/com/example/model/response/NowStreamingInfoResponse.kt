@@ -1,9 +1,20 @@
 package com.example.model.response
 
+import android.icu.text.MessageFormat.format
+import android.os.Build
+import android.text.format.DateFormat.format
+import androidx.annotation.RequiresApi
 import com.example.model.domain.NowStreamingInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlin.concurrent.timer
+import java.lang.String.format
+import java.text.DateFormat
+import java.text.MessageFormat.format
+import java.text.SimpleDateFormat
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 @Serializable
 data class NowStreamingInfoResponse(
@@ -42,7 +53,7 @@ fun NowStreamingInfoResponse.asDomainModel(): NowStreamingInfo? {
         id = info.id,
         isMature = info.isMature,
         language = info.language,
-        startedAt = info.startedAt,
+        startedAt = utcToJtc(info.startedAt),
         tagIds = info.tagIds,
         thumbnailUrl = info.thumbnailUrl,
         title = info.title,
@@ -52,4 +63,12 @@ fun NowStreamingInfoResponse.asDomainModel(): NowStreamingInfo? {
         viewerCount = info.viewerCount,
         type = info.type
     )
+}
+
+private fun utcToJtc(utcTime: String): String {
+    val dateTime = OffsetDateTime.parse(utcTime)
+    val zoneId = ZoneId.of("Asia/Tokyo")
+    val jtc = dateTime.atZoneSameInstant(zoneId).toOffsetDateTime()
+    val formatter = DateTimeFormatter.ofPattern("MM月dd日 HH:mm〜")
+    return jtc.format(formatter)
 }
