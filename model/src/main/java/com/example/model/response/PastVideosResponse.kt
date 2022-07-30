@@ -1,5 +1,6 @@
 package com.example.model.response
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -10,22 +11,22 @@ data class PastVideosResponse(
 
 @Serializable
 data class PastVideosContent(
-    val created_at: String,
+    @SerialName("created_at") val createdAt: String,
     val description: String,
     val duration: String,
     val id: String,
     val language: String,
-    val muted_segments: List<MutedSegment>,
-    val published_at: String,
-    val stream_id: String,
-    val thumbnail_url: String,
+    @SerialName("muted_segments") val mutedSegments: List<MutedSegment>,
+    @SerialName("published_a") val publishedAt: String,
+    @SerialName("stream_id") val streamId: String,
+    @SerialName("thumbnail_url") val thumbnailUrl: String,
     val title: String,
     val type: String,
     val url: String,
-    val user_id: String,
-    val user_login: String,
-    val user_name: String,
-    val view_count: Int,
+    @SerialName("user_id") val userId: String,
+    @SerialName("user_login") val userLogin: String,
+    @SerialName("user_name") val userName: String,
+    @SerialName("view_count") val viewCount: Int,
     val viewable: String
 )
 
