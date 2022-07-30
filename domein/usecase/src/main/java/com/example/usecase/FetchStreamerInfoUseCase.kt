@@ -7,7 +7,7 @@ import com.example.model.response.asDomainModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
-//複数のrepository,apiを掛け合わせる予定
+// TODO: なんとなくusecaseで値まとめたけど、compose用に各局viewModelで分散して変数を置くなら不要な処理だったかもなぁ
 class FetchStreamerInfoUseCase(
     private val baseInfoRepository: StreamerBaseInfoRepository,
     private val followInfoRepository: StreamerFollowInfoRepository

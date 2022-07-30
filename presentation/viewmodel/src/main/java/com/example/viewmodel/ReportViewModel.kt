@@ -15,9 +15,13 @@ class ReportViewModel @Inject constructor(
     private val useCase: FetchNowStreamingInfoUseCase
 ) : ViewModel() {
 
-    private val _nowStreamingInfoUiState: MutableStateFlow<NowStreamingInfoUiState> =
-        MutableStateFlow(NowStreamingInfoUiState.Empty)
+    private val _nowStreamingInfoUiState: MutableStateFlow<NowStreamingInfoState> =
+        MutableStateFlow(NowStreamingInfoState.Empty)
     val nowStreamingInfoUiState = _nowStreamingInfoUiState.asStateFlow()
+
+    private val _pastVideoInfoState: MutableStateFlow<PastVideosInfoState> =
+        MutableStateFlow(PastVideosInfoState.Empty)
+    val pastVideosInfoState = _pastVideoInfoState.asStateFlow()
 
     private val _isRefreshing: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
@@ -26,27 +30,28 @@ class ReportViewModel @Inject constructor(
         refresh()
     }
 
-    fun refresh(){
-        fetchNowStreamingInfo()
+    fun refresh() {
+        fetch()
     }
 
-    private fun fetchNowStreamingInfo() {
+    private fun fetch() {
         _isRefreshing.update { true }
         viewModelScope.launch {
             useCase()
-            _nowStreamingInfoUiState.update { NowStreamingInfoUiState.Loading }
+            _nowStreamingInfoUiState.update { NowStreamingInfoState.Loading }
             runCatching {
                 useCase()
             }.onSuccess { info ->
                 _isRefreshing.update { false }
-                if (info == null) {
-                    _nowStreamingInfoUiState.update { NowStreamingInfoUiState.Empty }
-                } else {
-                    _nowStreamingInfoUiState.update { NowStreamingInfoUiState.Success(info) }
-                }
+                info.nowStreamingInfo?.also { streamInfo ->
+                    _nowStreamingInfoUiState.update { NowStreamingInfoState.Success(streamInfo) }
+                } ?: _nowStreamingInfoUiState.update { NowStreamingInfoState.Empty }
+
+                _pastVideoInfoState.update { PastVideosInfoState.Success(info.pastVideosInfo) }
+
             }.onFailure { e ->
                 _isRefreshing.update { false }
-                _nowStreamingInfoUiState.update { NowStreamingInfoUiState.Error(e) }
+                _nowStreamingInfoUiState.update { NowStreamingInfoState.Error(e) }
             }
         }
     }

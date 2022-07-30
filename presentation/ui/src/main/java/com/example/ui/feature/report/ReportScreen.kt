@@ -19,26 +19,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.example.model.domain.PastVideosInfo
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
-import com.example.viewmodel.NowStreamingInfoUiState
+import com.example.viewmodel.NowStreamingInfoState
+import com.example.viewmodel.PastVideosInfoState
 import com.example.viewmodel.ReportViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import timber.log.Timber
 
 @Composable
 fun ForReportRoute(
     modifier: Modifier = Modifier,
     viewModel: ReportViewModel = hiltViewModel()
 ) {
-    val state by viewModel.nowStreamingInfoUiState.collectAsState()
+    val nowStreamInfoState by viewModel.nowStreamingInfoUiState.collectAsState()
+    val pastVideosInfoState by viewModel.pastVideosInfoState.collectAsState()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
 
     ReportScreen(
         isRefreshing = isRefreshing,
         onRefreshing = { viewModel.refresh() },
-        nowStreamingInfoUiState = state
+        nowStreamingInfoUiState = nowStreamInfoState,
+        pastVideosInfoState = pastVideosInfoState
     )
 }
 
@@ -48,7 +51,8 @@ fun ReportScreen(
     modifier: Modifier = Modifier,
     isRefreshing: Boolean,
     onRefreshing: () -> Unit,
-    nowStreamingInfoUiState: NowStreamingInfoUiState
+    nowStreamingInfoUiState: NowStreamingInfoState,
+    pastVideosInfoState: PastVideosInfoState
 ) {
     SwipeRefresh(
         modifier = modifier.fillMaxHeight(),
@@ -83,6 +87,10 @@ fun ReportScreen(
                     uiState = nowStreamingInfoUiState,
                     context = context
                 )
+                PastVideosInfo(
+                    uiState = pastVideosInfoState,
+                    context = context
+                )
             }
         }
     }
@@ -90,18 +98,18 @@ fun ReportScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 private fun LazyListScope.NowStreamingInfo(
-    uiState: NowStreamingInfoUiState,
+    uiState: NowStreamingInfoState,
     modifier: Modifier = Modifier,
     context: Context
 ) {
     when (uiState) {
-        is NowStreamingInfoUiState.Loading -> {}
+        is NowStreamingInfoState.Loading -> {}
 
-        is NowStreamingInfoUiState.Error -> {
+        is NowStreamingInfoState.Error -> {
             Toast.makeText(context, "エラーです", Toast.LENGTH_SHORT).show()
         }
 
-        is NowStreamingInfoUiState.Empty -> {
+        is NowStreamingInfoState.Empty -> {
             item {
                 Text(
                     text = "現在の放送はありません。",
@@ -111,7 +119,7 @@ private fun LazyListScope.NowStreamingInfo(
             }
         }
 
-        is NowStreamingInfoUiState.Success -> {
+        is NowStreamingInfoState.Success -> {
             item {
                 Card(
                     Modifier
@@ -157,3 +165,28 @@ private fun LazyListScope.NowStreamingInfo(
     }
 }
 
+private fun LazyListScope.PastVideosInfo(
+    uiState: PastVideosInfoState,
+    modifier: Modifier = Modifier,
+    context: Context
+) {
+    when (uiState) {
+        is PastVideosInfoState.Empty -> {
+
+        }
+
+        is PastVideosInfoState.Error -> {
+
+        }
+
+        is PastVideosInfoState.Loading -> {
+
+        }
+
+        is PastVideosInfoState.Success -> {
+            item {
+                Text(text = uiState.pastVideosState.pastVideos.toString())
+            }
+        }
+    }
+}
