@@ -1,5 +1,6 @@
 package com.example.model.response
 
+import com.example.model.domain.PastVideosInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -40,3 +41,10 @@ data class MutedSegment(
 data class PastVideosPagination(
     val cursor: String
 )
+
+
+fun PastVideosResponse.asDomainModel(): PastVideosInfo {
+    return PastVideosInfo(
+        pastVideos = this.data
+    )
+}
