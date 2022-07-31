@@ -1,5 +1,8 @@
 package com.example.model.response
 
+import com.example.core.util.DateUtil.format
+import com.example.core.util.DateUtil.utcToJtc
+import com.example.core.util.ThumbnailUrlUtil.complementSizeForPastThumbnail
 import com.example.model.domain.PastVideosInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -47,9 +50,9 @@ fun PastVideosResponse.asDomainModel(): PastVideosInfo {
     return PastVideosInfo(
         pastVideos = this.data.map {
             it.copy(
-                createdAt = PastVideosInfo.utcToJtc(it.createdAt),
-                thumbnailUrl = PastVideosInfo.complementSizeForPastThumbnail(it.thumbnailUrl),
-                duration = PastVideosInfo.format(it.duration)
+                createdAt = utcToJtc(it.createdAt),
+                thumbnailUrl = complementSizeForPastThumbnail(it.thumbnailUrl),
+                duration = format(it.duration)
             )
         }
     )

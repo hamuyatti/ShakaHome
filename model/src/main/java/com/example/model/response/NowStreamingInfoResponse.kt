@@ -1,5 +1,7 @@
 package com.example.model.response
 
+import com.example.core.util.DateUtil
+import com.example.core.util.ThumbnailUrlUtil.complementSizeForNowStreamingThumbnail
 import com.example.model.domain.NowStreamingInfo
 import com.example.model.domain.PastVideosInfo
 import kotlinx.serialization.SerialName
@@ -42,9 +44,9 @@ fun NowStreamingInfoResponse.asDomainModel(): NowStreamingInfo? {
         id = info.id,
         isMature = info.isMature,
         language = info.language,
-        startedAt = "${PastVideosInfo.utcToJtc(info.startedAt)}~",
+        startedAt = "${DateUtil.utcToJtc(info.startedAt)}~",
         tagIds = info.tagIds ?: listOf(),
-        thumbnailUrl = PastVideosInfo.complementSizeForNowStreamingThumbnail(info.thumbnailUrl),
+        thumbnailUrl = complementSizeForNowStreamingThumbnail(info.thumbnailUrl),
         title = info.title,
         userId = info.userId,
         userLogin = info.userLogin,
