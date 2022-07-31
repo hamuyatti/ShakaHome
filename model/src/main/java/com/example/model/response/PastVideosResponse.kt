@@ -45,6 +45,12 @@ data class PastVideosPagination(
 
 fun PastVideosResponse.asDomainModel(): PastVideosInfo {
     return PastVideosInfo(
-        pastVideos = this.data
+        pastVideos = this.data.map {
+            it.copy(
+                createdAt = PastVideosInfo.utcToJtc(it.createdAt),
+                thumbnailUrl = PastVideosInfo.complementSizeForPastThumbnail(it.thumbnailUrl),
+                duration = PastVideosInfo.format(it.duration)
+            )
+        }
     )
 }

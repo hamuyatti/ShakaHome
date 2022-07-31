@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.example.model.domain.PastVideosInfo
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.viewmodel.NowStreamingInfoState
@@ -114,7 +114,7 @@ private fun LazyListScope.NowStreamingInfo(
                 Text(
                     text = "現在の放送はありません。",
                     modifier = modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             }
         }
@@ -131,6 +131,11 @@ private fun LazyListScope.NowStreamingInfo(
                             .fillMaxWidth()
                             .padding(8.dp),
                     ) {
+                        Text(
+                            text = "Now Streaming",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                         AsyncImage(
                             model = uiState.nowStreamingInfo.thumbnailUrl,
                             contentDescription = "aa",
@@ -165,6 +170,7 @@ private fun LazyListScope.NowStreamingInfo(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 private fun LazyListScope.PastVideosInfo(
     uiState: PastVideosInfoState,
     modifier: Modifier = Modifier,
@@ -184,8 +190,58 @@ private fun LazyListScope.PastVideosInfo(
         }
 
         is PastVideosInfoState.Success -> {
-            item {
-                Text(text = uiState.pastVideosState.pastVideos.toString())
+            items(uiState.pastVideosState.pastVideos) { item ->
+                Card(
+                    Modifier
+                        .padding(16.dp)
+                        .wrapContentSize()
+                ) {
+                    Column(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                    ) {
+                        if (item.thumbnailUrl.isEmpty()) {
+                            Text(
+                                text = "画像が設定されていません。",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                            )
+                        } else {
+                            AsyncImage(
+                                model = item.thumbnailUrl,
+                                contentDescription = "aa",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                            )
+                        }
+                        Text(
+                            text = item.title,
+                            textAlign = TextAlign.Start,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Row {
+                            Text(
+                                text = "視聴回数 ",
+                            )
+                            Text(
+                                text = item.viewCount.toString(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                        Row {
+                            Text(
+                                text = "${item.createdAt}~  ",
+                            )
+                            Text(
+                                text = item.duration
+                            )
+                        }
+                    }
+                }
             }
         }
     }
