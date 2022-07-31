@@ -26,7 +26,10 @@ import com.example.ui.thema.ShakaHomeTheme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun ShakaHomeApp(windowSizeClass: WindowSizeClass) {
+fun ShakaHomeApp(
+    windowSizeClass: WindowSizeClass,
+    callbackOnItemClicked: (String) -> Unit
+) {
     ShakaHomeTheme {
         val navController = rememberNavController()
         val shakaHomeTopLevelNavigation = remember(navController) {
@@ -36,45 +39,46 @@ fun ShakaHomeApp(windowSizeClass: WindowSizeClass) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
-            Scaffold(
-                modifier = Modifier,
-                containerColor = Color.Transparent,
-                contentColor = MaterialTheme.colorScheme.onBackground,
-                bottomBar = {
-                    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                        ShakaHomeBottomBar(
-                            onNavigateToTopLevelDestination = shakaHomeTopLevelNavigation::navigateTo,
-                            currentDestination = currentDestination
-                        )
-                    }
-                }
-            ) { padding ->
-                Row(
-                    Modifier
-                        .fillMaxSize()
-                        .windowInsetsPadding(
-                            WindowInsets.safeDrawing.only(
-                                WindowInsetsSides.Horizontal
-                            )
-                        )
-                ) {
-                    if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
-                        ShakaHomeNavRail(
-                            onNavigateToTopLevelDestination = shakaHomeTopLevelNavigation::navigateTo,
-                            currentDestination = currentDestination,
-                            modifier = Modifier.safeDrawingPadding()
-                        )
-                    }
-
-                    ShakaHomeNavHost(
-                        windowSizeClass = windowSizeClass,
-                        navController = navController,
-                        modifier = Modifier
-                            .padding(padding)
-                            .consumedWindowInsets(padding)
+        Scaffold(
+            modifier = Modifier,
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onBackground,
+            bottomBar = {
+                if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                    ShakaHomeBottomBar(
+                        onNavigateToTopLevelDestination = shakaHomeTopLevelNavigation::navigateTo,
+                        currentDestination = currentDestination
                     )
                 }
             }
+        ) { padding ->
+            Row(
+                Modifier
+                    .fillMaxSize()
+                    .windowInsetsPadding(
+                        WindowInsets.safeDrawing.only(
+                            WindowInsetsSides.Horizontal
+                        )
+                    )
+            ) {
+                if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
+                    ShakaHomeNavRail(
+                        onNavigateToTopLevelDestination = shakaHomeTopLevelNavigation::navigateTo,
+                        currentDestination = currentDestination,
+                        modifier = Modifier.safeDrawingPadding()
+                    )
+                }
+
+                ShakaHomeNavHost(
+                    windowSizeClass = windowSizeClass,
+                    navController = navController,
+                    modifier = Modifier
+                        .padding(padding)
+                        .consumedWindowInsets(padding),
+                    callbackOnItemClicked = callbackOnItemClicked
+                )
+            }
+        }
     }
 }
 
@@ -102,7 +106,6 @@ private fun ShakaHomeNavRail(
         }
     }
 }
-
 
 
 @Composable

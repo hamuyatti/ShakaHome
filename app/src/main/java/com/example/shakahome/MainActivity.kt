@@ -1,5 +1,8 @@
 package com.example.shakahome
 
+import android.content.Intent
+import android.content.Intent.ACTION_VIEW
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -16,6 +19,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        setContent { ShakaHomeApp(calculateWindowSizeClass(this) ) }
+        val callbackOnItemClicked: (String) -> Unit = { it ->
+            val uri = Uri.parse(it)
+            val intent = Intent(ACTION_VIEW, uri)
+            startActivity(intent)
+        }
+
+        setContent { ShakaHomeApp(calculateWindowSizeClass(this), callbackOnItemClicked) }
     }
 }

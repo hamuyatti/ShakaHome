@@ -2,6 +2,7 @@ package com.example.ui.feature.report
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -31,7 +32,8 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 @Composable
 fun ForReportRoute(
     modifier: Modifier = Modifier,
-    viewModel: ReportViewModel = hiltViewModel()
+    viewModel: ReportViewModel = hiltViewModel(),
+    callbackOnItemClicked: (String) -> Unit
 ) {
     val nowStreamInfoState by viewModel.nowStreamingInfoUiState.collectAsState()
     val pastVideosInfoState by viewModel.pastVideosInfoState.collectAsState()
@@ -41,7 +43,8 @@ fun ForReportRoute(
         isRefreshing = isRefreshing,
         onRefreshing = { viewModel.refresh() },
         nowStreamingInfoUiState = nowStreamInfoState,
-        pastVideosInfoState = pastVideosInfoState
+        pastVideosInfoState = pastVideosInfoState,
+        callbackOnItemClicked = callbackOnItemClicked
     )
 }
 
@@ -52,7 +55,8 @@ fun ReportScreen(
     isRefreshing: Boolean,
     onRefreshing: () -> Unit,
     nowStreamingInfoUiState: NowStreamingInfoState,
-    pastVideosInfoState: PastVideosInfoState
+    pastVideosInfoState: PastVideosInfoState,
+    callbackOnItemClicked: (String) -> Unit
 ) {
     SwipeRefresh(
         modifier = modifier.fillMaxHeight(),
@@ -85,11 +89,13 @@ fun ReportScreen(
             ) {
                 NowStreamingInfo(
                     uiState = nowStreamingInfoUiState,
-                    context = context
+                    context = context,
+                    callbackOnItemClicked = callbackOnItemClicked
                 )
                 PastVideosInfo(
                     uiState = pastVideosInfoState,
-                    context = context
+                    context = context,
+                    callbackOnItemClicked = callbackOnItemClicked
                 )
             }
         }
@@ -100,7 +106,8 @@ fun ReportScreen(
 private fun LazyListScope.NowStreamingInfo(
     uiState: NowStreamingInfoState,
     modifier: Modifier = Modifier,
-    context: Context
+    context: Context,
+    callbackOnItemClicked: (String) -> Unit
 ) {
     when (uiState) {
         is NowStreamingInfoState.Loading -> {}
@@ -174,7 +181,8 @@ private fun LazyListScope.NowStreamingInfo(
 private fun LazyListScope.PastVideosInfo(
     uiState: PastVideosInfoState,
     modifier: Modifier = Modifier,
-    context: Context
+    context: Context,
+    callbackOnItemClicked: (String) -> Unit
 ) {
     when (uiState) {
         is PastVideosInfoState.Empty -> {
@@ -195,6 +203,7 @@ private fun LazyListScope.PastVideosInfo(
                     Modifier
                         .padding(16.dp)
                         .wrapContentSize()
+                        .clickable { callbackOnItemClicked.invoke(item.url) },
                 ) {
                     Column(
                         modifier = modifier
