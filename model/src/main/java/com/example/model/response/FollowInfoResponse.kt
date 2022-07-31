@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FollowInfoResponse(
     val `data`: List<EachFollowInfo>,
-    val pagination: FollowInfoPagination,
+    val pagination: PastVideosPagination,
     val total: Int
 )
 
@@ -58,7 +58,7 @@ private fun dummyData(): FollowInfoResponse {
                 followedAt = "2022-04-02T12:27:43Z"
             )
         ),
-        pagination = FollowInfoPagination(
+        pagination = PastVideosPagination(
             cursor = "eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6ImV5SjBjQ0k2SW5WelpYSTZORGt5TURje" +
                     "E9EUTZabTlzYkc5M2N5SXNJblJ6SWpvaWRYTmxjam8wTXpZMk9EZzVNVFVpTENKcGND" +
                     "STZJblZ6WlhJNk5Ea3lNRGN4T0RRNlptOXNiRzkzY3lJc0ltbHpJam9pTVRZME5EZzJ" +

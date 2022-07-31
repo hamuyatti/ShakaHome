@@ -1,13 +1,16 @@
 package com.example.shakahome.di
 
 import com.example.data.api.NowStreamingInfoDataSource
+import com.example.data.api.PastVideosDataSource
 import com.example.data.api.StreamerFollowInfoRemoteDataSource
 import com.example.data.api.StreamerInfoRemoteDataSource
 import com.example.irepository.NowStreamingInfoRepository
+import com.example.irepository.PastVideosRepository
 import com.example.irepository.StreamerFollowInfoRepository
 import com.example.repository.StreamerBaseInfoRepositoryImpl
 import com.example.irepository.StreamerBaseInfoRepository
 import com.example.repository.NowStreamingInfoRepositoryImpl
+import com.example.repository.PastVideosRepositoryImpl
 import com.example.repository.StreamerFollowInfoRepositoryImpl
 import dagger.Module
 import dagger.Provides
@@ -40,5 +43,13 @@ object RepositoryModule {
         remoteDataSource: NowStreamingInfoDataSource
     ): NowStreamingInfoRepository {
         return NowStreamingInfoRepositoryImpl(remoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun providesPastVideosRepository(
+        dataSource: PastVideosDataSource
+    ): PastVideosRepository {
+        return PastVideosRepositoryImpl(dataSource)
     }
 }
