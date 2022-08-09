@@ -39,6 +39,7 @@ class ReportViewModel @Inject constructor(
         viewModelScope.launch {
             useCase()
             _nowStreamingInfoUiState.update { NowStreamingInfoState.Loading }
+            _pastVideoInfoState.update { PastVideosInfoState.Loading }
             runCatching {
                 useCase()
             }.onSuccess { info ->

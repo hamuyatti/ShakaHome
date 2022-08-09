@@ -5,15 +5,16 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.ui.feature.report.ForReportRoute
 
-object ReportDestination : ShakaHomeNavigationDestination{
+object ReportDestination : ShakaHomeNavigationDestination {
     override val route: String = "report_route"
     override val destination: String = "report_destination"
 }
 
 fun NavGraphBuilder.reportGraph(
-    windowSizeClass: WindowSizeClass
-){
-    composable(route = ReportDestination.route){
-        ForReportRoute()
+    windowSizeClass: WindowSizeClass,
+    callbackOnItemClicked: (String) -> Unit
+) {
+    composable(route = ReportDestination.route) {
+        ForReportRoute(callbackOnItemClicked = callbackOnItemClicked)
     }
 }

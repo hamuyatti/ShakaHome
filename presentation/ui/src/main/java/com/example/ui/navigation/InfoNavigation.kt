@@ -12,9 +12,10 @@ object InfoNavigation : ShakaHomeNavigationDestination {
 
 //参考にしたアプリのままwindowSizeClassを持ってきたけど、一旦使わなそう
 fun NavGraphBuilder.infoGraph(
-    windowSizeClass: WindowSizeClass
-){
-    composable(route = InfoNavigation.route){
+    windowSizeClass: WindowSizeClass,
+    callbackOnItemClicked: (String) -> Unit
+) {
+    composable(route = InfoNavigation.route) {
         ForInfoRoute()
     }
 }
