@@ -1,19 +1,20 @@
 package com.example.model.response
 
 import com.example.core.util.DateUtil.utcToJtc
+import com.example.model.domain.EachFollowInfo
 import com.example.model.domain.FollowInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class FollowInfoResponse(
-    val `data`: List<EachFollowInfo>,
+    val `data`: List<EachFollowInfoResponse>,
     val pagination: FollowInfoPagination,
     val total: Int
 )
 
 @Serializable
-data class EachFollowInfo(
+data class EachFollowInfoResponse(
     @SerialName("followed_at") val followedAt: String,
     @SerialName("from_id") val fromId: String,
     @SerialName("from_login") val fromLogin: String,
@@ -31,8 +32,14 @@ data class FollowInfoPagination(
 fun FollowInfoResponse.asDomainModel(): FollowInfo {
     return FollowInfo(
         FollowsInfo = this.data.map {
-            it.copy(
-                followedAt = utcToJtc(it.followedAt)
+            EachFollowInfo(
+                followedAt = utcToJtc(it.followedAt),
+                fromId = it.fromId,
+                fromLogin = it.fromLogin,
+                fromName = it.fromName,
+                toId = it.toId,
+                toLogin = it.toLogin,
+                toName = it.toName
             )
         },
         total = this.total.toString()
