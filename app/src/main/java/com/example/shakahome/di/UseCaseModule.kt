@@ -4,6 +4,7 @@ import com.example.irepository.NowStreamingInfoRepository
 import com.example.irepository.PastVideosRepository
 import com.example.irepository.StreamerBaseInfoRepository
 import com.example.irepository.StreamerFollowInfoRepository
+import com.example.usecase.FetchFollowInfoUseCase
 import com.example.usecase.FetchNowStreamingInfoUseCase
 import com.example.usecase.FetchPastVideosUseCase
 import com.example.usecase.FetchStreamerBaseInfoUseCase
@@ -21,8 +22,13 @@ object UseCaseModule {
     @Singleton
     fun provideFetchStreamerInfoUseCase(
         streamerBaseInfoRepository: StreamerBaseInfoRepository,
-        streamerFollowInfoRepository: StreamerFollowInfoRepository
-    ) = FetchStreamerBaseInfoUseCase(streamerBaseInfoRepository, streamerFollowInfoRepository)
+    ) = FetchStreamerBaseInfoUseCase(streamerBaseInfoRepository)
+
+    @Provides
+    @Singleton
+    fun providesFetchFollowInfoUseCase(
+        followInfoRepository: StreamerFollowInfoRepository
+    ) = FetchFollowInfoUseCase(followInfoRepository)
 
     @Provides
     @Singleton
