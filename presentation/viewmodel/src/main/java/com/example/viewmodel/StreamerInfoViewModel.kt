@@ -2,44 +2,65 @@ package com.example.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.usecase.FetchStreamerInfoUseCase
+import com.example.model.domain.StreamerBaseInfo
+import com.example.usecase.FetchFollowInfoUseCase
+import com.example.usecase.FetchStreamerBaseInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class StreamerInfoViewModel @Inject constructor(
-    private val useCase: FetchStreamerInfoUseCase
+    private val baseInfoUseCase: FetchStreamerBaseInfoUseCase,
+    private val followInfoUseCase: FetchFollowInfoUseCase
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<StreamerInfoUiState> =
-        MutableStateFlow(StreamerInfoUiState.Empty)
-    val uiState = _uiState.asStateFlow()
+    private val _baseInfoUiState: MutableStateFlow<StreamerBaseInfoUiState> =
+        MutableStateFlow(StreamerBaseInfoUiState.Empty)
+    val baseInfoUiState = _baseInfoUiState.asStateFlow()
 
-    private val _isRefreshing : MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val _followInfoUiState: MutableStateFlow<FollowInfoUiState> =
+        MutableStateFlow(FollowInfoUiState.Empty)
+    val followInfoUiState = _followInfoUiState.asStateFlow()
+
+    private val _isRefreshing: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
     init {
-        fetchStreamerInfo()
+        fetch()
     }
 
-    fun fetchStreamerInfo() {
-        _isRefreshing.update { true }
+    fun refresh(){
+        fetch()
+    }
+
+    private fun fetch(){
         viewModelScope.launch {
-            _uiState.update { StreamerInfoUiState.Loading }
-            runCatching {
-                useCase()
-            }.onSuccess { info ->
-                _isRefreshing.update { false }
-                _uiState.update { StreamerInfoUiState.Success(info) }
-            }.onFailure { e ->
-                _isRefreshing.update { false }
-                _uiState.update { StreamerInfoUiState.Error(e) }
-            }
+            fetchBaseInfo()
+            fetchFollowInfo()
+        }
+    }
+
+    private suspend fun fetchBaseInfo() {
+        runCatching {
+            baseInfoUseCase()
+        }.onSuccess { info ->
+            _baseInfoUiState.update { StreamerBaseInfoUiState.Success(info) }
+        }.onFailure { error ->
+            _baseInfoUiState.update { StreamerBaseInfoUiState.Error(error) }
+        }
+    }
+
+    private suspend fun fetchFollowInfo() {
+        kotlin.runCatching {
+            followInfoUseCase()
+        }.onSuccess { info ->
+            _followInfoUiState.update { FollowInfoUiState.Success(info) }
+        }.onFailure { error ->
+            _followInfoUiState.update { FollowInfoUiState.Error(error) }
         }
     }
 

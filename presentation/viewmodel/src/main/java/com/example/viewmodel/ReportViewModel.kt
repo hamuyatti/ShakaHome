@@ -3,6 +3,7 @@ package com.example.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usecase.FetchNowStreamingInfoUseCase
+import com.example.usecase.FetchPastVideosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReportViewModel @Inject constructor(
-    private val useCase: FetchNowStreamingInfoUseCase
+    private val nowStreamingInfoUseCase: FetchNowStreamingInfoUseCase,
+    private val pastVideosUseCase: FetchPastVideosUseCase
 ) : ViewModel() {
 
     private val _nowStreamingInfoUiState: MutableStateFlow<NowStreamingInfoState> =
@@ -23,11 +25,12 @@ class ReportViewModel @Inject constructor(
         MutableStateFlow(PastVideosInfoState.Empty)
     val pastVideosInfoState = _pastVideoInfoState.asStateFlow()
 
-    private val _isRefreshing: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val _isRefreshing: MutableStateFlow<Boolean> =
+        MutableStateFlow(_nowStreamingInfoUiState.value is NowStreamingInfoState.Loading && _pastVideoInfoState.value is PastVideosInfoState.Loading)
     val isRefreshing = _isRefreshing.asStateFlow()
 
     init {
-        refresh()
+        fetch()
     }
 
     fun refresh() {
@@ -35,25 +38,38 @@ class ReportViewModel @Inject constructor(
     }
 
     private fun fetch() {
-        _isRefreshing.update { true }
         viewModelScope.launch {
-            useCase()
-            _nowStreamingInfoUiState.update { NowStreamingInfoState.Loading }
-            _pastVideoInfoState.update { PastVideosInfoState.Loading }
-            runCatching {
-                useCase()
-            }.onSuccess { info ->
-                _isRefreshing.update { false }
-                info.nowStreamingInfo?.also { streamInfo ->
-                    _nowStreamingInfoUiState.update { NowStreamingInfoState.Success(streamInfo) }
-                } ?: _nowStreamingInfoUiState.update { NowStreamingInfoState.Empty }
-
-                _pastVideoInfoState.update { PastVideosInfoState.Success(info.pastVideosInfo) }
-
-            }.onFailure { e ->
-                _isRefreshing.update { false }
-                _nowStreamingInfoUiState.update { NowStreamingInfoState.Error(e) }
-            }
+            fetchNowStreaming()
+            fetchPastVideos()
         }
+    }
+
+    private suspend fun fetchNowStreaming() {
+        _nowStreamingInfoUiState.update { NowStreamingInfoState.Loading }
+        runCatching {
+            nowStreamingInfoUseCase()
+        }.onSuccess { info ->
+
+            info?.also { streamInfo ->
+                _nowStreamingInfoUiState.update { NowStreamingInfoState.Success(streamInfo) }
+            } ?: _nowStreamingInfoUiState.update { NowStreamingInfoState.Empty }
+
+        }.onFailure { e ->
+            _nowStreamingInfoUiState.update { NowStreamingInfoState.Error(e) }
+        }
+    }
+
+    private suspend fun fetchPastVideos() {
+        _pastVideoInfoState.update { PastVideosInfoState.Loading }
+        runCatching {
+            pastVideosUseCase()
+        }.onSuccess { info ->
+
+            _pastVideoInfoState.update { PastVideosInfoState.Success(info) }
+
+        }.onFailure { e ->
+            _nowStreamingInfoUiState.update { NowStreamingInfoState.Error(e) }
+        }
+
     }
 }

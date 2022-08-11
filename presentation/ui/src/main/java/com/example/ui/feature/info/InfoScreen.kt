@@ -3,9 +3,6 @@ package com.example.ui.feature.info
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
@@ -18,14 +15,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
 import com.example.model.CarouselModel
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
-import com.example.ui.utils.Center
 import com.example.ui.utils.ImageCarousel
-import com.example.ui.utils.SimpleProgressBar
-import com.example.viewmodel.StreamerInfoUiState
+import com.example.viewmodel.StreamerBaseInfoUiState
 import com.example.viewmodel.StreamerInfoViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -35,10 +29,10 @@ fun ForInfoRoute(
     modifier: Modifier = Modifier,
     viewModel: StreamerInfoViewModel = hiltViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val state by viewModel.baseInfoUiState.collectAsState()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     InfoScreen(
-        onRefresh = { viewModel.fetchStreamerInfo() },
+        onRefresh = { viewModel.refresh() },
         uiState = state,
         modifier = modifier,
         isRefreshing = isRefreshing
@@ -50,7 +44,7 @@ fun ForInfoRoute(
 fun InfoScreen(
     modifier: Modifier = Modifier,
     onRefresh: () -> Unit,
-    uiState: StreamerInfoUiState,
+    uiState: StreamerBaseInfoUiState,
     isRefreshing: Boolean,
 ) {
     SwipeRefresh(
@@ -84,21 +78,21 @@ fun InfoScreen(
 
 @Composable
 private fun Feed(
-    uiState: StreamerInfoUiState,
+    uiState: StreamerBaseInfoUiState,
     context: Context,
     innerPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
     when (uiState) {
-        is StreamerInfoUiState.Loading -> {}
+        is StreamerBaseInfoUiState.Loading -> {}
 
-        is StreamerInfoUiState.Error -> {
+        is StreamerBaseInfoUiState.Error -> {
             Toast.makeText(context, "エラーです", Toast.LENGTH_SHORT).show()
         }
 
-        is StreamerInfoUiState.Empty -> {}
+        is StreamerBaseInfoUiState.Empty -> {}
 
-        is StreamerInfoUiState.Success -> {
+        is StreamerBaseInfoUiState.Success -> {
             Column(modifier = modifier.padding(innerPadding)) {
                 Column {
                     Text(
