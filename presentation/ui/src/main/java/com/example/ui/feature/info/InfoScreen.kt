@@ -5,15 +5,14 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +32,7 @@ import com.example.viewmodel.StreamerBaseInfoUiState
 import com.example.viewmodel.StreamerInfoViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.flow.collect
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -45,7 +45,8 @@ fun ForInfoRoute(
 
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     InfoScreen(
-        onRefresh = { viewModel.refresh() },
+        onRefresh = viewModel::refresh,
+        onReachedBottom = viewModel::onReachBottom,
         baseInfoUiState = baseInfoState,
         followInfoUiState = followState,
         modifier = modifier,
@@ -58,6 +59,7 @@ fun ForInfoRoute(
 fun InfoScreen(
     modifier: Modifier = Modifier,
     onRefresh: () -> Unit,
+    onReachedBottom: () -> Unit,
     baseInfoUiState: StreamerBaseInfoUiState,
     followInfoUiState: FollowInfoUiState,
     isRefreshing: Boolean,
@@ -86,8 +88,23 @@ fun InfoScreen(
             }, containerColor = Color.Transparent
         ) { innerPadding ->
             val context = LocalContext.current
+            val listState = rememberLazyListState()
+            val currentOnReachedBottom by rememberUpdatedState(onReachedBottom)
+            val isReachedBottom by remember {
+                derivedStateOf {
+                    listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
+                }
+            }
+            LaunchedEffect(isReachedBottom) {
+                snapshotFlow { isReachedBottom }
+                    .collect { isReached ->
+                        if (isReached) {
+                            currentOnReachedBottom()
+                        }
+                    }
+            }
 
-            LazyColumn(modifier = modifier.padding(innerPadding)) {
+            LazyColumn(modifier = modifier.padding(innerPadding), state = listState) {
                 BaseInfoFeed(
                     uiState = baseInfoUiState,
                     context = context,
