@@ -22,6 +22,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.model.CarouselModel
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
@@ -32,13 +34,14 @@ import com.example.viewmodel.StreamerInfoViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ForInfoRoute(
     modifier: Modifier = Modifier,
     viewModel: StreamerInfoViewModel = hiltViewModel()
 ) {
-    val baseInfoState by viewModel.baseInfoUiState.collectAsState()
-    val followState by viewModel.followInfoUiState.collectAsState()
+    val baseInfoState by viewModel.baseInfoUiState.collectAsStateWithLifecycle()
+    val followState by viewModel.followInfoUiState.collectAsStateWithLifecycle()
 
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     InfoScreen(

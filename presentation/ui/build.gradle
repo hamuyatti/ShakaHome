@@ -59,6 +59,7 @@ dependencies {
     implementation 'androidx.compose.foundation:foundation:1.1.1'
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha01"
     implementation "androidx.compose.runtime:runtime:1.2.0-beta02"
     implementation 'androidx.compose.runtime:runtime-livedata:1.1.1'
     implementation 'androidx.compose.runtime:runtime-rxjava2:1.1.1'

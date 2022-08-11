@@ -37,6 +37,12 @@ class StreamerInfoViewModel @Inject constructor(
         fetch()
     }
 
+    fun onReachBottom(){
+        viewModelScope.launch {
+            fetchMoreFollowInfo()
+        }
+    }
+
     private fun fetch() {
         viewModelScope.launch {
             fetchBaseInfo()
@@ -64,6 +70,10 @@ class StreamerInfoViewModel @Inject constructor(
         }.onFailure { error ->
             _followInfoUiState.update { FollowInfoUiState.Error(error) }
         }
+    }
+
+    private suspend fun fetchMoreFollowInfo(){
+
     }
 
 }
