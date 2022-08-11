@@ -7,10 +7,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class StreamerFollowInfoRepositoryImpl(
-    private val dataSource: StreamerFollowInfoRemoteDataSource
+    private val remoteDataSource: StreamerFollowInfoRemoteDataSource
 ) : StreamerFollowInfoRepository {
     override suspend fun fetchStreamerFollowInfo(): FollowInfoResponse =
         withContext(Dispatchers.IO) {
-            dataSource.fetchStreamerFollowInfo()
+            remoteDataSource.fetchStreamerFollowInfo()
         }
+
+    override suspend fun fetchMoreFollowInfo(): FollowInfoResponse {
+        TODO("Not yet implemented")
+    }
 }

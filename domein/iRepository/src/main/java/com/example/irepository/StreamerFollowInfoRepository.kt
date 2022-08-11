@@ -4,4 +4,6 @@ import com.example.model.response.FollowInfoResponse
 
 interface StreamerFollowInfoRepository {
     suspend fun fetchStreamerFollowInfo(): FollowInfoResponse
+
+    suspend fun fetchMoreFollowInfo() : FollowInfoResponse
 }
