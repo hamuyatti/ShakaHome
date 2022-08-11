@@ -40,7 +40,7 @@ fun ForReportRoute(
 ) {
     val nowStreamInfoState by viewModel.nowStreamingInfoUiState.collectAsStateWithLifecycle()
     val pastVideosInfoState by viewModel.pastVideosInfoState.collectAsStateWithLifecycle()
-    val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     ReportScreen(
         isRefreshing = isRefreshing,

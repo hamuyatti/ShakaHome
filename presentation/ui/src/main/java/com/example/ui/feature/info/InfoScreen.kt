@@ -43,7 +43,7 @@ fun ForInfoRoute(
     val baseInfoState by viewModel.baseInfoUiState.collectAsStateWithLifecycle()
     val followState by viewModel.followInfoUiState.collectAsStateWithLifecycle()
 
-    val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     InfoScreen(
         onRefresh = { viewModel.refresh() },
         baseInfoUiState = baseInfoState,
