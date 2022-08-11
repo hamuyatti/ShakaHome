@@ -1,9 +1,6 @@
 package com.example.data.api
 
-import com.example.model.response.FollowInfoResponse
-import com.example.model.response.NowStreamingInfoResponse
-import com.example.model.response.PastVideosResponse
-import com.example.model.response.StreamerBaseInfoResponse
+import com.example.model.response.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -26,7 +23,8 @@ interface Api {
     )
     @GET("users/follows")
     suspend fun fetchStreamerFollowInfo(
-        @Query("from_id") streamerId: Int = 49207184
+        @Query("from_id") streamerId: Int = 49207184,
+        @Query("after") cursor : FollowInfoPagination? = null
     ): Response<FollowInfoResponse>
 
     @Headers(

@@ -176,7 +176,7 @@ fun LazyListScope.FollowInfoFeed(
                 )
             }
             FollowList(
-                followInfo = uiState.followInfo.FollowsInfo,
+                followInfo = uiState.followInfo.followsInfo,
             )
         }
     }
