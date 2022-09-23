@@ -43,6 +43,7 @@ fun ForReportRoute(
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     ReportScreen(
+        modifier = modifier,
         isRefreshing = isRefreshing,
         onRefreshing = { viewModel.refresh() },
         nowStreamingInfoUiState = nowStreamInfoState,
@@ -93,7 +94,6 @@ fun ReportScreen(
                 NowStreamingInfo(
                     uiState = nowStreamingInfoUiState,
                     context = context,
-                    callbackOnItemClicked = callbackOnItemClicked
                 )
                 PastVideosInfo(
                     uiState = pastVideosInfoState,
@@ -110,7 +110,6 @@ private fun LazyListScope.NowStreamingInfo(
     uiState: NowStreamingInfoState,
     modifier: Modifier = Modifier,
     context: Context,
-    callbackOnItemClicked: (String) -> Unit
 ) {
     when (uiState) {
         is NowStreamingInfoState.Loading -> {}
