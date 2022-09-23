@@ -3,18 +3,21 @@ package com.example.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usecase.FetchFollowInfoUseCase
+import com.example.usecase.FetchMoreFollowInfoUseCase
 import com.example.usecase.FetchStreamerBaseInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class StreamerInfoViewModel @Inject constructor(
     private val baseInfoUseCase: FetchStreamerBaseInfoUseCase,
-    private val followInfoUseCase: FetchFollowInfoUseCase
+    private val followInfoUseCase: FetchFollowInfoUseCase,
+    private val moreFollowInfoUseCase: FetchMoreFollowInfoUseCase
 ) : ViewModel() {
 
     private val _baseInfoUiState: MutableStateFlow<StreamerBaseInfoUiState> =
@@ -37,7 +40,7 @@ class StreamerInfoViewModel @Inject constructor(
         fetch()
     }
 
-    fun onReachBottom(){
+    fun onReachBottom() {
         viewModelScope.launch {
             fetchMoreFollowInfo()
         }
@@ -63,6 +66,7 @@ class StreamerInfoViewModel @Inject constructor(
 
     private suspend fun fetchFollowInfo() {
         _followInfoUiState.update { FollowInfoUiState.Loading }
+        followInfoUseCase()
         runCatching {
             followInfoUseCase()
         }.onSuccess { info ->
@@ -72,8 +76,12 @@ class StreamerInfoViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchMoreFollowInfo(){
-
+    private suspend fun fetchMoreFollowInfo() {
+        runCatching {
+            moreFollowInfoUseCase()
+        }.onSuccess { info ->
+            _followInfoUiState.update { FollowInfoUiState.Success(info) }
+        }
     }
 
 }
