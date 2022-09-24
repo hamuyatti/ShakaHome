@@ -7,7 +7,6 @@ import com.example.ui.feature.report.ForReportRoute
 
 object ReportDestination : ShakaHomeNavigationDestination {
     override val route: String = "report_route"
-    override val destination: String = "report_destination"
 }
 
 fun NavGraphBuilder.reportGraph(

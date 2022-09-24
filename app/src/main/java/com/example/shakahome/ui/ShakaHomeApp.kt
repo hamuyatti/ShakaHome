@@ -161,9 +161,9 @@ fun AppDrawer(
 
 @Composable
 fun ColumnScope.DrawerSheetContent(
-    selectedDrawerItem : DrawerItem,
+    selectedDrawerItem: DrawerItem,
     onClickDrawerItem: (DrawerItem) -> Unit
-){
+) {
 
 }
 
@@ -172,7 +172,7 @@ enum class DrawerItem(
     @StringRes val titleStringRes: Int,
     val icon: ImageVector,
     val navRoute: String
-){
+) {
     Settings(
         titleStringRes = com.example.core.R.string.drawer_menu_setting,
         icon = Icons.Outlined.Settings,
