@@ -36,14 +36,14 @@ fun ShakaHomeApp(
     appState: ShakaHomeAppState = rememberShakaHomeAppState(windowSizeClass = windowSizeClass)
 ) {
     ShakaHomeTheme {
-        AppDrawer(windowSizeClass = windowSizeClass, drawerSheetContent = {
-            DrawerSheetContent(
-                onClickDrawerItem = appState::onClickDrawerItem,
-                selectedDrawerItem = appState.selectedItem
-            )
-        }) {
-
-        }
+//        AppDrawer(windowSizeClass = windowSizeClass, drawerSheetContent = {
+//            DrawerSheetContent(
+//                onClickDrawerItem = appState::onClickDrawerItem,
+//                selectedDrawerItem = appState.selectedItem
+//            )
+//        }) {
+//
+//        }
         Scaffold(
             modifier = Modifier,
             containerColor = Color.Transparent,
