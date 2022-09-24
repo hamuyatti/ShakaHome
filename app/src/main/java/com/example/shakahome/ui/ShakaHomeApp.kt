@@ -2,7 +2,10 @@
 
 package com.example.shakahome.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -10,10 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.example.shakahome.R
 import com.example.shakahome.navigation.ShakaHomeNavHost
 import com.example.shakahome.navigation.TopLevelDestination
 import com.example.ui.ClearRippleTheme
@@ -27,6 +32,9 @@ fun ShakaHomeApp(
     appState: ShakaHomeAppState = rememberShakaHomeAppState(windowSizeClass = windowSizeClass)
 ) {
     ShakaHomeTheme {
+//        AppDrawer(windowSizeClass = windowSizeClass, drawerSheetContent = ) {
+//
+//        }
         Scaffold(
             modifier = Modifier,
             containerColor = Color.Transparent,
@@ -149,4 +157,25 @@ fun AppDrawer(
     ) {
         content()
     }
+}
+
+@Composable
+fun ColumnScope.DrawerSheetContent(
+    selectedDrawerItem : DrawerItem,
+    onClickDrawerItem: (DrawerItem) -> Unit
+){
+
+}
+
+
+enum class DrawerItem(
+    @StringRes val titleStringRes: Int,
+    val icon: ImageVector,
+    val navRoute: String
+){
+    Settings(
+        titleStringRes = com.example.core.R.string.drawer_menu_setting,
+        icon = Icons.Outlined.Settings,
+        navRoute = ""
+    )
 }

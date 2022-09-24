@@ -49,6 +49,7 @@ dependencies {
     implementation project(':data:db')
     implementation project(':data:api')
     implementation project(':data:repository')
+    implementation project(':core')
 
 
     implementation "com.google.dagger:hilt-android:2.38.1"
