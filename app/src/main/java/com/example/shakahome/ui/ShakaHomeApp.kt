@@ -36,53 +36,52 @@ fun ShakaHomeApp(
     appState: ShakaHomeAppState = rememberShakaHomeAppState(windowSizeClass = windowSizeClass)
 ) {
     ShakaHomeTheme {
-//        AppDrawer(windowSizeClass = windowSizeClass, drawerSheetContent = {
-//            DrawerSheetContent(
-//                onClickDrawerItem = appState::onClickDrawerItem,
-//                selectedDrawerItem = appState.selectedItem
-//            )
-//        }) {
-//
-//        }
-        Scaffold(
-            modifier = Modifier,
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onBackground,
-            bottomBar = {
-                if (appState.shouldShowBottomBar) {
-                    ShakaHomeBottomBar(
-                        destinations = appState.TOP_LEVEL_DESTINATIONS,
-                        onNavigateToTopLevelDestination = appState::navigateTo,
-                        currentDestination = appState.currentDestination
-                    )
-                }
-            }) { padding ->
-            Row(
-                Modifier
-                    .fillMaxSize()
-                    .windowInsetsPadding(
-                        WindowInsets.safeDrawing.only(
-                            WindowInsetsSides.Horizontal
+        AppDrawer(windowSizeClass = windowSizeClass, drawerSheetContent = {
+            DrawerSheetContent(
+                onClickDrawerItem = appState::onClickDrawerItem,
+                selectedDrawerItem = appState.selectedItem
+            )
+        }) {
+            Scaffold(
+                modifier = Modifier,
+                containerColor = Color.Transparent,
+                contentColor = MaterialTheme.colorScheme.onBackground,
+                bottomBar = {
+                    if (appState.shouldShowBottomBar) {
+                        ShakaHomeBottomBar(
+                            destinations = appState.TOP_LEVEL_DESTINATIONS,
+                            onNavigateToTopLevelDestination = appState::navigateTo,
+                            currentDestination = appState.currentDestination
                         )
-                    )
-            ) {
-                if (appState.shouldShowNavRail) {
-                    ShakaHomeNavRail(
-                        destinations = appState.TOP_LEVEL_DESTINATIONS,
-                        onNavigateToTopLevelDestination = appState::navigateTo,
-                        currentDestination = appState.currentDestination,
-                        modifier = Modifier.safeDrawingPadding()
+                    }
+                }) { padding ->
+                Row(
+                    Modifier
+                        .fillMaxSize()
+                        .windowInsetsPadding(
+                            WindowInsets.safeDrawing.only(
+                                WindowInsetsSides.Horizontal
+                            )
+                        )
+                ) {
+                    if (appState.shouldShowNavRail) {
+                        ShakaHomeNavRail(
+                            destinations = appState.TOP_LEVEL_DESTINATIONS,
+                            onNavigateToTopLevelDestination = appState::navigateTo,
+                            currentDestination = appState.currentDestination,
+                            modifier = Modifier.safeDrawingPadding()
+                        )
+                    }
+
+                    ShakaHomeNavHost(
+                        windowSizeClass = windowSizeClass,
+                        navController = appState.navController,
+                        modifier = Modifier
+                            .padding(padding)
+                            .consumedWindowInsets(padding),
+                        callbackOnItemClicked = callbackOnItemClicked
                     )
                 }
-
-                ShakaHomeNavHost(
-                    windowSizeClass = windowSizeClass,
-                    navController = appState.navController,
-                    modifier = Modifier
-                        .padding(padding)
-                        .consumedWindowInsets(padding),
-                    callbackOnItemClicked = callbackOnItemClicked
-                )
             }
         }
     }
