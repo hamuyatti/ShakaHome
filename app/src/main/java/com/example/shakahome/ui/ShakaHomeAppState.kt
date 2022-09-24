@@ -5,6 +5,10 @@ import androidx.compose.material.icons.filled.Grid3x3
 import androidx.compose.material.icons.filled.Upcoming
 import androidx.compose.material.icons.outlined.Grid3x3
 import androidx.compose.material.icons.outlined.Upcoming
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -22,20 +26,27 @@ import com.example.ui.navigation.InfoNavigation
 import com.example.ui.navigation.ReportDestination
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun rememberShakaHomeAppState(
     windowSizeClass: WindowSizeClass,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 ): ShakaHomeAppState {
     return remember(navController, windowSizeClass) {
-        ShakaHomeAppState(navController = navController, windowInsetSizeClass = windowSizeClass)
+        ShakaHomeAppState(
+            navController = navController,
+            windowInsetSizeClass = windowSizeClass,
+            drawerState = drawerState
+        )
     }
 }
 
 @Stable
-class ShakaHomeAppState(
+class ShakaHomeAppState @OptIn(ExperimentalMaterial3Api::class) constructor(
     val navController: NavHostController,
-    val windowInsetSizeClass: WindowSizeClass
+    val windowInsetSizeClass: WindowSizeClass,
+    val drawerState: DrawerState
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination

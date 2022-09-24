@@ -14,7 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import com.example.shakahome.navigation.*
+import com.example.shakahome.navigation.ShakaHomeNavHost
+import com.example.shakahome.navigation.TopLevelDestination
 import com.example.ui.ClearRippleTheme
 import com.example.ui.thema.ShakaHomeTheme
 
@@ -131,5 +132,21 @@ private fun ShakaHomeBottomBar(
                 }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppDrawer(
+    windowSizeClass: WindowSizeClass,
+    appState: ShakaHomeAppState = rememberShakaHomeAppState(windowSizeClass = windowSizeClass),
+    drawerSheetContent: @Composable ColumnScope.() -> Unit,
+    content: @Composable () -> Unit
+) {
+    ModalNavigationDrawer(
+        drawerState = appState.drawerState,
+        drawerContent = { ModalDrawerSheet { drawerSheetContent() } }
+    ) {
+        content()
     }
 }
