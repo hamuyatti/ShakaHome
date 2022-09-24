@@ -4,7 +4,10 @@ package com.example.shakahome.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.*
@@ -22,6 +25,7 @@ import com.example.shakahome.R
 import com.example.shakahome.navigation.ShakaHomeNavHost
 import com.example.shakahome.navigation.TopLevelDestination
 import com.example.ui.ClearRippleTheme
+import com.example.ui.feature.drawer.settings.SettingsNavigation
 import com.example.ui.thema.ShakaHomeTheme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -32,9 +36,14 @@ fun ShakaHomeApp(
     appState: ShakaHomeAppState = rememberShakaHomeAppState(windowSizeClass = windowSizeClass)
 ) {
     ShakaHomeTheme {
-//        AppDrawer(windowSizeClass = windowSizeClass, drawerSheetContent = ) {
-//
-//        }
+        AppDrawer(windowSizeClass = windowSizeClass, drawerSheetContent = {
+            DrawerSheetContent(
+                onClickDrawerItem = appState::onClickDrawerItem,
+                selectedDrawerItem = appState.selectedItem
+            )
+        }) {
+
+        }
         Scaffold(
             modifier = Modifier,
             containerColor = Color.Transparent,
@@ -159,11 +168,26 @@ fun AppDrawer(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ColumnScope.DrawerSheetContent(
-    selectedDrawerItem: DrawerItem,
+    selectedDrawerItem: DrawerItem?,
     onClickDrawerItem: (DrawerItem) -> Unit
 ) {
+    Column(Modifier.verticalScroll(rememberScrollState())) {
+        DrawerItem.values().forEach { drawerItem ->
+            NavigationDrawerItem(
+                label = {
+                    Text(text = stringResource(id = drawerItem.titleStringRes))
+                },
+                selected = drawerItem == selectedDrawerItem,
+                onClick = { onClickDrawerItem(drawerItem) },
+                icon = {
+                    Icon(imageVector = drawerItem.icon, contentDescription = null)
+                }
+            )
+        }
+    }
 
 }
 
@@ -176,6 +200,11 @@ enum class DrawerItem(
     Settings(
         titleStringRes = com.example.core.R.string.drawer_menu_setting,
         icon = Icons.Outlined.Settings,
+        navRoute = SettingsNavigation.route
+    ),
+    Tmp(
+        titleStringRes = com.example.core.R.string.drawer_menu_tmp,
+        icon = Icons.Outlined.Done,
         navRoute = ""
     )
 }

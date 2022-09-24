@@ -12,9 +12,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -24,6 +22,8 @@ import com.example.shakahome.R
 import com.example.shakahome.navigation.TopLevelDestination
 import com.example.ui.navigation.InfoNavigation
 import com.example.ui.navigation.ReportDestination
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,22 +31,26 @@ import com.example.ui.navigation.ReportDestination
 fun rememberShakaHomeAppState(
     windowSizeClass: WindowSizeClass,
     navController: NavHostController = rememberNavController(),
-    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ): ShakaHomeAppState {
     return remember(navController, windowSizeClass) {
         ShakaHomeAppState(
             navController = navController,
             windowInsetSizeClass = windowSizeClass,
-            drawerState = drawerState
+            drawerState = drawerState,
+            coroutineScope = coroutineScope
         )
     }
 }
 
 @Stable
-class ShakaHomeAppState @OptIn(ExperimentalMaterial3Api::class) constructor(
+@OptIn(ExperimentalMaterial3Api::class)
+class ShakaHomeAppState(
     val navController: NavHostController,
     val windowInsetSizeClass: WindowSizeClass,
-    val drawerState: DrawerState
+    val drawerState: DrawerState,
+    val coroutineScope: CoroutineScope,
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
@@ -58,6 +62,20 @@ class ShakaHomeAppState @OptIn(ExperimentalMaterial3Api::class) constructor(
     val shouldShowNavRail: Boolean
         get() = !shouldShowBottomBar
 
+    private var _selectedDrawerItem: MutableState<DrawerItem?> = mutableStateOf(null)
+    val selectedItem get() = _selectedDrawerItem.value
+
+
+    init {
+        coroutineScope.launch {
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                _selectedDrawerItem.value = destination.route?.let {
+                    DrawerItem.values().firstOrNull { it.navRoute == destination.route }
+                }
+            }
+        }
+    }
+
     fun navigateTo(destination: TopLevelDestination) {
         navController.navigate(destination.route) {
             popUpTo(navController.graph.findStartDestination().id) {
@@ -65,6 +83,13 @@ class ShakaHomeAppState @OptIn(ExperimentalMaterial3Api::class) constructor(
             }
             launchSingleTop = true
             restoreState = true
+        }
+    }
+
+    fun onClickDrawerItem(drawerItem: DrawerItem) {
+        navController.navigate(drawerItem.navRoute)
+        coroutineScope.launch {
+            drawerState.close()
         }
     }
 
