@@ -5,10 +5,13 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,28 +21,34 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.model.CarouselModel
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
-import com.example.ui.utils.Center
 import com.example.ui.utils.ImageCarousel
-import com.example.ui.utils.SimpleProgressBar
-import com.example.viewmodel.StreamerInfoUiState
+import com.example.viewmodel.FollowInfoUiState
+import com.example.viewmodel.StreamerBaseInfoUiState
 import com.example.viewmodel.StreamerInfoViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.flow.collect
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ForInfoRoute(
     modifier: Modifier = Modifier,
     viewModel: StreamerInfoViewModel = hiltViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
-    val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val baseInfoState by viewModel.baseInfoUiState.collectAsStateWithLifecycle()
+    val followState by viewModel.followInfoUiState.collectAsStateWithLifecycle()
+
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     InfoScreen(
-        onRefresh = { viewModel.fetchStreamerInfo() },
-        uiState = state,
+        onRefresh = viewModel::refresh,
+        onReachedBottom = viewModel::onReachBottom,
+        baseInfoUiState = baseInfoState,
+        followInfoUiState = followState,
         modifier = modifier,
         isRefreshing = isRefreshing
     )
@@ -50,7 +59,9 @@ fun ForInfoRoute(
 fun InfoScreen(
     modifier: Modifier = Modifier,
     onRefresh: () -> Unit,
-    uiState: StreamerInfoUiState,
+    onReachedBottom: () -> Unit,
+    baseInfoUiState: StreamerBaseInfoUiState,
+    followInfoUiState: FollowInfoUiState,
     isRefreshing: Boolean,
 ) {
     SwipeRefresh(
@@ -77,68 +88,118 @@ fun InfoScreen(
             }, containerColor = Color.Transparent
         ) { innerPadding ->
             val context = LocalContext.current
-            Feed(uiState, context, innerPadding)
-        }
-    }
-}
-
-@Composable
-private fun Feed(
-    uiState: StreamerInfoUiState,
-    context: Context,
-    innerPadding: PaddingValues,
-    modifier: Modifier = Modifier
-) {
-    when (uiState) {
-        is StreamerInfoUiState.Loading -> {}
-
-        is StreamerInfoUiState.Error -> {
-            Toast.makeText(context, "エラーです", Toast.LENGTH_SHORT).show()
-        }
-
-        is StreamerInfoUiState.Empty -> {}
-
-        is StreamerInfoUiState.Success -> {
-            Column(modifier = modifier.padding(innerPadding)) {
-                Column {
-                    Text(
-                        text = "名前",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = uiState.streamerInfo.baseInfo.displayName,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    uiState.streamerInfo.baseInfo.let {
-                        ImageCarousel(
-                            info = listOf(
-                                CarouselModel(it.profileImageUrl, "プロフィール画像"),
-                                CarouselModel(it.offlineImageUrl, "オフライン画像"),
-                            )
-                        )
-                    }
-                    Text(
-                        text = "フォロー総数",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = uiState.streamerInfo.followInfo.total,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "最近のフォロー",
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+            val listState = rememberLazyListState()
+            val currentOnReachedBottom by rememberUpdatedState(onReachedBottom)
+            val isReachedBottom by remember {
+                derivedStateOf {
+                    listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
                 }
-                FollowList(
-                    followInfo = uiState.streamerInfo.followInfo.FollowsInfo,
+            }
+            LaunchedEffect(isReachedBottom) {
+                snapshotFlow { isReachedBottom }
+                    .collect { isReached ->
+                        if (isReached) {
+                            currentOnReachedBottom()
+                        }
+                    }
+            }
+
+            LazyColumn(modifier = modifier.padding(innerPadding), state = listState) {
+                BaseInfoFeed(
+                    uiState = baseInfoUiState,
+                    context = context,
+                )
+                FollowInfoFeed(
+                    uiState = followInfoUiState,
+                    context = context,
                 )
             }
         }
     }
 }
+
+private fun LazyListScope.BaseInfoFeed(
+    uiState: StreamerBaseInfoUiState,
+    context: Context,
+    modifier: Modifier = Modifier
+) {
+    when (uiState) {
+        is StreamerBaseInfoUiState.Loading -> {}
+
+        is StreamerBaseInfoUiState.Error -> {
+            Toast.makeText(context, "エラーです", Toast.LENGTH_SHORT).show()
+        }
+
+        is StreamerBaseInfoUiState.Empty -> {}
+
+        is StreamerBaseInfoUiState.Success -> {
+            item {
+                Text(
+                    text = "名前",
+                    textAlign = TextAlign.Center,
+                    modifier = modifier.fillMaxWidth()
+                )
+            }
+            item {
+                Text(
+                    text = uiState.baseInfo.displayName,
+                    textAlign = TextAlign.Center,
+                    modifier = modifier.fillMaxWidth()
+                )
+            }
+            item {
+                uiState.baseInfo.let {
+                    ImageCarousel(
+                        info = listOf(
+                            CarouselModel(it.profileImageUrl, "プロフィール画像"),
+                            CarouselModel(it.offlineImageUrl, "オフライン画像"),
+                        )
+                    )
+                }
+            }
+            item {
+                Text(
+                    text = "フォロー総数",
+                    textAlign = TextAlign.Center,
+                    modifier = modifier.fillMaxWidth()
+                )
+            }
+        }
+    }
+}
+
+fun LazyListScope.FollowInfoFeed(
+    uiState: FollowInfoUiState,
+    context: Context,
+    modifier: Modifier = Modifier
+) {
+    when (uiState) {
+        FollowInfoUiState.Empty -> {}
+        FollowInfoUiState.Loading -> {}
+        is FollowInfoUiState.Error -> {
+            Toast.makeText(context, "エラーです", Toast.LENGTH_SHORT).show()
+        }
+
+        is FollowInfoUiState.Success -> {
+            item {
+                Text(
+                    text = uiState.followInfo.total,
+                    textAlign = TextAlign.Center,
+                    modifier = modifier.fillMaxWidth()
+                )
+            }
+            item {
+                Text(
+                    text = "最近のフォロー",
+                    textAlign = TextAlign.Center,
+                    modifier = modifier.fillMaxWidth()
+                )
+            }
+            FollowList(
+                followInfo = uiState.followInfo.followsInfo,
+            )
+        }
+    }
+}
+
+

@@ -4,8 +4,7 @@ import com.example.irepository.NowStreamingInfoRepository
 import com.example.irepository.PastVideosRepository
 import com.example.irepository.StreamerBaseInfoRepository
 import com.example.irepository.StreamerFollowInfoRepository
-import com.example.usecase.FetchNowStreamingInfoUseCase
-import com.example.usecase.FetchStreamerInfoUseCase
+import com.example.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,13 +19,30 @@ object UseCaseModule {
     @Singleton
     fun provideFetchStreamerInfoUseCase(
         streamerBaseInfoRepository: StreamerBaseInfoRepository,
-        streamerFollowInfoRepository: StreamerFollowInfoRepository
-    ) = FetchStreamerInfoUseCase(streamerBaseInfoRepository, streamerFollowInfoRepository)
+    ) = FetchStreamerBaseInfoUseCase(streamerBaseInfoRepository)
+
+    @Provides
+    @Singleton
+    fun providesFetchFollowInfoUseCase(
+        followInfoRepository: StreamerFollowInfoRepository
+    ) = FetchFollowInfoUseCase(followInfoRepository)
+
+    @Provides
+    @Singleton
+    fun providesFetchMoreFollowInfoUseCase(
+        followInfoRepository: StreamerFollowInfoRepository
+    ) = FetchMoreFollowInfoUseCase(followInfoRepository)
 
     @Provides
     @Singleton
     fun providesFetchNowStreamingInfoUseCase(
         nowStreamingInfoRepository: NowStreamingInfoRepository,
+    ) = FetchNowStreamingInfoUseCase(nowStreamingInfoRepository)
+
+    @Provides
+    @Singleton
+    fun providesFetchPastVideosUseCase(
         pastVideosRepository: PastVideosRepository
-    ) = FetchNowStreamingInfoUseCase(nowStreamingInfoRepository, pastVideosRepository)
+    ) = FetchPastVideosUseCase(pastVideosRepository)
+
 }

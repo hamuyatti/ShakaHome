@@ -20,6 +20,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
@@ -29,17 +31,19 @@ import com.example.viewmodel.ReportViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ForReportRoute(
     modifier: Modifier = Modifier,
     viewModel: ReportViewModel = hiltViewModel(),
     callbackOnItemClicked: (String) -> Unit
 ) {
-    val nowStreamInfoState by viewModel.nowStreamingInfoUiState.collectAsState()
-    val pastVideosInfoState by viewModel.pastVideosInfoState.collectAsState()
-    val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val nowStreamInfoState by viewModel.nowStreamingInfoUiState.collectAsStateWithLifecycle()
+    val pastVideosInfoState by viewModel.pastVideosInfoState.collectAsStateWithLifecycle()
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     ReportScreen(
+        modifier = modifier,
         isRefreshing = isRefreshing,
         onRefreshing = { viewModel.refresh() },
         nowStreamingInfoUiState = nowStreamInfoState,
@@ -90,7 +94,6 @@ fun ReportScreen(
                 NowStreamingInfo(
                     uiState = nowStreamingInfoUiState,
                     context = context,
-                    callbackOnItemClicked = callbackOnItemClicked
                 )
                 PastVideosInfo(
                     uiState = pastVideosInfoState,
@@ -107,7 +110,6 @@ private fun LazyListScope.NowStreamingInfo(
     uiState: NowStreamingInfoState,
     modifier: Modifier = Modifier,
     context: Context,
-    callbackOnItemClicked: (String) -> Unit
 ) {
     when (uiState) {
         is NowStreamingInfoState.Loading -> {}

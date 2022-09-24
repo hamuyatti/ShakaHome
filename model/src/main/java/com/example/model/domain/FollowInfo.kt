@@ -1,7 +1,7 @@
 package com.example.model.domain
 
 data class FollowInfo(
-    val FollowsInfo: List<EachFollowInfo>,
+    val followsInfo: List<EachFollowInfo>,
     val total: String
 )
 

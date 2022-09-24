@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FollowInfoResponse(
     val `data`: List<EachFollowInfoResponse>,
-    val pagination: FollowInfoPagination,
+    val pagination: FollowInfoPagination? = null,
     val total: Int
 )
 
@@ -31,7 +31,7 @@ data class FollowInfoPagination(
 
 fun FollowInfoResponse.asDomainModel(): FollowInfo {
     return FollowInfo(
-        FollowsInfo = this.data.map {
+        followsInfo = this.data.map {
             EachFollowInfo(
                 followedAt = utcToJtc(it.followedAt),
                 fromId = it.fromId,

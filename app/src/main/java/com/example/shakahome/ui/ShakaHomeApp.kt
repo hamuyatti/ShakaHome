@@ -1,26 +1,20 @@
+@file:Suppress("OPT_IN_IS_NOT_ENABLED")
+
 package com.example.shakahome.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.shakahome.navigation.ShakaHomeNavHost
-import com.example.shakahome.navigation.ShakaHomeTopLevelNavigation
-import com.example.shakahome.navigation.TOP_LEVEL_DESTINATIONS
-import com.example.shakahome.navigation.TopLevelDestination
+import com.example.shakahome.navigation.*
 import com.example.ui.ClearRippleTheme
 import com.example.ui.thema.ShakaHomeTheme
 
@@ -28,30 +22,23 @@ import com.example.ui.thema.ShakaHomeTheme
 @Composable
 fun ShakaHomeApp(
     windowSizeClass: WindowSizeClass,
-    callbackOnItemClicked: (String) -> Unit
+    callbackOnItemClicked: (String) -> Unit,
+    appState: ShakaHomeAppState = rememberShakaHomeAppState(windowSizeClass = windowSizeClass)
 ) {
     ShakaHomeTheme {
-        val navController = rememberNavController()
-        val shakaHomeTopLevelNavigation = remember(navController) {
-            ShakaHomeTopLevelNavigation(navController)
-        }
-
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
-
         Scaffold(
             modifier = Modifier,
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
             bottomBar = {
-                if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                if (appState.shouldShowBottomBar) {
                     ShakaHomeBottomBar(
-                        onNavigateToTopLevelDestination = shakaHomeTopLevelNavigation::navigateTo,
-                        currentDestination = currentDestination
+                        destinations = appState.TOP_LEVEL_DESTINATIONS,
+                        onNavigateToTopLevelDestination = appState::navigateTo,
+                        currentDestination = appState.currentDestination
                     )
                 }
-            }
-        ) { padding ->
+            }) { padding ->
             Row(
                 Modifier
                     .fillMaxSize()
@@ -61,17 +48,18 @@ fun ShakaHomeApp(
                         )
                     )
             ) {
-                if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
+                if (appState.shouldShowNavRail) {
                     ShakaHomeNavRail(
-                        onNavigateToTopLevelDestination = shakaHomeTopLevelNavigation::navigateTo,
-                        currentDestination = currentDestination,
+                        destinations = appState.TOP_LEVEL_DESTINATIONS,
+                        onNavigateToTopLevelDestination = appState::navigateTo,
+                        currentDestination = appState.currentDestination,
                         modifier = Modifier.safeDrawingPadding()
                     )
                 }
 
                 ShakaHomeNavHost(
                     windowSizeClass = windowSizeClass,
-                    navController = navController,
+                    navController = appState.navController,
                     modifier = Modifier
                         .padding(padding)
                         .consumedWindowInsets(padding),
@@ -84,16 +72,16 @@ fun ShakaHomeApp(
 
 @Composable
 private fun ShakaHomeNavRail(
+    destinations: List<TopLevelDestination>,
     onNavigateToTopLevelDestination: (TopLevelDestination) -> Unit,
     currentDestination: NavDestination?,
     modifier: Modifier = Modifier,
 ) {
     NavigationRail(modifier = modifier) {
-        TOP_LEVEL_DESTINATIONS.forEach { destination ->
+        destinations.forEach { destination ->
             val selected =
                 currentDestination?.hierarchy?.any { it.route == destination.route } == true
-            NavigationRailItem(
-                selected = selected,
+            NavigationRailItem(selected = selected,
                 onClick = { onNavigateToTopLevelDestination(destination) },
                 icon = {
                     Icon(
@@ -101,8 +89,7 @@ private fun ShakaHomeNavRail(
                         contentDescription = null
                     )
                 },
-                label = { Text(stringResource(destination.iconTextId)) }
-            )
+                label = { Text(stringResource(destination.iconTextId)) })
         }
     }
 }
@@ -110,6 +97,7 @@ private fun ShakaHomeNavRail(
 
 @Composable
 private fun ShakaHomeBottomBar(
+    destinations: List<TopLevelDestination>,
     onNavigateToTopLevelDestination: (TopLevelDestination) -> Unit,
     currentDestination: NavDestination?
 ) {
@@ -122,15 +110,13 @@ private fun ShakaHomeBottomBar(
                     WindowInsets.safeDrawing.only(
                         WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
                     )
-                ),
-                tonalElevation = 0.dp
+                ), tonalElevation = 0.dp
             ) {
 
-                TOP_LEVEL_DESTINATIONS.forEach { destination ->
+                destinations.forEach { destination ->
                     val selected =
                         currentDestination?.hierarchy?.any { it.route == destination.route } == true
-                    NavigationBarItem(
-                        selected = selected,
+                    NavigationBarItem(selected = selected,
                         onClick = { onNavigateToTopLevelDestination(destination) },
                         icon = {
                             Icon(
@@ -138,12 +124,10 @@ private fun ShakaHomeBottomBar(
                                     destination.selectedIcon
                                 } else {
                                     destination.unselectedIcon
-                                },
-                                contentDescription = null
+                                }, contentDescription = null
                             )
                         },
-                        label = { Text(stringResource(destination.iconTextId)) }
-                    )
+                        label = { Text(stringResource(destination.iconTextId)) })
                 }
             }
         }
