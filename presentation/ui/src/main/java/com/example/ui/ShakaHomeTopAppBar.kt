@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.thema.ShakaHomeTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShakaHomeTopAppBar(
     modifier: Modifier = Modifier,
@@ -38,6 +39,7 @@ fun ShakaHomeTopAppBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun TopAppBar(){

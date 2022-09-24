@@ -7,13 +7,11 @@ import com.example.ui.feature.info.ForInfoRoute
 
 object InfoNavigation : ShakaHomeNavigationDestination {
     override val route: String = "info_route"
-    override val destination: String = "info_destination"
 }
 
 //参考にしたアプリのままwindowSizeClassを持ってきたけど、一旦使わなそう
 fun NavGraphBuilder.infoGraph(
-    windowSizeClass: WindowSizeClass,
-    callbackOnItemClicked: (String) -> Unit
+    windowSizeClass: WindowSizeClass
 ) {
     composable(route = InfoNavigation.route) {
         ForInfoRoute()

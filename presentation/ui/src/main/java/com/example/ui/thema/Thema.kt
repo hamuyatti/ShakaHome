@@ -153,7 +153,6 @@ fun ShakaHomeTheme(
         }
     }
     MaterialTheme (
-        colorScheme = colorSchema,
         typography = Typography,
         content = content
     )

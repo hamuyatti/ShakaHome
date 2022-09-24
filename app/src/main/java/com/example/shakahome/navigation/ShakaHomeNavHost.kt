@@ -30,7 +30,6 @@ fun ShakaHomeNavHost(
         )
         infoGraph(
             windowSizeClass = windowSizeClass,
-            callbackOnItemClicked = callbackOnItemClicked
         )
     }
 }
