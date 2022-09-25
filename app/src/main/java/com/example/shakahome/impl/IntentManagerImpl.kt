@@ -7,6 +7,7 @@ import com.example.core.IntentManager
 
 class IntentManagerImpl(private val context: Context) : IntentManager {
     override fun transition(url: String) {
+        if (url.isEmpty()) return
         val uri = Uri.parse(url)
         val intent = Intent(Intent.ACTION_VIEW, uri)
         context.startActivity(intent)
