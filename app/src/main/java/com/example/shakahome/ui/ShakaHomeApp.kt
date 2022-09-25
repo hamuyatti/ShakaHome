@@ -36,12 +36,16 @@ fun ShakaHomeApp(
     appState: ShakaHomeAppState = rememberShakaHomeAppState(windowSizeClass = windowSizeClass)
 ) {
     ShakaHomeTheme {
-        AppDrawer(windowSizeClass = windowSizeClass, drawerSheetContent = {
-            DrawerSheetContent(
-                onClickDrawerItem = appState::onClickDrawerItem,
-                selectedDrawerItem = appState.selectedItem
-            )
-        }) {
+        AppDrawer(
+            appState = appState,
+            windowSizeClass = windowSizeClass,
+            drawerSheetContent = {
+                DrawerSheetContent(
+                    onClickDrawerItem = appState::onClickDrawerItem,
+                    selectedDrawerItem = appState.selectedItem
+                )
+            })
+        {
             Scaffold(
                 modifier = Modifier,
                 containerColor = Color.Transparent,
@@ -129,11 +133,11 @@ private fun ShakaHomeBottomBar(
                     )
                 ), tonalElevation = 0.dp
             ) {
-
                 destinations.forEach { destination ->
                     val selected =
                         currentDestination?.hierarchy?.any { it.route == destination.route } == true
-                    NavigationBarItem(selected = selected,
+                    NavigationBarItem(
+                        selected = selected,
                         onClick = { onNavigateToTopLevelDestination(destination) },
                         icon = {
                             Icon(
@@ -187,7 +191,6 @@ fun ColumnScope.DrawerSheetContent(
             )
         }
     }
-
 }
 
 
