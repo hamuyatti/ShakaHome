@@ -29,8 +29,8 @@ class StreamerFollowInfoRepositoryImpl(
         }
 
     override suspend fun fetchMoreFollowInfo(): FollowInfo {
-        val nextCursor = localDataSource.nextCursor ?: throw Exception()
-        val followResponse = remoteDataSource.fetchStreamerMoreFollowInfo(nextCursor.cursor)
+        val nextCursor = localDataSource.nextCursor?.cursor ?: throw Exception()
+        val followResponse = remoteDataSource.fetchStreamerMoreFollowInfo(nextCursor)
         val followList = followResponse.asDomainModel()
         val newFollowList = followList.copy(
             followsInfo = followList.followsInfo + localDataSource.followInfoCache?.followsInfo!!

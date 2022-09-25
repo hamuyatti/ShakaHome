@@ -2,4 +2,7 @@
 <resources>
     <string name = "drawer_menu_setting">設定</string>
     <string name = "drawer_menu_tmp">とりあえず</string>
+    <string name = "external_link_twitter">twitter</string>
+    <string name = "external_link_instagram">instagram</string>
+    <string name = "external_link_wikipedia">wikipedia</string>
 </resources>

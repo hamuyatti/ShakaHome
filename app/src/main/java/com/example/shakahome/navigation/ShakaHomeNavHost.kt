@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.ui.feature.drawer.settings.settingGraph
 import com.example.ui.navigation.ReportDestination
 import com.example.ui.navigation.infoGraph
 import com.example.ui.navigation.reportGraph
@@ -17,7 +18,6 @@ fun ShakaHomeNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = ReportDestination.route,
-    callbackOnItemClicked: (String) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -26,10 +26,10 @@ fun ShakaHomeNavHost(
     ) {
         reportGraph(
             windowSizeClass = windowSizeClass,
-            callbackOnItemClicked = callbackOnItemClicked
         )
         infoGraph(
             windowSizeClass = windowSizeClass,
         )
+        settingGraph()
     }
 }

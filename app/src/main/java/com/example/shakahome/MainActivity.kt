@@ -19,12 +19,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        val callbackOnItemClicked: (String) -> Unit = { it ->
-            val uri = Uri.parse(it)
-            val intent = Intent(ACTION_VIEW, uri)
-            startActivity(intent)
-        }
-
-        setContent { ShakaHomeApp(calculateWindowSizeClass(this), callbackOnItemClicked) }
+        setContent { ShakaHomeApp(calculateWindowSizeClass(this)) }
     }
 }

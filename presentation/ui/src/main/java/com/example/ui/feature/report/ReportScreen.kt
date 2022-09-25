@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.example.core.LocalIntentManager
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.viewmodel.NowStreamingInfoState
@@ -36,7 +36,6 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 fun ForReportRoute(
     modifier: Modifier = Modifier,
     viewModel: ReportViewModel = hiltViewModel(),
-    callbackOnItemClicked: (String) -> Unit
 ) {
     val nowStreamInfoState by viewModel.nowStreamingInfoUiState.collectAsStateWithLifecycle()
     val pastVideosInfoState by viewModel.pastVideosInfoState.collectAsStateWithLifecycle()
@@ -48,7 +47,6 @@ fun ForReportRoute(
         onRefreshing = { viewModel.refresh() },
         nowStreamingInfoUiState = nowStreamInfoState,
         pastVideosInfoState = pastVideosInfoState,
-        callbackOnItemClicked = callbackOnItemClicked
     )
 }
 
@@ -60,7 +58,6 @@ fun ReportScreen(
     onRefreshing: () -> Unit,
     nowStreamingInfoUiState: NowStreamingInfoState,
     pastVideosInfoState: PastVideosInfoState,
-    callbackOnItemClicked: (String) -> Unit
 ) {
     SwipeRefresh(
         modifier = modifier.fillMaxHeight(),
@@ -97,8 +94,6 @@ fun ReportScreen(
                 )
                 PastVideosInfo(
                     uiState = pastVideosInfoState,
-                    context = context,
-                    callbackOnItemClicked = callbackOnItemClicked
                 )
             }
         }
@@ -179,12 +174,9 @@ private fun LazyListScope.NowStreamingInfo(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 private fun LazyListScope.PastVideosInfo(
     uiState: PastVideosInfoState,
     modifier: Modifier = Modifier,
-    context: Context,
-    callbackOnItemClicked: (String) -> Unit
 ) {
     when (uiState) {
         is PastVideosInfoState.Empty -> {
@@ -201,11 +193,12 @@ private fun LazyListScope.PastVideosInfo(
 
         is PastVideosInfoState.Success -> {
             items(uiState.pastVideosState.pastVideos) { item ->
+                val intentManager = LocalIntentManager.current
                 Card(
                     Modifier
                         .padding(16.dp)
                         .wrapContentSize()
-                        .clickable { callbackOnItemClicked.invoke(item.url) },
+                        .clickable { intentManager.transition(item.url) },
                 ) {
                     Column(
                         modifier = modifier

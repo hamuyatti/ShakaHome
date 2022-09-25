@@ -11,9 +11,8 @@ object ReportDestination : ShakaHomeNavigationDestination {
 
 fun NavGraphBuilder.reportGraph(
     windowSizeClass: WindowSizeClass,
-    callbackOnItemClicked: (String) -> Unit
 ) {
     composable(route = ReportDestination.route) {
-        ForReportRoute(callbackOnItemClicked = callbackOnItemClicked)
+        ForReportRoute()
     }
 }
