@@ -21,7 +21,6 @@ import com.example.ui.thema.ShakaHomeTheme
 @Composable
 fun ShakaHomeApp(
     windowSizeClass: WindowSizeClass,
-    callbackOnItemClicked: (String) -> Unit,
     appState: ShakaHomeAppState = rememberShakaHomeAppState(windowSizeClass = windowSizeClass)
 ) {
     ShakaHomeTheme {
@@ -75,7 +74,6 @@ fun ShakaHomeApp(
                             modifier = Modifier
                                 .padding(padding)
                                 .consumedWindowInsets(padding),
-                            callbackOnItemClicked = callbackOnItemClicked
                         )
                     }
                 }

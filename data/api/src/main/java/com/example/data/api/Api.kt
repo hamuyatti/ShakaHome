@@ -6,10 +6,12 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
+const val token = " Bearer ig8t6eujfxl5swgszhrtlbhs9eecsh"
+
 interface Api {
 
     @Headers(
-        "Authorization: Bearer vr3yz2e59jscxrzfvoa6219lwsw2by",
+        "Authorization:$token",
         "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
     )
     @GET("users")
@@ -18,7 +20,7 @@ interface Api {
     ): Response<StreamerBaseInfoResponse>
 
     @Headers(
-        "Authorization: Bearer vr3yz2e59jscxrzfvoa6219lwsw2by",
+        "Authorization:$token",
         "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
     )
     @GET("users/follows")
@@ -28,7 +30,7 @@ interface Api {
     ): Response<FollowInfoResponse>
 
     @Headers(
-        "Authorization: Bearer vr3yz2e59jscxrzfvoa6219lwsw2by",
+        "Authorization:$token",
         "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
     )
     @GET("users/follows")
@@ -39,7 +41,7 @@ interface Api {
     ): Response<FollowInfoResponse>
 
     @Headers(
-        "Authorization: Bearer vr3yz2e59jscxrzfvoa6219lwsw2by",
+        "Authorization:$token",
         "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
     )
     @GET("streams")
@@ -48,7 +50,7 @@ interface Api {
     ): Response<NowStreamingInfoResponse>
 
     @Headers(
-        "Authorization: Bearer vr3yz2e59jscxrzfvoa6219lwsw2by",
+        "Authorization:$token",
         "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
     )
     @GET("videos")

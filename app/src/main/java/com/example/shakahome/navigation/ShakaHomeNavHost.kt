@@ -18,7 +18,6 @@ fun ShakaHomeNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = ReportDestination.route,
-    callbackOnItemClicked: (String) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -27,7 +26,6 @@ fun ShakaHomeNavHost(
     ) {
         reportGraph(
             windowSizeClass = windowSizeClass,
-            callbackOnItemClicked = callbackOnItemClicked
         )
         infoGraph(
             windowSizeClass = windowSizeClass,
