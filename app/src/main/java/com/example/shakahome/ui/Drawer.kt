@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.WbTwilight
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
@@ -70,4 +71,26 @@ enum class DrawerItem(
         icon = Icons.Outlined.Done,
         navRoute = ""
     )
+}
+
+enum class ExternalLinkItem(
+    @StringRes val titleStringRes: Int,
+    val icon: ImageVector,
+    val url : String
+){
+    Twitter(
+        titleStringRes = com.example.core.R.string.external_link_twitter,
+        icon = Icons.Outlined.WbTwilight,
+        url = ""
+    ),
+    Instagram(
+        titleStringRes = com.example.core.R.string.external_link_instagram,
+        icon = Icons.Outlined.WbTwilight,
+        url = ""
+    ),
+    Wikipedia(
+        titleStringRes = com.example.core.R.string.external_link_wikipedia,
+        icon = Icons.Outlined.WbTwilight,
+        url = ""
+    ),
 }
