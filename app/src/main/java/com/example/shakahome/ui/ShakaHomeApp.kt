@@ -29,7 +29,6 @@ fun ShakaHomeApp(
         ) {
             AppDrawer(
                 appState = appState,
-                windowSizeClass = windowSizeClass,
                 drawerSheetContent = {
                     DrawerSheetContent(
                         onClickDrawerItem = appState::onClickDrawerItem,
@@ -69,7 +68,6 @@ fun ShakaHomeApp(
                         }
 
                         ShakaHomeNavHost(
-                            windowSizeClass = windowSizeClass,
                             navController = appState.navController,
                             modifier = Modifier
                                 .padding(padding)

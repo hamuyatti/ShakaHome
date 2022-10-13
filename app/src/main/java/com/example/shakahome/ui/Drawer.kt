@@ -12,21 +12,18 @@ import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.WbTwilight
 import androidx.compose.material3.*
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.core.LocalIntentManager
-import com.example.ui.feature.drawer.settings.SettingsNavigation
+import com.example.ui.navigation.SettingsNavigation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDrawer(
-    windowSizeClass: WindowSizeClass,
-    appState: ShakaHomeAppState = rememberShakaHomeAppState(windowSizeClass = windowSizeClass),
+    appState: ShakaHomeAppState,
     drawerSheetContent: @Composable ColumnScope.() -> Unit,
     content: @Composable () -> Unit
 ) {
@@ -65,6 +62,7 @@ fun ColumnScope.DrawerSheetContent(
                 .fillMaxWidth()
                 .padding(16.dp)
         )
+
         Text(text = "外部リンク", modifier = Modifier.padding(16.dp))
         ExternalLinkItem.values().forEach { externalLinkItem ->
             NavigationDrawerItem(
