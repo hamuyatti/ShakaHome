@@ -62,6 +62,7 @@ fun ColumnScope.DrawerSheetContent(
                 .fillMaxWidth()
                 .padding(16.dp)
         )
+
         Text(text = "外部リンク", modifier = Modifier.padding(16.dp))
         ExternalLinkItem.values().forEach { externalLinkItem ->
             NavigationDrawerItem(
