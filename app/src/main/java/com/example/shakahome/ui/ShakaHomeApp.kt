@@ -7,8 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -24,55 +23,62 @@ fun ShakaHomeApp(
     appState: ShakaHomeAppState = rememberShakaHomeAppState(windowSizeClass = windowSizeClass)
 ) {
     ShakaHomeTheme {
-        CompositionLocalProvider(
-            LocalIntentManager provides IntentManagerImpl(LocalContext.current)
-        ) {
-            AppDrawer(
-                appState = appState,
-                drawerSheetContent = {
-                    DrawerSheetContent(
-                        onClickDrawerItem = appState::onClickDrawerItem,
-                        selectedDrawerItem = appState.selectedItem
-                    )
-                })
-            {
-                Scaffold(
-                    modifier = Modifier,
-                    containerColor = Color.Transparent,
-                    contentColor = MaterialTheme.colorScheme.onBackground,
-                    bottomBar = {
-                        if (appState.shouldShowBottomBar) {
-                            ShakaHomeBottomBar(
-                                destinations = appState.TOP_LEVEL_DESTINATIONS,
-                                onNavigateToTopLevelDestination = appState::navigateTo,
-                                currentDestination = appState.currentDestination
-                            )
-                        }
-                    }) { padding ->
-                    Row(
-                        Modifier
-                            .fillMaxSize()
-                            .windowInsetsPadding(
-                                WindowInsets.safeDrawing.only(
-                                    WindowInsetsSides.Horizontal
-                                )
-                            )
-                    ) {
-                        if (appState.shouldShowNavRail) {
-                            ShakaHomeNavRail(
-                                destinations = appState.TOP_LEVEL_DESTINATIONS,
-                                onNavigateToTopLevelDestination = appState::navigateTo,
-                                currentDestination = appState.currentDestination,
-                                modifier = Modifier.safeDrawingPadding()
-                            )
-                        }
-
-                        ShakaHomeNavHost(
-                            navController = appState.navController,
-                            modifier = Modifier
-                                .padding(padding)
-                                .consumedWindowInsets(padding),
+        var showSplashScreen by remember { mutableStateOf(true) }
+        if (showSplashScreen) {
+            SplashScreen {
+                showSplashScreen = false
+            }
+        } else {
+            CompositionLocalProvider(
+                LocalIntentManager provides IntentManagerImpl(LocalContext.current)
+            ) {
+                AppDrawer(
+                    appState = appState,
+                    drawerSheetContent = {
+                        DrawerSheetContent(
+                            onClickDrawerItem = appState::onClickDrawerItem,
+                            selectedDrawerItem = appState.selectedItem
                         )
+                    })
+                {
+                    Scaffold(
+                        modifier = Modifier,
+                        containerColor = Color.Transparent,
+                        contentColor = MaterialTheme.colorScheme.onBackground,
+                        bottomBar = {
+                            if (appState.shouldShowBottomBar) {
+                                ShakaHomeBottomBar(
+                                    destinations = appState.TOP_LEVEL_DESTINATIONS,
+                                    onNavigateToTopLevelDestination = appState::navigateTo,
+                                    currentDestination = appState.currentDestination
+                                )
+                            }
+                        }) { padding ->
+                        Row(
+                            Modifier
+                                .fillMaxSize()
+                                .windowInsetsPadding(
+                                    WindowInsets.safeDrawing.only(
+                                        WindowInsetsSides.Horizontal
+                                    )
+                                )
+                        ) {
+                            if (appState.shouldShowNavRail) {
+                                ShakaHomeNavRail(
+                                    destinations = appState.TOP_LEVEL_DESTINATIONS,
+                                    onNavigateToTopLevelDestination = appState::navigateTo,
+                                    currentDestination = appState.currentDestination,
+                                    modifier = Modifier.safeDrawingPadding()
+                                )
+                            }
+
+                            ShakaHomeNavHost(
+                                navController = appState.navController,
+                                modifier = Modifier
+                                    .padding(padding)
+                                    .consumedWindowInsets(padding),
+                            )
+                        }
                     }
                 }
             }
