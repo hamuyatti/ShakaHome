@@ -41,8 +41,14 @@ class StreamerInfoViewModel @Inject constructor(
     }
 
     fun onReachBottom() {
-        viewModelScope.launch {
-            fetchMoreFollowInfo()
+        val uiState = _followInfoUiState.value
+        if (uiState is FollowInfoUiState.Success) {
+            uiState.followInfo.cursor?.let {
+                _followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
+                viewModelScope.launch {
+                    fetchMoreFollowInfo(it)
+                }
+            }
         }
     }
 
@@ -76,11 +82,13 @@ class StreamerInfoViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchMoreFollowInfo() {
+    private suspend fun fetchMoreFollowInfo(nextCursor: String) {
         runCatching {
-            moreFollowInfoUseCase()
+            moreFollowInfoUseCase(nextCursor)
         }.onSuccess { info ->
             _followInfoUiState.update { FollowInfoUiState.Success(info) }
+        }.onFailure { error ->
+            _followInfoUiState.update { FollowInfoUiState.Error(error) }
         }
     }
 

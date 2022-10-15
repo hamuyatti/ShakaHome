@@ -14,29 +14,17 @@ class StreamerFollowInfoRepositoryImpl(
 ) : StreamerFollowInfoRepository {
     override suspend fun fetchStreamerFollowInfo(): FollowInfo =
         withContext(Dispatchers.IO) {
-            val firstFollowList = remoteDataSource.fetchStreamerFollowInfo()
-            val secondFollowList =
-                remoteDataSource.fetchStreamerMoreFollowInfo(nextCursor = firstFollowList.pagination?.cursor!!)
-
-            localDataSource.updateFollowInfoCache(secondFollowList.asDomainModel())
-
-            val domain1 = firstFollowList.asDomainModel()
-            val domain2 = secondFollowList.asDomainModel()
-
-            return@withContext domain1.copy(
-                followsInfo = domain1.followsInfo + domain2.followsInfo
-            )
+            val followList = remoteDataSource.fetchStreamerFollowInfo().asDomainModel()
+            localDataSource.updateFollowInfoCache(followList)
+            return@withContext followList
         }
 
-    override suspend fun fetchMoreFollowInfo(): FollowInfo {
-        val nextCursor = localDataSource.nextCursor?.cursor ?: throw Exception()
-        val followResponse = remoteDataSource.fetchStreamerMoreFollowInfo(nextCursor)
-        val followList = followResponse.asDomainModel()
+    override suspend fun fetchMoreFollowInfo(nextCursor: String): FollowInfo {
+        val followList = remoteDataSource.fetchStreamerMoreFollowInfo(nextCursor).asDomainModel()
         val newFollowList = followList.copy(
-            followsInfo = followList.followsInfo + localDataSource.followInfoCache?.followsInfo!!
+            followsInfo = localDataSource.followInfoCache?.followsInfo!! + followList.followsInfo
         )
         localDataSource.updateFollowInfoCache(newFollowList)
-     //   localDataSource.updateNextCursor(followResponse.pagination)
         return newFollowList
     }
 }

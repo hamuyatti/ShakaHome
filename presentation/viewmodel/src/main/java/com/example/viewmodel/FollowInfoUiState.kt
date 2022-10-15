@@ -7,4 +7,5 @@ sealed interface FollowInfoUiState {
     object Loading : FollowInfoUiState
     data class Success(val followInfo: FollowInfo) : FollowInfoUiState
     data class Error(val throwable: Throwable) : FollowInfoUiState
+    data class MoreLoading(val followInfo: FollowInfo) : FollowInfoUiState
 }

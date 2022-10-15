@@ -8,10 +8,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +29,6 @@ import com.example.viewmodel.StreamerBaseInfoUiState
 import com.example.viewmodel.StreamerInfoViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import kotlinx.coroutines.flow.collect
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -198,6 +194,28 @@ fun LazyListScope.FollowInfoFeed(
             FollowList(
                 followInfo = uiState.followInfo.followsInfo,
             )
+        }
+        is FollowInfoUiState.MoreLoading -> {
+            item {
+                Text(
+                    text = uiState.followInfo.total,
+                    textAlign = TextAlign.Center,
+                    modifier = modifier.fillMaxWidth()
+                )
+            }
+            item {
+                Text(
+                    text = "最近のフォロー",
+                    textAlign = TextAlign.Center,
+                    modifier = modifier.fillMaxWidth()
+                )
+            }
+            FollowList(
+                followInfo = uiState.followInfo.followsInfo,
+            )
+            item {
+                CircularProgressIndicator(modifier = Modifier.fillMaxWidth())
+            }
         }
     }
 }
