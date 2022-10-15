@@ -23,13 +23,15 @@ fun ShakaHomeApp(
     appState: ShakaHomeAppState = rememberShakaHomeAppState(windowSizeClass = windowSizeClass)
 ) {
     ShakaHomeTheme {
-        CompositionLocalProvider(
-            LocalIntentManager provides IntentManagerImpl(LocalContext.current)
-        ) {
-            var showSplashScreen by remember { mutableStateOf(true) }
-            if(showSplashScreen){
-
-            }else{
+        var showSplashScreen by remember { mutableStateOf(true) }
+        if (showSplashScreen) {
+            SplashScreen {
+                showSplashScreen = false
+            }
+        } else {
+            CompositionLocalProvider(
+                LocalIntentManager provides IntentManagerImpl(LocalContext.current)
+            ) {
                 AppDrawer(
                     appState = appState,
                     drawerSheetContent = {
