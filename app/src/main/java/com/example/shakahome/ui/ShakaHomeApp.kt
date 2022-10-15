@@ -26,8 +26,8 @@ fun ShakaHomeApp(
         CompositionLocalProvider(
             LocalIntentManager provides IntentManagerImpl(LocalContext.current)
         ) {
-            var showLandingScreen by remember { mutableStateOf(true) }
-            if(showLandingScreen){
+            var showSplashScreen by remember { mutableStateOf(true) }
+            if(showSplashScreen){
 
             }else{
                 AppDrawer(
