@@ -30,10 +30,14 @@ object NetworkModule {
         okHttpClient: OkHttpClient
     ): Retrofit {
         val contentType = "application/json".toMediaType()
+        val format = Json {
+            ignoreUnknownKeys = true
+            explicitNulls = true
+        }
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl("https://api.twitch.tv/helix/")
-            .addConverterFactory(Json.asConverterFactory(contentType))
+            .addConverterFactory(format.asConverterFactory(contentType))
             .build()
     }
 

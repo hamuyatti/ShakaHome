@@ -26,7 +26,7 @@ data class EachFollowInfoResponse(
 
 @Serializable
 data class FollowInfoPagination(
-    val cursor: String?
+    val cursor: String? = null
 )
 
 fun FollowInfoResponse.asDomainModel(): FollowInfo {
@@ -42,6 +42,7 @@ fun FollowInfoResponse.asDomainModel(): FollowInfo {
                 toName = it.toName
             )
         },
-        total = this.total.toString()
+        total = this.total.toString(),
+        cursor = this.pagination?.cursor
     )
 }

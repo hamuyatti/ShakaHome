@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
-private const val SplashWaitTime: Long = 2000
+private const val SplashWaitTime: Long = 1500
 
 @Composable
 fun SplashScreen(onTimeout: () -> Unit) {
@@ -28,10 +28,9 @@ fun SplashScreen(onTimeout: () -> Unit) {
             contentDescription = null,
             modifier = Modifier.size(200.dp)
         )
-
     }
 
-    LaunchedEffect(currentOnTimeOut) {
+    LaunchedEffect(Unit) {
         delay(SplashWaitTime)
         currentOnTimeOut()
     }

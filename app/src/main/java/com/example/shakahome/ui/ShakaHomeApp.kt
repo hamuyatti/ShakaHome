@@ -19,8 +19,7 @@ import com.example.ui.thema.ShakaHomeTheme
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ShakaHomeApp(
-    windowSizeClass: WindowSizeClass,
-    appState: ShakaHomeAppState = rememberShakaHomeAppState(windowSizeClass = windowSizeClass)
+    appState: ShakaHomeAppState = rememberShakaHomeAppState()
 ) {
     ShakaHomeTheme {
         var showSplashScreen by remember { mutableStateOf(true) }
@@ -46,39 +45,18 @@ fun ShakaHomeApp(
                         containerColor = Color.Transparent,
                         contentColor = MaterialTheme.colorScheme.onBackground,
                         bottomBar = {
-                            if (appState.shouldShowBottomBar) {
-                                ShakaHomeBottomBar(
-                                    destinations = appState.TOP_LEVEL_DESTINATIONS,
-                                    onNavigateToTopLevelDestination = appState::navigateTo,
-                                    currentDestination = appState.currentDestination
-                                )
-                            }
-                        }) { padding ->
-                        Row(
-                            Modifier
-                                .fillMaxSize()
-                                .windowInsetsPadding(
-                                    WindowInsets.safeDrawing.only(
-                                        WindowInsetsSides.Horizontal
-                                    )
-                                )
-                        ) {
-                            if (appState.shouldShowNavRail) {
-                                ShakaHomeNavRail(
-                                    destinations = appState.TOP_LEVEL_DESTINATIONS,
-                                    onNavigateToTopLevelDestination = appState::navigateTo,
-                                    currentDestination = appState.currentDestination,
-                                    modifier = Modifier.safeDrawingPadding()
-                                )
-                            }
-
-                            ShakaHomeNavHost(
-                                navController = appState.navController,
-                                modifier = Modifier
-                                    .padding(padding)
-                                    .consumedWindowInsets(padding),
+                            ShakaHomeBottomBar(
+                                destinations = appState.TOP_LEVEL_DESTINATIONS,
+                                onNavigateToTopLevelDestination = appState::navigateTo,
+                                currentDestination = appState.currentDestination
                             )
-                        }
+                        }) { padding ->
+                        ShakaHomeNavHost(
+                            navController = appState.navController,
+                            modifier = Modifier
+                                .padding(padding)
+                                .consumedWindowInsets(padding),
+                        )
                     }
                 }
             }
