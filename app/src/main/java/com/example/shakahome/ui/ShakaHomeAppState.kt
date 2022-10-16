@@ -29,15 +29,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun rememberShakaHomeAppState(
-    windowSizeClass: WindowSizeClass,
     navController: NavHostController = rememberNavController(),
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ): ShakaHomeAppState {
-    return remember(navController, windowSizeClass) {
+    return remember(navController) {
         ShakaHomeAppState(
             navController = navController,
-            windowInsetSizeClass = windowSizeClass,
             drawerState = drawerState,
             coroutineScope = coroutineScope
         )
@@ -48,19 +46,11 @@ fun rememberShakaHomeAppState(
 @OptIn(ExperimentalMaterial3Api::class)
 class ShakaHomeAppState(
     val navController: NavHostController,
-    val windowInsetSizeClass: WindowSizeClass,
     val drawerState: DrawerState,
     val coroutineScope: CoroutineScope,
 ) {
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
-
-    val shouldShowBottomBar: Boolean
-        get() = windowInsetSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
-                windowInsetSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-
-    val shouldShowNavRail: Boolean
-        get() = !shouldShowBottomBar
 
     private var _selectedDrawerItem: MutableState<DrawerItem?> = mutableStateOf(null)
     val selectedItem get() = _selectedDrawerItem.value

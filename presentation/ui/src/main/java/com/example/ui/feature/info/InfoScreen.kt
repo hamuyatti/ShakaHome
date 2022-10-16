@@ -62,7 +62,7 @@ fun InfoScreen(
 ) {
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
-        onRefresh = { onRefresh.invoke() },
+        onRefresh = { onRefresh() },
         indicatorAlignment = Alignment.TopCenter,
         indicatorPadding = PaddingValues(100.dp)
     ) {

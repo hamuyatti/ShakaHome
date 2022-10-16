@@ -24,11 +24,7 @@ fun ShakaHomeBottomBar(
     Surface(color = MaterialTheme.colorScheme.surface) {
         CompositionLocalProvider(LocalRippleTheme provides ClearRippleTheme) {
             NavigationBar(
-                modifier = Modifier.windowInsetsPadding(
-                    WindowInsets.safeDrawing.only(
-                        WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
-                    )
-                ), tonalElevation = 0.dp
+               tonalElevation = 0.dp
             ) {
                 destinations.forEach { destination ->
                     val selected =
