@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-    implementation project(":domein:iRepository")
+    implementation project(":domain:iRepository")
     implementation project(":model")
     implementation project(":data:api")
     implementation project(":data:db")
