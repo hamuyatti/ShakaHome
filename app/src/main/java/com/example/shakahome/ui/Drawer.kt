@@ -83,12 +83,12 @@ enum class DrawerItem(
     val navRoute: String
 ) {
     Settings(
-        titleStringRes = com.example.core.R.string.drawer_menu_setting,
+        titleStringRes = com.example.resource.R.string.drawer_menu_setting,
         icon = Icons.Outlined.Settings,
         navRoute = SettingsNavigation.route
     ),
     Tmp(
-        titleStringRes = com.example.core.R.string.drawer_menu_tmp,
+        titleStringRes = com.example.resource.R.string.drawer_menu_tmp,
         icon = Icons.Outlined.Done,
         navRoute = ""
     )
@@ -100,17 +100,17 @@ enum class ExternalLinkItem(
     val url: String
 ) {
     Twitter(
-        titleStringRes = com.example.core.R.string.external_link_twitter,
+        titleStringRes = com.example.resource.R.string.external_link_twitter,
         icon = Icons.Outlined.WbTwilight,
         url = "https://twitter.com/avashaka"
     ),
     Instagram(
-        titleStringRes = com.example.core.R.string.external_link_instagram,
+        titleStringRes = com.example.resource.R.string.external_link_instagram,
         icon = Icons.Outlined.WbTwilight,
         url = "https://www.instagram.com/avashaka/"
     ),
     Wikipedia(
-        titleStringRes = com.example.core.R.string.external_link_wikipedia,
+        titleStringRes = com.example.resource.R.string.external_link_wikipedia,
         icon = Icons.Outlined.WbTwilight,
         url = "https://ja.wikipedia.org/wiki/SHAKA"
     ),
