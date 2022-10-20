@@ -3,7 +3,7 @@ package com.example.ui
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Search
+import com.example.resource.R
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -42,13 +42,13 @@ fun ShakaHomeTopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun TopAppBar(){
-    ShakaHomeTheme{
-        Surface{
+fun TopAppBar() {
+    ShakaHomeTheme {
+        Surface {
             ShakaHomeTopAppBar(
                 titleRes = R.string.app_name,
                 actionIcon = Icons.Default.MoreVert,
-                actionIconContentDescription = "Action icon"
+                actionIconContentDescription = stringResource(id = R.string.action_icon)
             )
         }
     }

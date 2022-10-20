@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">shakaHome</string>
+    <string name="report">report</string>
+    <string name="info">info</string>
+    <string name="top_app_bar_action_button_content_desc">settings</string>
+    <string name="error_notice">エラーです</string>
+    <string name="action_icon">action_icon</string>
+
+    <!-- Drawer -->
+    <string name="in_app_page">アプリ内ページ</string>
+    <string name="drawer_menu_setting">設定</string>
+    <string name="drawer_menu_tmp">とりあえず</string>
+
+    <string name="external_link">外部リンク</string>
+    <string name="external_link_twitter">twitter</string>
+    <string name="external_link_instagram">instagram</string>
+    <string name="external_link_wikipedia">wikipedia</string>
+
+
+    <!-- info screen -->
+
+    <!-- base -->
+    <string name="name">名前</string>
+    <string name="follow_amount">フォロー総数</string>
+    <string name="offline_image">オフライン画像</string>
+    <string name="profile_image">プロフィール画像</string>
+
+    <!-- follow -->
+    <string name="recent_follow">最近のフォロー</string>
+
+</resources>

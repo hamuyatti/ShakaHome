@@ -21,7 +21,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.model.CarouselModel
-import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.ui.utils.ImageCarousel
 import com.example.viewmodel.info.FollowInfoUiState
@@ -29,6 +28,7 @@ import com.example.viewmodel.info.StreamerBaseInfoUiState
 import com.example.viewmodel.info.StreamerInfoViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.example.resource.R
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -127,7 +127,7 @@ private fun LazyListScope.BaseInfoFeed(
         is StreamerBaseInfoUiState.Loading -> {}
 
         is StreamerBaseInfoUiState.Error -> {
-            Toast.makeText(context, "エラーです", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.error_notice, Toast.LENGTH_SHORT).show()
         }
 
         is StreamerBaseInfoUiState.Empty -> {}
@@ -135,7 +135,7 @@ private fun LazyListScope.BaseInfoFeed(
         is StreamerBaseInfoUiState.Success -> {
             item {
                 Text(
-                    text = "名前",
+                    text = stringResource(id = R.string.name),
                     textAlign = TextAlign.Center,
                     modifier = modifier.fillMaxWidth()
                 )
@@ -151,15 +151,21 @@ private fun LazyListScope.BaseInfoFeed(
                 uiState.baseInfo.let {
                     ImageCarousel(
                         info = listOf(
-                            CarouselModel(it.profileImageUrl, "プロフィール画像"),
-                            CarouselModel(it.offlineImageUrl, "オフライン画像"),
+                            CarouselModel(
+                                it.profileImageUrl,
+                                stringResource(id = R.string.profile_image)
+                            ),
+                            CarouselModel(
+                                it.offlineImageUrl,
+                                stringResource(id = R.string.offline_image)
+                            )
                         )
                     )
                 }
             }
             item {
                 Text(
-                    text = "フォロー総数",
+                    text = stringResource(id = R.string.follow_amount),
                     textAlign = TextAlign.Center,
                     modifier = modifier.fillMaxWidth()
                 )
@@ -177,7 +183,7 @@ fun LazyListScope.FollowInfoFeed(
         FollowInfoUiState.Empty -> {}
         FollowInfoUiState.Loading -> {}
         is FollowInfoUiState.Error -> {
-            Toast.makeText(context, "エラーです", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.error_notice, Toast.LENGTH_SHORT).show()
         }
 
         is FollowInfoUiState.Success -> {
@@ -190,7 +196,7 @@ fun LazyListScope.FollowInfoFeed(
             }
             item {
                 Text(
-                    text = "最近のフォロー",
+                    text = stringResource(id = R.string.recent_follow),
                     textAlign = TextAlign.Center,
                     modifier = modifier.fillMaxWidth()
                 )
@@ -210,7 +216,7 @@ fun LazyListScope.FollowInfoFeed(
             }
             item {
                 Text(
-                    text = "最近のフォロー",
+                    text = stringResource(id = R.string.recent_follow),
                     textAlign = TextAlign.Center,
                     modifier = modifier.fillMaxWidth()
                 )
