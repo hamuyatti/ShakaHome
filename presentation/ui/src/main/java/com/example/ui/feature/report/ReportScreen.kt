@@ -25,9 +25,9 @@ import coil.compose.AsyncImage
 import com.example.core.LocalIntentManager
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
-import com.example.viewmodel.NowStreamingInfoState
-import com.example.viewmodel.PastVideosInfoState
-import com.example.viewmodel.ReportViewModel
+import com.example.viewmodel.report.NowStreamingInfoState
+import com.example.viewmodel.report.PastVideosInfoState
+import com.example.viewmodel.report.ReportViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -44,7 +44,7 @@ fun ForReportRoute(
     ReportScreen(
         modifier = modifier,
         isRefreshing = isRefreshing,
-        onRefreshing = { viewModel.refresh() },
+        onRefreshing = viewModel::onSwipeRefresh,
         nowStreamingInfoUiState = nowStreamInfoState,
         pastVideosInfoState = pastVideosInfoState,
     )
@@ -100,7 +100,6 @@ fun ReportScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 private fun LazyListScope.NowStreamingInfo(
     uiState: NowStreamingInfoState,
     modifier: Modifier = Modifier,

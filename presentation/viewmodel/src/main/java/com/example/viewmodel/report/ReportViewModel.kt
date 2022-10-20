@@ -1,4 +1,4 @@
-package com.example.viewmodel
+package com.example.viewmodel.report
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,7 +33,7 @@ class ReportViewModel @Inject constructor(
         fetch()
     }
 
-    fun refresh() {
+    fun onSwipeRefresh() {
         fetch()
     }
 

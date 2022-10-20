@@ -24,9 +24,9 @@ import com.example.model.CarouselModel
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.ui.utils.ImageCarousel
-import com.example.viewmodel.FollowInfoUiState
-import com.example.viewmodel.StreamerBaseInfoUiState
-import com.example.viewmodel.StreamerInfoViewModel
+import com.example.viewmodel.info.FollowInfoUiState
+import com.example.viewmodel.info.StreamerBaseInfoUiState
+import com.example.viewmodel.info.StreamerInfoViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -34,19 +34,21 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 @Composable
 fun ForInfoRoute(
     modifier: Modifier = Modifier,
-    viewModel: StreamerInfoViewModel = hiltViewModel()
+    viewModel: StreamerInfoViewModel = hiltViewModel(),
+    onSettingIconClick: () -> Unit
 ) {
     val baseInfoState by viewModel.baseInfoUiState.collectAsStateWithLifecycle()
     val followState by viewModel.followInfoUiState.collectAsStateWithLifecycle()
 
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     InfoScreen(
-        onRefresh = viewModel::refresh,
+        onRefresh = viewModel::onSwipeRefresh,
         onReachedBottom = viewModel::onReachBottom,
         baseInfoUiState = baseInfoState,
         followInfoUiState = followState,
         modifier = modifier,
-        isRefreshing = isRefreshing
+        isRefreshing = isRefreshing,
+        onSettingIconClick = onSettingIconClick
     )
 }
 
@@ -59,6 +61,7 @@ fun InfoScreen(
     baseInfoUiState: StreamerBaseInfoUiState,
     followInfoUiState: FollowInfoUiState,
     isRefreshing: Boolean,
+    onSettingIconClick: () -> Unit
 ) {
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
@@ -80,6 +83,7 @@ fun InfoScreen(
                     modifier = Modifier.windowInsetsPadding(
                         WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
                     ),
+                    onActionClick = onSettingIconClick
                 )
             }, containerColor = Color.Transparent
         ) { innerPadding ->
@@ -195,6 +199,7 @@ fun LazyListScope.FollowInfoFeed(
                 followInfo = uiState.followInfo.followsInfo,
             )
         }
+
         is FollowInfoUiState.MoreLoading -> {
             item {
                 Text(

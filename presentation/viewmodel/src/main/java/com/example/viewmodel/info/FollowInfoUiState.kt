@@ -1,4 +1,4 @@
-package com.example.viewmodel
+package com.example.viewmodel.info
 
 import com.example.model.domain.FollowInfo
 
