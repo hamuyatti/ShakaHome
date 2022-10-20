@@ -15,7 +15,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.shakahome.R
+import com.example.resource.R
 import com.example.shakahome.navigation.TopLevelDestination
 import com.example.ui.navigation.InfoNavigation
 import com.example.ui.navigation.ReportDestination

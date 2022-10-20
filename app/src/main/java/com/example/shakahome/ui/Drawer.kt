@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.core.LocalIntentManager
+import com.example.resource.R
 import com.example.ui.navigation.SettingsNavigation
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +44,7 @@ fun ColumnScope.DrawerSheetContent(
 ) {
     val intentManager = LocalIntentManager.current
     Column(Modifier.verticalScroll(rememberScrollState())) {
-        Text(text = "アプリ内ページ", modifier = Modifier.padding(16.dp))
+        Text(text = stringResource(id = R.string.in_app_page), modifier = Modifier.padding(16.dp))
         DrawerItem.values().forEach { drawerItem ->
             NavigationDrawerItem(
                 label = {
@@ -63,7 +64,7 @@ fun ColumnScope.DrawerSheetContent(
                 .padding(16.dp)
         )
 
-        Text(text = "外部リンク", modifier = Modifier.padding(16.dp))
+        Text(text = stringResource(id = R.string.external_link), modifier = Modifier.padding(16.dp))
         ExternalLinkItem.values().forEach { externalLinkItem ->
             NavigationDrawerItem(
                 label = {
@@ -83,12 +84,12 @@ enum class DrawerItem(
     val navRoute: String
 ) {
     Settings(
-        titleStringRes = com.example.resource.R.string.drawer_menu_setting,
+        titleStringRes = R.string.drawer_menu_setting,
         icon = Icons.Outlined.Settings,
         navRoute = SettingsNavigation.route
     ),
     Tmp(
-        titleStringRes = com.example.resource.R.string.drawer_menu_tmp,
+        titleStringRes = R.string.drawer_menu_tmp,
         icon = Icons.Outlined.Done,
         navRoute = ""
     )
@@ -100,17 +101,17 @@ enum class ExternalLinkItem(
     val url: String
 ) {
     Twitter(
-        titleStringRes = com.example.resource.R.string.external_link_twitter,
+        titleStringRes = R.string.external_link_twitter,
         icon = Icons.Outlined.WbTwilight,
         url = "https://twitter.com/avashaka"
     ),
     Instagram(
-        titleStringRes = com.example.resource.R.string.external_link_instagram,
+        titleStringRes = R.string.external_link_instagram,
         icon = Icons.Outlined.WbTwilight,
         url = "https://www.instagram.com/avashaka/"
     ),
     Wikipedia(
-        titleStringRes = com.example.resource.R.string.external_link_wikipedia,
+        titleStringRes = R.string.external_link_wikipedia,
         icon = Icons.Outlined.WbTwilight,
         url = "https://ja.wikipedia.org/wiki/SHAKA"
     ),
