@@ -8,8 +8,10 @@ object InfoNavigation : ShakaHomeNavigationDestination {
     override val route: String = "info_route"
 }
 
-fun NavGraphBuilder.infoGraph() {
+fun NavGraphBuilder.infoGraph(onSettingIconClick : ()-> Unit) {
     composable(route = InfoNavigation.route) {
-        ForInfoRoute()
+        ForInfoRoute(
+            onSettingIconClick = onSettingIconClick
+        )
     }
 }

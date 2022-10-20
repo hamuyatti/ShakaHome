@@ -16,6 +16,7 @@ fun ShakaHomeNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = ReportDestination.route,
+    onSettingIconClick: () -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -23,7 +24,7 @@ fun ShakaHomeNavHost(
         modifier = modifier
     ) {
         reportGraph()
-        infoGraph()
+        infoGraph(onSettingIconClick)
         settingGraph()
     }
 }

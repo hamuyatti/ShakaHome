@@ -34,7 +34,8 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 @Composable
 fun ForInfoRoute(
     modifier: Modifier = Modifier,
-    viewModel: StreamerInfoViewModel = hiltViewModel()
+    viewModel: StreamerInfoViewModel = hiltViewModel(),
+    onSettingIconClick: () -> Unit
 ) {
     val baseInfoState by viewModel.baseInfoUiState.collectAsStateWithLifecycle()
     val followState by viewModel.followInfoUiState.collectAsStateWithLifecycle()
@@ -46,7 +47,8 @@ fun ForInfoRoute(
         baseInfoUiState = baseInfoState,
         followInfoUiState = followState,
         modifier = modifier,
-        isRefreshing = isRefreshing
+        isRefreshing = isRefreshing,
+        onSettingIconClick = onSettingIconClick
     )
 }
 
@@ -59,6 +61,7 @@ fun InfoScreen(
     baseInfoUiState: StreamerBaseInfoUiState,
     followInfoUiState: FollowInfoUiState,
     isRefreshing: Boolean,
+    onSettingIconClick: () -> Unit
 ) {
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
@@ -80,6 +83,7 @@ fun InfoScreen(
                     modifier = Modifier.windowInsetsPadding(
                         WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
                     ),
+                    onActionClick = onSettingIconClick
                 )
             }, containerColor = Color.Transparent
         ) { innerPadding ->
@@ -195,6 +199,7 @@ fun LazyListScope.FollowInfoFeed(
                 followInfo = uiState.followInfo.followsInfo,
             )
         }
+
         is FollowInfoUiState.MoreLoading -> {
             item {
                 Text(

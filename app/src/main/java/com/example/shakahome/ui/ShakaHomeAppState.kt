@@ -9,9 +9,6 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.*
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -22,6 +19,7 @@ import com.example.shakahome.R
 import com.example.shakahome.navigation.TopLevelDestination
 import com.example.ui.navigation.InfoNavigation
 import com.example.ui.navigation.ReportDestination
+import com.example.ui.navigation.SettingsNavigation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -81,6 +79,10 @@ class ShakaHomeAppState(
         coroutineScope.launch {
             drawerState.close()
         }
+    }
+
+    fun onSettingIconClick() {
+        navController.navigate(SettingsNavigation.route)
     }
 
     val TOP_LEVEL_DESTINATIONS = listOf(
