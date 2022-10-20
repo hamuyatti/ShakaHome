@@ -1,4 +1,4 @@
-package com.example.viewmodel
+package com.example.viewmodel.report
 
 import com.example.model.domain.PastVideosInfo
 

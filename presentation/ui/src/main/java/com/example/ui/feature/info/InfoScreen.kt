@@ -24,9 +24,9 @@ import com.example.model.CarouselModel
 import com.example.ui.R
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.ui.utils.ImageCarousel
-import com.example.viewmodel.FollowInfoUiState
-import com.example.viewmodel.StreamerBaseInfoUiState
-import com.example.viewmodel.StreamerInfoViewModel
+import com.example.viewmodel.info.FollowInfoUiState
+import com.example.viewmodel.info.StreamerBaseInfoUiState
+import com.example.viewmodel.info.StreamerInfoViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
