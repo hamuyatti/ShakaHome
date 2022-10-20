@@ -9,6 +9,7 @@ import com.example.ui.navigation.ReportDestination
 import com.example.ui.navigation.infoGraph
 import com.example.ui.navigation.reportGraph
 import com.example.ui.navigation.settingGraph
+import com.example.ui.navigation.tmpGraph
 
 
 @Composable
@@ -26,5 +27,6 @@ fun ShakaHomeNavHost(
         reportGraph()
         infoGraph(onSettingIconClick)
         settingGraph()
+        tmpGraph()
     }
 }

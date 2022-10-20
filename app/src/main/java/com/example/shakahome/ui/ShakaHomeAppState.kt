@@ -63,9 +63,11 @@ class ShakaHomeAppState(
                     DrawerItem.values().firstOrNull { it.navRoute == destination.route }
                 }
 
-                _isShowBottomBar.value = destination.route?.let {
-                    it == SettingsNavigation.route
-                } != true
+                _isShowBottomBar.value = destination.route?.let { route ->
+                    TOP_LEVEL_DESTINATIONS.any {
+                        it.route == route
+                    }
+                } == true
             }
         }
     }
