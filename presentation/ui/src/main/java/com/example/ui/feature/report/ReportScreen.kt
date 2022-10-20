@@ -44,7 +44,7 @@ fun ForReportRoute(
     ReportScreen(
         modifier = modifier,
         isRefreshing = isRefreshing,
-        onRefreshing = { viewModel.refresh() },
+        onRefreshing = viewModel::onSwipeRefresh,
         nowStreamingInfoUiState = nowStreamInfoState,
         pastVideosInfoState = pastVideosInfoState,
     )
@@ -100,7 +100,6 @@ fun ReportScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 private fun LazyListScope.NowStreamingInfo(
     uiState: NowStreamingInfoState,
     modifier: Modifier = Modifier,

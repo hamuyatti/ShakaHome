@@ -33,7 +33,7 @@ class ReportViewModel @Inject constructor(
         fetch()
     }
 
-    fun refresh() {
+    fun onSwipeRefresh() {
         fetch()
     }
 
