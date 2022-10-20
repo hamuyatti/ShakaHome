@@ -1,11 +1,14 @@
 package com.example.shakahome.ui
 
-import androidx.compose.foundation.layout.*
 import androidx.compose.material.ripple.LocalRippleTheme
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
@@ -17,14 +20,14 @@ import com.example.ui.ClearRippleTheme
 fun ShakaHomeBottomBar(
     destinations: List<TopLevelDestination>,
     onNavigateToTopLevelDestination: (TopLevelDestination) -> Unit,
-    currentDestination: NavDestination?
+    currentDestination: NavDestination?,
 ) {
     // Wrap the navigation bar in a surface so the color behind the system
     // navigation is equal to the container color of the navigation bar.
     Surface(color = MaterialTheme.colorScheme.surface) {
         CompositionLocalProvider(LocalRippleTheme provides ClearRippleTheme) {
             NavigationBar(
-               tonalElevation = 0.dp
+                tonalElevation = 0.dp
             ) {
                 destinations.forEach { destination ->
                     val selected =

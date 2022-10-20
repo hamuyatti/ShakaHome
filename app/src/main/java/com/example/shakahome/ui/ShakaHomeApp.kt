@@ -51,10 +51,11 @@ fun ShakaHomeApp(
                         containerColor = Color.Transparent,
                         contentColor = MaterialTheme.colorScheme.onBackground,
                         bottomBar = {
+                            if (appState.isShowBottomBar.not()) return@Scaffold
                             ShakaHomeBottomBar(
                                 destinations = appState.TOP_LEVEL_DESTINATIONS,
                                 onNavigateToTopLevelDestination = appState::navigateTo,
-                                currentDestination = appState.currentDestination
+                                currentDestination = appState.currentDestination,
                             )
                         }) { padding ->
                         ShakaHomeNavHost(

@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -53,6 +54,8 @@ class ShakaHomeAppState(
     private var _selectedDrawerItem: MutableState<DrawerItem?> = mutableStateOf(null)
     val selectedItem get() = _selectedDrawerItem.value
 
+    private var _isShowBottomBar: MutableState<Boolean> = mutableStateOf(true)
+    val isShowBottomBar get() = _isShowBottomBar.value
 
     init {
         coroutineScope.launch {
@@ -60,6 +63,10 @@ class ShakaHomeAppState(
                 _selectedDrawerItem.value = destination.route?.let {
                     DrawerItem.values().firstOrNull { it.navRoute == destination.route }
                 }
+
+                _isShowBottomBar.value = destination.route?.let {
+                    it == SettingsNavigation.route
+                } != true
             }
         }
     }
