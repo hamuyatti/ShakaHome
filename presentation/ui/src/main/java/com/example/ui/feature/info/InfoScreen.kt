@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.compose.Header
 import com.example.model.CarouselModel
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.ui.utils.ImageCarousel
@@ -194,7 +195,7 @@ fun LazyGridScope.FollowInfoFeed(
         }
 
         is FollowInfoUiState.Success -> {
-            item(span = { GridItemSpan(this.maxLineSpan) }) {
+            Header {
                 Column {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
