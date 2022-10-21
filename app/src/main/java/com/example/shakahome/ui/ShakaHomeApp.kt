@@ -3,6 +3,7 @@
 package com.example.shakahome.ui
 
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import com.example.core.LocalIntentManager
 import com.example.shakahome.impl.IntentManagerImpl
 import com.example.shakahome.navigation.ShakaHomeNavHost
@@ -62,7 +64,12 @@ fun ShakaHomeApp(
                             navController = appState.navController,
                             onSettingIconClick = appState::onSettingIconClick,
                             modifier = Modifier
-                                .padding(padding)
+                                .absolutePadding(
+                                    top = padding.calculateTopPadding(),
+                                    // padding.calculateBottomPaddingに任せると異常にpaddingが付与されてしまうため
+                                    // absolutePaddingでbottomだけ自前で指定した。
+                                    bottom = 80.dp
+                                )
                                 .consumedWindowInsets(padding),
                         )
                     }
