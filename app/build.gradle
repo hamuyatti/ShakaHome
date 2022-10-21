@@ -51,6 +51,7 @@ dependencies {
     implementation project(':data:repository')
     implementation project(':core')
     implementation project(':common:resource')
+    implementation project(':common:compose')
 
 
     implementation "com.google.dagger:hilt-android:2.38.1"

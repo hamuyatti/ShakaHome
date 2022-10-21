@@ -9,7 +9,7 @@ object DateUtil {
         val dateTime = OffsetDateTime.parse(utcTime)
         val zoneId = ZoneId.of("Asia/Tokyo")
         val jtc = dateTime.atZoneSameInstant(zoneId).toOffsetDateTime()
-        val formatter = DateTimeFormatter.ofPattern("MM月dd日 HH:mm")
+        val formatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm")
         return jtc.format(formatter)
     }
 

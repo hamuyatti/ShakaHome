@@ -2,9 +2,15 @@ package com.example.ui.feature.info
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
@@ -20,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.compose.Header
 import com.example.model.CarouselModel
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.ui.utils.ImageCarousel
@@ -88,7 +95,7 @@ fun InfoScreen(
             }, containerColor = Color.Transparent
         ) { innerPadding ->
             val context = LocalContext.current
-            val listState = rememberLazyListState()
+            val listState = rememberLazyGridState()
             val currentOnReachedBottom by rememberUpdatedState(onReachedBottom)
             val isReachedBottom by remember {
                 derivedStateOf {
@@ -104,15 +111,26 @@ fun InfoScreen(
                     }
             }
 
-            LazyColumn(modifier = modifier.padding(innerPadding), state = listState) {
-                BaseInfoFeed(
-                    uiState = baseInfoUiState,
-                    context = context,
-                )
-                FollowInfoFeed(
-                    uiState = followInfoUiState,
-                    context = context,
-                )
+            Column(modifier = modifier.padding(innerPadding)) {
+                LazyColumn {
+                    BaseInfoFeed(
+                        uiState = baseInfoUiState,
+                        context = context,
+                    )
+                }
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    state = listState,
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(4.dp)
+                ) {
+                    FollowInfoFeed(
+                        uiState = followInfoUiState,
+                        context = context,
+                    )
+                }
+
             }
         }
     }
@@ -163,18 +181,11 @@ private fun LazyListScope.BaseInfoFeed(
                     )
                 }
             }
-            item {
-                Text(
-                    text = stringResource(id = R.string.follow_amount),
-                    textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
-                )
-            }
         }
     }
 }
 
-fun LazyListScope.FollowInfoFeed(
+fun LazyGridScope.FollowInfoFeed(
     uiState: FollowInfoUiState,
     context: Context,
     modifier: Modifier = Modifier
@@ -187,19 +198,21 @@ fun LazyListScope.FollowInfoFeed(
         }
 
         is FollowInfoUiState.Success -> {
-            item {
-                Text(
-                    text = uiState.followInfo.total,
-                    textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
-                )
-            }
-            item {
-                Text(
-                    text = stringResource(id = R.string.recent_follow),
-                    textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
-                )
+            Header {
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = stringResource(id = R.string.follow_amount))
+                        Text(text = uiState.followInfo.total)
+                    }
+                    Text(
+                        text = stringResource(id = R.string.recent_follow),
+                        textAlign = TextAlign.Center,
+                        modifier = modifier.fillMaxWidth()
+                    )
+                }
             }
             FollowList(
                 followInfo = uiState.followInfo.followsInfo,
