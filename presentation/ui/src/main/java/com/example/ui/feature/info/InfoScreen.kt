@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -117,7 +118,7 @@ fun InfoScreen(
                     )
                 }
                 LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 128.dp),
+                    columns = GridCells.Fixed(2),
                     state = listState
                 ) {
                     FollowInfoFeed(
@@ -176,13 +177,6 @@ private fun LazyListScope.BaseInfoFeed(
                     )
                 }
             }
-            item {
-                Text(
-                    text = stringResource(id = R.string.follow_amount),
-                    textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
-                )
-            }
         }
     }
 }
@@ -200,19 +194,21 @@ fun LazyGridScope.FollowInfoFeed(
         }
 
         is FollowInfoUiState.Success -> {
-            item {
-                Text(
-                    text = uiState.followInfo.total,
-                    textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
-                )
-            }
-            item {
-                Text(
-                    text = stringResource(id = R.string.recent_follow),
-                    textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
-                )
+            item(span = { GridItemSpan(this.maxLineSpan) }) {
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = stringResource(id = R.string.follow_amount))
+                        Text(text = uiState.followInfo.total)
+                    }
+                    Text(
+                        text = stringResource(id = R.string.recent_follow),
+                        textAlign = TextAlign.Center,
+                        modifier = modifier.fillMaxWidth()
+                    )
+                }
             }
             FollowList(
                 followInfo = uiState.followInfo.followsInfo,
