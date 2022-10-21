@@ -120,7 +120,10 @@ fun InfoScreen(
                 }
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
-                    state = listState
+                    state = listState,
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(4.dp)
                 ) {
                     FollowInfoFeed(
                         uiState = followInfoUiState,
