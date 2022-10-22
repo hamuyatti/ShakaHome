@@ -113,32 +113,28 @@ fun InfoScreen(
                     }
             }
 
-            Column(modifier = modifier.padding(innerPadding)) {
-                LazyColumn {
-                    BaseInfoFeed(
-                        uiState = baseInfoUiState,
-                        context = context,
-                    )
-                }
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    state = listState,
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.padding(4.dp)
-                ) {
-                    FollowInfoFeed(
-                        uiState = followInfoUiState,
-                        context = context,
-                    )
-                }
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                state = listState,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(innerPadding)
+            ) {
+                BaseInfoFeed(
+                    uiState = baseInfoUiState,
+                    context = context,
+                )
 
+                FollowInfoFeed(
+                    uiState = followInfoUiState,
+                    context = context,
+                )
             }
         }
     }
 }
 
-private fun LazyListScope.BaseInfoFeed(
+private fun LazyGridScope.BaseInfoFeed(
     uiState: StreamerBaseInfoUiState,
     context: Context,
     modifier: Modifier = Modifier
@@ -153,21 +149,21 @@ private fun LazyListScope.BaseInfoFeed(
         is StreamerBaseInfoUiState.Empty -> {}
 
         is StreamerBaseInfoUiState.Success -> {
-            item {
+            item(span = { GridItemSpan(this.maxLineSpan) }) {
                 Text(
                     text = stringResource(id = R.string.name),
                     textAlign = TextAlign.Center,
                     modifier = modifier.fillMaxWidth()
                 )
             }
-            item {
+            item(span = { GridItemSpan(this.maxLineSpan) }) {
                 Text(
                     text = uiState.baseInfo.displayName,
                     textAlign = TextAlign.Center,
                     modifier = modifier.fillMaxWidth()
                 )
             }
-            item {
+            item(span = { GridItemSpan(this.maxLineSpan) }) {
                 uiState.baseInfo.let {
                     ImageCarousel(
                         info = listOf(
@@ -212,7 +208,7 @@ fun LazyGridScope.FollowInfoFeed(
     }
 }
 
-private fun LazyGridScope.FollowContent(followInfo: FollowInfo){
+private fun LazyGridScope.FollowContent(followInfo: FollowInfo) {
     Header {
         Column {
             Row(
