@@ -1,5 +1,6 @@
 package com.example.compose
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -13,8 +14,11 @@ fun LazyGridScope.Header(
     item(span = { GridItemSpan(this.maxLineSpan) }, content = content)
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 fun LazyListScope.Header(
-    content: @Composable LazyItemScope.() -> Unit
+    content: @Composable LazyItemScope.() -> Unit,
 ) {
-    item(content = content)
+    stickyHeader {
+        content()
+    }
 }

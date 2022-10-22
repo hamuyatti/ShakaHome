@@ -2,15 +2,10 @@ package com.example.ui.feature.info
 
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
@@ -21,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,8 +24,8 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.compose.Header
 import com.example.model.CarouselModel
-import com.example.model.domain.EachFollowInfo
 import com.example.model.domain.FollowInfo
+import com.example.resource.R
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.ui.utils.ImageCarousel
 import com.example.viewmodel.info.FollowInfoUiState
@@ -39,7 +33,6 @@ import com.example.viewmodel.info.StreamerBaseInfoUiState
 import com.example.viewmodel.info.StreamerInfoViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.example.resource.R
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -114,8 +107,6 @@ fun InfoScreen(
                         }
                     }
             }
-            var followAmount by remember { mutableStateOf("") }
-
 
             val screenWidth = LocalConfiguration.current.screenWidthDp
             LazyColumn(
@@ -126,12 +117,10 @@ fun InfoScreen(
                 BaseInfoFeed(
                     uiState = baseInfoUiState,
                     context = context,
-                    followAmount = followAmount
                 )
                 FollowInfoFeed(
                     uiState = followInfoUiState,
                     context = context,
-                    onGetFollowAmount = { followCount -> followAmount = followCount },
                     screenWidth = screenWidth
                 )
             }
@@ -143,7 +132,6 @@ private fun LazyListScope.BaseInfoFeed(
     uiState: StreamerBaseInfoUiState,
     context: Context,
     modifier: Modifier = Modifier,
-    followAmount: String
 ) {
     when (uiState) {
         is StreamerBaseInfoUiState.Loading -> {}
@@ -185,22 +173,6 @@ private fun LazyListScope.BaseInfoFeed(
                     )
                 }
             }
-            item {
-                Column {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(text = stringResource(id = R.string.follow_amount))
-                        Text(text = followAmount)
-                    }
-                    Text(
-                        text = stringResource(id = R.string.recent_follow),
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            }
         }
     }
 }
@@ -209,7 +181,6 @@ fun LazyListScope.FollowInfoFeed(
     uiState: FollowInfoUiState,
     context: Context,
     modifier: Modifier = Modifier,
-    onGetFollowAmount: (String) -> Unit,
     screenWidth: Int
 ) {
     when (uiState) {
@@ -220,23 +191,36 @@ fun LazyListScope.FollowInfoFeed(
         }
 
         is FollowInfoUiState.Success -> {
-            onGetFollowAmount(uiState.followInfo.total)
-            FollowList(
-                followInfo = uiState.followInfo.followsInfo,
-                modifier = modifier,
-                screenWidth = screenWidth
-            )
+            FollowContent(followInfo = uiState.followInfo, screenWidth, modifier = modifier)
         }
 
         is FollowInfoUiState.MoreLoading -> {
-            FollowList(
-                followInfo = uiState.followInfo.followsInfo,
-                modifier = modifier,
-                screenWidth = screenWidth
-            )
-            item {
-                CircularProgressIndicator(modifier = Modifier.fillMaxWidth())
-            }
+            FollowContent(followInfo = uiState.followInfo, screenWidth, modifier = modifier)
         }
     }
+}
+
+private fun LazyListScope.FollowContent(
+    followInfo: FollowInfo,
+    screenWidth: Int,
+    modifier: Modifier = Modifier
+) {
+    Header {
+        Column(modifier = modifier.background(Color.White)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(text = stringResource(id = R.string.follow_amount))
+                Text(text = followInfo.total)
+            }
+            Text(
+                text = stringResource(id = R.string.recent_follow),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+
+    FollowList(followInfo = followInfo.followsInfo, screenWidth = screenWidth, modifier = modifier)
 }
