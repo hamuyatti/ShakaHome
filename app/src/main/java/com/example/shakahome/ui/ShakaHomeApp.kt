@@ -5,7 +5,6 @@ package com.example.shakahome.ui
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.consumedWindowInsets
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -40,7 +39,7 @@ fun ShakaHomeApp(
                 LocalIntentManager provides IntentManagerImpl(LocalContext.current)
             ) {
                 AppDrawer(
-                    appState = appState,
+                    drawerState = appState.drawerState,
                     drawerSheetContent = {
                         DrawerSheetContent(
                             onClickDrawerItem = appState::onClickDrawerItem,
@@ -49,20 +48,19 @@ fun ShakaHomeApp(
                     })
                 {
                     Scaffold(
-                        modifier = Modifier,
                         containerColor = Color.Transparent,
                         contentColor = MaterialTheme.colorScheme.onBackground,
                         bottomBar = {
                             if (appState.isShowBottomBar.not()) return@Scaffold
                             ShakaHomeBottomBar(
                                 destinations = appState.TOP_LEVEL_DESTINATIONS,
-                                onNavigateToTopLevelDestination = appState::navigateTo,
+                                onNavigateToTopLevelDestination = appState::onClickBottomItem,
                                 currentDestination = appState.currentDestination,
                             )
                         }) { padding ->
                         ShakaHomeNavHost(
                             navController = appState.navController,
-                            onSettingIconClick = appState::onSettingIconClick,
+                            onSettingIconClick = appState::onClickSettingIcon,
                             modifier = Modifier
                                 .absolutePadding(
                                     top = padding.calculateTopPadding(),

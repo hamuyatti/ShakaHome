@@ -28,6 +28,8 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.compose.Header
 import com.example.model.CarouselModel
+import com.example.model.domain.EachFollowInfo
+import com.example.model.domain.FollowInfo
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.ui.utils.ImageCarousel
 import com.example.viewmodel.info.FollowInfoUiState
@@ -198,50 +200,38 @@ fun LazyGridScope.FollowInfoFeed(
         }
 
         is FollowInfoUiState.Success -> {
-            Header {
-                Column {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(text = stringResource(id = R.string.follow_amount))
-                        Text(text = uiState.followInfo.total)
-                    }
-                    Text(
-                        text = stringResource(id = R.string.recent_follow),
-                        textAlign = TextAlign.Center,
-                        modifier = modifier.fillMaxWidth()
-                    )
-                }
-            }
-            FollowList(
-                followInfo = uiState.followInfo.followsInfo,
-            )
+            FollowContent(uiState.followInfo)
         }
 
         is FollowInfoUiState.MoreLoading -> {
-            item {
-                Text(
-                    text = uiState.followInfo.total,
-                    textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
-                )
-            }
-            item {
-                Text(
-                    text = stringResource(id = R.string.recent_follow),
-                    textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
-                )
-            }
-            FollowList(
-                followInfo = uiState.followInfo.followsInfo,
-            )
+            FollowContent(uiState.followInfo)
             item {
                 CircularProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
         }
     }
+}
+
+private fun LazyGridScope.FollowContent(followInfo: FollowInfo){
+    Header {
+        Column {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(text = stringResource(id = R.string.follow_amount))
+                Text(text = followInfo.total)
+            }
+            Text(
+                text = stringResource(id = R.string.recent_follow),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+    FollowList(
+        followInfo = followInfo.followsInfo,
+    )
 }
 
 
