@@ -19,7 +19,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -97,7 +99,7 @@ fun InfoScreen(
             }, containerColor = Color.Transparent
         ) { innerPadding ->
             val context = LocalContext.current
-            val listState = rememberLazyGridState()
+            val listState = rememberLazyListState()
             val currentOnReachedBottom by rememberUpdatedState(onReachedBottom)
             val isReachedBottom by remember {
                 derivedStateOf {
@@ -112,32 +114,36 @@ fun InfoScreen(
                         }
                     }
             }
+            var followAmount by remember { mutableStateOf("") }
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
+
+            val screenWidth = LocalConfiguration.current.screenWidthDp
+            LazyColumn(
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.padding(innerPadding)
             ) {
                 BaseInfoFeed(
                     uiState = baseInfoUiState,
                     context = context,
+                    followAmount = followAmount
                 )
-
                 FollowInfoFeed(
                     uiState = followInfoUiState,
                     context = context,
+                    onGetFollowAmount = { followCount -> followAmount = followCount },
+                    screenWidth = screenWidth
                 )
             }
         }
     }
 }
 
-private fun LazyGridScope.BaseInfoFeed(
+private fun LazyListScope.BaseInfoFeed(
     uiState: StreamerBaseInfoUiState,
     context: Context,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    followAmount: String
 ) {
     when (uiState) {
         is StreamerBaseInfoUiState.Loading -> {}
@@ -149,21 +155,21 @@ private fun LazyGridScope.BaseInfoFeed(
         is StreamerBaseInfoUiState.Empty -> {}
 
         is StreamerBaseInfoUiState.Success -> {
-            item(span = { GridItemSpan(this.maxLineSpan) }) {
+            item {
                 Text(
                     text = stringResource(id = R.string.name),
                     textAlign = TextAlign.Center,
                     modifier = modifier.fillMaxWidth()
                 )
             }
-            item(span = { GridItemSpan(this.maxLineSpan) }) {
+            item {
                 Text(
                     text = uiState.baseInfo.displayName,
                     textAlign = TextAlign.Center,
                     modifier = modifier.fillMaxWidth()
                 )
             }
-            item(span = { GridItemSpan(this.maxLineSpan) }) {
+            item {
                 uiState.baseInfo.let {
                     ImageCarousel(
                         info = listOf(
@@ -179,14 +185,32 @@ private fun LazyGridScope.BaseInfoFeed(
                     )
                 }
             }
+            item {
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = stringResource(id = R.string.follow_amount))
+                        Text(text = followAmount)
+                    }
+                    Text(
+                        text = stringResource(id = R.string.recent_follow),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
         }
     }
 }
 
-fun LazyGridScope.FollowInfoFeed(
+fun LazyListScope.FollowInfoFeed(
     uiState: FollowInfoUiState,
     context: Context,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onGetFollowAmount: (String) -> Unit,
+    screenWidth: Int
 ) {
     when (uiState) {
         FollowInfoUiState.Empty -> {}
@@ -196,38 +220,23 @@ fun LazyGridScope.FollowInfoFeed(
         }
 
         is FollowInfoUiState.Success -> {
-            FollowContent(uiState.followInfo)
+            onGetFollowAmount(uiState.followInfo.total)
+            FollowList(
+                followInfo = uiState.followInfo.followsInfo,
+                modifier = modifier,
+                screenWidth = screenWidth
+            )
         }
 
         is FollowInfoUiState.MoreLoading -> {
-            FollowContent(uiState.followInfo)
+            FollowList(
+                followInfo = uiState.followInfo.followsInfo,
+                modifier = modifier,
+                screenWidth = screenWidth
+            )
             item {
                 CircularProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
         }
     }
 }
-
-private fun LazyGridScope.FollowContent(followInfo: FollowInfo) {
-    Header {
-        Column {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(text = stringResource(id = R.string.follow_amount))
-                Text(text = followInfo.total)
-            }
-            Text(
-                text = stringResource(id = R.string.recent_follow),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-    }
-    FollowList(
-        followInfo = followInfo.followsInfo,
-    )
-}
-
-
