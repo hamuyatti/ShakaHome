@@ -2,6 +2,8 @@ package com.example.ui.feature.report
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -23,13 +26,13 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.core.LocalIntentManager
+import com.example.resource.R
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.viewmodel.report.NowStreamingInfoState
 import com.example.viewmodel.report.PastVideosInfoState
 import com.example.viewmodel.report.ReportViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.example.resource.R
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -100,6 +103,7 @@ fun ReportScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 private fun LazyListScope.NowStreamingInfo(
     uiState: NowStreamingInfoState,
     modifier: Modifier = Modifier,
@@ -109,25 +113,29 @@ private fun LazyListScope.NowStreamingInfo(
         is NowStreamingInfoState.Loading -> {}
 
         is NowStreamingInfoState.Error -> {
-            Toast.makeText(context, "エラーです", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.error_notice), Toast.LENGTH_SHORT)
+                .show()
         }
 
         is NowStreamingInfoState.Empty -> {
-            item {
+            stickyHeader {
                 Text(
-                    text = "現在の放送はありません。",
-                    modifier = modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.no_now_streaming),
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .background(Color.White),
                     textAlign = TextAlign.Center,
                 )
             }
         }
 
         is NowStreamingInfoState.Success -> {
-            item {
+            stickyHeader {
                 Card(
                     Modifier
                         .padding(16.dp)
                         .wrapContentSize()
+                        .background(Color.White),
                 ) {
                     Column(
                         modifier = modifier
@@ -135,13 +143,13 @@ private fun LazyListScope.NowStreamingInfo(
                             .padding(8.dp),
                     ) {
                         Text(
-                            text = "Now Streaming",
+                            text = stringResource(id = R.string.now_streaming),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )
                         AsyncImage(
                             model = uiState.nowStreamingInfo.thumbnailUrl,
-                            contentDescription = "aa",
+                            contentDescription = "",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(200.dp)
@@ -154,7 +162,7 @@ private fun LazyListScope.NowStreamingInfo(
                         )
                         Row {
                             Text(
-                                text = "視聴者数 ",
+                                text = stringResource(id = R.string.viewer_count),
                             )
                             Text(
                                 text = uiState.nowStreamingInfo.viewerCount.toString(),
@@ -206,7 +214,7 @@ private fun LazyListScope.PastVideosInfo(
                     ) {
                         if (item.thumbnailUrl.isEmpty()) {
                             Text(
-                                text = "画像が設定されていません。",
+                                text = stringResource(id = R.string.no_set_image),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(200.dp)
@@ -214,7 +222,7 @@ private fun LazyListScope.PastVideosInfo(
                         } else {
                             AsyncImage(
                                 model = item.thumbnailUrl,
-                                contentDescription = "aa",
+                                contentDescription = "",
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(200.dp)
@@ -228,7 +236,7 @@ private fun LazyListScope.PastVideosInfo(
                         )
                         Row {
                             Text(
-                                text = "視聴回数 ",
+                                text = stringResource(id = R.string.viewer_count),
                             )
                             Text(
                                 text = item.viewCount.toString(),

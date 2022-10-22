@@ -25,12 +25,12 @@ import com.example.ui.navigation.TmpNavigation
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDrawer(
-    appState: ShakaHomeAppState,
+    drawerState: DrawerState,
     drawerSheetContent: @Composable ColumnScope.() -> Unit,
     content: @Composable () -> Unit
 ) {
     ModalNavigationDrawer(
-        drawerState = appState.drawerState,
+        drawerState = drawerState,
         drawerContent = { ModalDrawerSheet { drawerSheetContent() } }
     ) {
         content()

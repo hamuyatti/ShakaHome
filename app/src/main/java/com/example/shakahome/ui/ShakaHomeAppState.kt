@@ -72,7 +72,7 @@ class ShakaHomeAppState(
         }
     }
 
-    fun navigateTo(destination: TopLevelDestination) {
+    fun onClickBottomItem(destination: TopLevelDestination) {
         navController.navigate(destination.route) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
@@ -89,7 +89,7 @@ class ShakaHomeAppState(
         }
     }
 
-    fun onSettingIconClick() {
+    fun onClickSettingIcon() {
         navController.navigate(SettingsNavigation.route)
     }
 

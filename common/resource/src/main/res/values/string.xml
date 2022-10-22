@@ -29,4 +29,12 @@
     <!-- follow -->
     <string name="recent_follow">最近のフォロー</string>
 
+
+    <!-- report -->
+    <string name="no_now_streaming">現在の放送はありません。</string>
+    <string name="now_streaming">now streaming</string>
+    <string name="viewer_count">視聴者数 </string>
+    <string name="no_set_image">画像が設定されていません。</string>
+
+
 </resources>
