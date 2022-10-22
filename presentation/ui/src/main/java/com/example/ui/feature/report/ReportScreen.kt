@@ -131,50 +131,54 @@ private fun LazyListScope.NowStreamingInfo(
 
         is NowStreamingInfoState.Success -> {
             stickyHeader {
-                Card(
+                Column(
                     Modifier
-                        .padding(16.dp)
+                        .padding(top = 0.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
                         .wrapContentSize()
                         .background(Color.White),
                 ) {
-                    Column(
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.now_streaming),
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        AsyncImage(
-                            model = uiState.nowStreamingInfo.thumbnailUrl,
-                            contentDescription = "",
-                            modifier = Modifier
+                    Card{
+                        Column(
+                            modifier = modifier
                                 .fillMaxWidth()
-                                .height(200.dp)
-                        )
-                        Text(
-                            text = uiState.nowStreamingInfo.title,
-                            textAlign = TextAlign.Start,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Row {
+                                .padding(8.dp),
+                        ) {
                             Text(
-                                text = stringResource(id = R.string.viewer_count),
+                                text = stringResource(id = R.string.now_streaming),
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            AsyncImage(
+                                model = uiState.nowStreamingInfo.thumbnailUrl,
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
                             )
                             Text(
-                                text = uiState.nowStreamingInfo.viewerCount.toString(),
-                                textAlign = TextAlign.Center
+                                text = uiState.nowStreamingInfo.title,
+                                textAlign = TextAlign.Start,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
                             )
-                        }
-                        Row {
-                            Text(
-                                text = uiState.nowStreamingInfo.startedAt,
-                            )
+                            Row {
+                                Text(
+                                    text = stringResource(id = R.string.viewer_count),
+                                )
+                                Text(
+                                    text = uiState.nowStreamingInfo.viewerCount.toString(),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            Row {
+                                Text(
+                                    text = uiState.nowStreamingInfo.startedAt,
+                                )
+                            }
                         }
                     }
+
+                    Divider(modifier.padding(8.dp))
                 }
             }
         }
