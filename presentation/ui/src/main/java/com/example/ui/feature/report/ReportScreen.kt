@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,13 +26,13 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.core.LocalIntentManager
+import com.example.resource.R
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.viewmodel.report.NowStreamingInfoState
 import com.example.viewmodel.report.PastVideosInfoState
 import com.example.viewmodel.report.ReportViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.example.resource.R
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -124,7 +123,7 @@ private fun LazyListScope.NowStreamingInfo(
                     text = stringResource(id = R.string.no_now_streaming),
                     modifier = modifier
                         .fillMaxWidth()
-                        .background(colorResource(id = R.color)),
+                        .background(Color.White),
                     textAlign = TextAlign.Center,
                 )
             }
@@ -136,6 +135,7 @@ private fun LazyListScope.NowStreamingInfo(
                     Modifier
                         .padding(16.dp)
                         .wrapContentSize()
+                        .background(Color.White),
                 ) {
                     Column(
                         modifier = modifier
