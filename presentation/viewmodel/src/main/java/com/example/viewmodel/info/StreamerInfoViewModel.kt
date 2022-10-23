@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.usecase.FetchFollowInfoUseCase
 import com.example.usecase.FetchMoreFollowInfoUseCase
 import com.example.usecase.FetchStreamerBaseInfoUseCase
+import com.example.usecase.SortFollowListBySomeoneNewUseCase
+import com.example.usecase.SortFollowListBySomeoneOldUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +18,9 @@ import javax.inject.Inject
 class StreamerInfoViewModel @Inject constructor(
     private val baseInfoUseCase: FetchStreamerBaseInfoUseCase,
     private val followInfoUseCase: FetchFollowInfoUseCase,
-    private val moreFollowInfoUseCase: FetchMoreFollowInfoUseCase
+    private val moreFollowInfoUseCase: FetchMoreFollowInfoUseCase,
+    private val sortFollowListBySomeoneNewUseCase: SortFollowListBySomeoneNewUseCase,
+    private val sortFollowListBySomeoneOldUseCase: SortFollowListBySomeoneOldUseCase
 ) : ViewModel() {
 
     private val _baseInfoUiState: MutableStateFlow<StreamerBaseInfoUiState> =
