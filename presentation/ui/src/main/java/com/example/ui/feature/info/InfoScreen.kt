@@ -45,6 +45,8 @@ fun ForInfoRoute(
     val followState by viewModel.followInfoUiState.collectAsStateWithLifecycle()
 
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
+
+
     InfoScreen(
         onRefresh = viewModel::onSwipeRefresh,
         onReachedBottom = viewModel::onReachBottom,
