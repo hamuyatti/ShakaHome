@@ -1,5 +1,7 @@
 package com.example.model.domain
 
+import java.util.Date
+
 data class FollowInfo(
     val followsList: List<EachFollowInfo>,
     val total: String,
@@ -7,12 +9,11 @@ data class FollowInfo(
 )
 
 data class EachFollowInfo(
-    val followedAt: String,
+    val followedAt: Date,
     val fromId: String,
     val fromLogin: String,
     val fromName: String,
     val toId: String,
     val toLogin: String,
-    val toName: String,
-    val index: Int
+    val toName: String
 )

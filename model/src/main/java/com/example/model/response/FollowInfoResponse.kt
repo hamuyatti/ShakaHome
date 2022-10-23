@@ -1,6 +1,6 @@
 package com.example.model.response
 
-import com.example.core.util.DateUtil.utcToJtc
+import com.example.core.util.DateUtil.utcToDate
 import com.example.model.domain.EachFollowInfo
 import com.example.model.domain.FollowInfo
 import kotlinx.serialization.SerialName
@@ -31,16 +31,15 @@ data class FollowInfoPagination(
 
 fun FollowInfoResponse.asDomainModel(): FollowInfo {
     return FollowInfo(
-        followsList = this.data.mapIndexed { index, it ->
+        followsList = this.data.map {
             EachFollowInfo(
-                followedAt = utcToJtc(it.followedAt),
+                followedAt = utcToDate(it.followedAt),
                 fromId = it.fromId,
                 fromLogin = it.fromLogin,
                 fromName = it.fromName,
                 toId = it.toId,
                 toLogin = it.toLogin,
-                toName = it.toName,
-                index = index
+                toName = it.toName
             )
         },
         total = this.total.toString(),

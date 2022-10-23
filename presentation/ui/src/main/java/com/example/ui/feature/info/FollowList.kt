@@ -44,7 +44,7 @@ fun LazyListScope.FollowList(
                             fontWeight = FontWeight.Black
                         )
                         Text(
-                            text = it.followedAt,
+                            text = it.followedAt.toString(),
                             textAlign = TextAlign.Center,
                         )
                     }
