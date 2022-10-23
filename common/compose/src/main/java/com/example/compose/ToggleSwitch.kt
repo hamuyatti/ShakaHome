@@ -6,9 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun ToggleSwitch(onToggled: (Boolean) -> Unit, description: String) {
+fun ToggleSwitch(onToggled: (Boolean) -> Unit, description: String, toggleState: Boolean) {
     Column {
         Text(text = description)
-        Switch(checked = true, onCheckedChange = onToggled)
+        Switch(checked = toggleState, onCheckedChange = onToggled)
     }
 }
