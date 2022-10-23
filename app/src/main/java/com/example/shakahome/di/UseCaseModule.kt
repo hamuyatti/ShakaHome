@@ -47,10 +47,7 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun providesSortFollowListBySomeoneNewUseCase() = SortFollowListBySomeoneOldUseCase()
+    fun sortFollowListUseCase() = SortFollowListUseCase()
 
-    @Provides
-    @Singleton
-    fun providesSortFollowListBySomeoneOldUseCase() = SortFollowListBySomeoneOldUseCase()
 
 }
