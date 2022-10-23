@@ -71,7 +71,8 @@ fun InfoScreen(
         state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
         onRefresh = { onRefresh() },
         indicatorAlignment = Alignment.TopCenter,
-        indicatorPadding = PaddingValues(100.dp)
+        indicatorPadding = PaddingValues(100.dp),
+        modifier = modifier
     ) {
         Scaffold(
             topBar = {
@@ -131,7 +132,6 @@ fun InfoScreen(
 private fun LazyListScope.BaseInfoFeed(
     uiState: StreamerBaseInfoUiState,
     context: Context,
-    modifier: Modifier = Modifier,
 ) {
     when (uiState) {
         is StreamerBaseInfoUiState.Loading -> {}
@@ -147,14 +147,14 @@ private fun LazyListScope.BaseInfoFeed(
                 Text(
                     text = stringResource(id = R.string.name),
                     textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             item {
                 Text(
                     text = uiState.baseInfo.displayName,
                     textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             item {
@@ -196,6 +196,9 @@ fun LazyListScope.FollowInfoFeed(
 
         is FollowInfoUiState.MoreLoading -> {
             FollowContent(followInfo = uiState.followInfo, screenWidth, modifier = modifier)
+            item {
+                CircularProgressIndicator()
+            }
         }
     }
 }

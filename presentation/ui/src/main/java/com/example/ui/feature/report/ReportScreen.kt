@@ -137,7 +137,7 @@ private fun LazyListScope.NowStreamingInfo(
                         .wrapContentSize()
                         .background(Color.White),
                 ) {
-                    Card{
+                    Card {
                         Column(
                             modifier = modifier
                                 .fillMaxWidth()
