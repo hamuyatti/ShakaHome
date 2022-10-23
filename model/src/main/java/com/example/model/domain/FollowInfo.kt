@@ -13,5 +13,6 @@ data class EachFollowInfo(
     val fromName: String,
     val toId: String,
     val toLogin: String,
-    val toName: String
+    val toName: String,
+    val index: Int
 )
