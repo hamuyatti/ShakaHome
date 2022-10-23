@@ -56,10 +56,16 @@ class StreamerInfoViewModel @Inject constructor(
     fun onToggled(isByNew: Boolean) {
         val uiState = _followInfoUiState.value
         if (uiState is FollowInfoUiState.Success) {
-            uiState.followInfo.cursor?.let {
+            if (uiState.followInfo.cursor == null) {
+                _followInfoUiState.update {
+                    FollowInfoUiState.Success(
+                        sortFollowListUseCase(followInfo = uiState.followInfo, isByNew = isByNew)
+                    )
+                }
+            } else {
                 _followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
                 viewModelScope.launch {
-                    fetchMoreFollowInfo(it)
+                    fetchMoreFollowInfo(uiState.followInfo.cursor ?: return@launch)
                     val newUiState = _followInfoUiState.value
                     if (newUiState is FollowInfoUiState.Success) {
                         FollowInfoUiState.Success(
@@ -69,12 +75,6 @@ class StreamerInfoViewModel @Inject constructor(
                             )
                         )
                     }
-                }
-            }.also {
-                _followInfoUiState.update {
-                    FollowInfoUiState.Success(
-                        sortFollowListUseCase(followInfo = uiState.followInfo, isByNew = isByNew)
-                    )
                 }
             }
         }

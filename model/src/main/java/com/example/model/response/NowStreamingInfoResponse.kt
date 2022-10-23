@@ -43,7 +43,7 @@ fun NowStreamingInfoResponse.asDomainModel(): NowStreamingInfo? {
         id = info.id,
         isMature = info.isMature,
         language = info.language,
-        startedAt = "${DateUtil.utcToDate(info.startedAt)}~",
+        startedAt = "${DateUtil.utcToJtc(info.startedAt)}~",
         tagIds = info.tagIds ?: listOf(),
         thumbnailUrl = complementSizeForNowStreamingThumbnail(info.thumbnailUrl),
         title = info.title,

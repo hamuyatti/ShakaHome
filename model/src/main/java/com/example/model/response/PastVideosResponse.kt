@@ -1,7 +1,6 @@
 package com.example.model.response
 
 import com.example.core.util.DateUtil.format
-import com.example.core.util.DateUtil.utcToDate
 import com.example.core.util.DateUtil.utcToJtc
 import com.example.core.util.ThumbnailUrlUtil.complementSizeForPastThumbnail
 import com.example.model.domain.PastVideo
