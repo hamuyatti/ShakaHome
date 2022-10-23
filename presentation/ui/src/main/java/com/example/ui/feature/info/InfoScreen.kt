@@ -225,5 +225,5 @@ private fun LazyListScope.FollowContent(
         }
     }
 
-    FollowList(followInfo = followInfo.followsInfo, screenWidth = screenWidth, modifier = modifier)
+    FollowList(followInfo = followInfo.followsList, screenWidth = screenWidth, modifier = modifier)
 }

@@ -31,7 +31,7 @@ data class FollowInfoPagination(
 
 fun FollowInfoResponse.asDomainModel(): FollowInfo {
     return FollowInfo(
-        followsInfo = this.data.mapIndexed { index, it ->
+        followsList = this.data.mapIndexed { index, it ->
             EachFollowInfo(
                 followedAt = utcToJtc(it.followedAt),
                 fromId = it.fromId,
