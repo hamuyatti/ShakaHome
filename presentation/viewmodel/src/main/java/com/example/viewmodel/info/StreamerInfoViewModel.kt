@@ -65,16 +65,10 @@ class StreamerInfoViewModel @Inject constructor(
             } else {
                 _followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
                 viewModelScope.launch {
-                    fetchMoreFollowInfo(uiState.followInfo.cursor ?: return@launch)
-                    val newUiState = _followInfoUiState.value
-                    if (newUiState is FollowInfoUiState.Success) {
-                        FollowInfoUiState.Success(
-                            sortFollowListUseCase(
-                                followInfo = newUiState.followInfo,
-                                isByNew = isByNew
-                            )
-                        )
-                    }
+                    fetchMoreFollowInfoWithSort(
+                        uiState.followInfo.cursor ?: return@launch,
+                        isByNew = isByNew
+                    )
                 }
             }
         }
@@ -115,6 +109,23 @@ class StreamerInfoViewModel @Inject constructor(
             moreFollowInfoUseCase(nextCursor)
         }.onSuccess { info ->
             _followInfoUiState.update { FollowInfoUiState.Success(info) }
+        }.onFailure { error ->
+            _followInfoUiState.update { FollowInfoUiState.Error(error) }
+        }
+    }
+
+    private suspend fun fetchMoreFollowInfoWithSort(nextCursor: String, isByNew: Boolean) {
+        runCatching {
+            moreFollowInfoUseCase(nextCursor)
+        }.onSuccess { info ->
+            _followInfoUiState.update {
+                FollowInfoUiState.Success(
+                    sortFollowListUseCase(
+                        followInfo = info,
+                        isByNew = isByNew
+                    )
+                )
+            }
         }.onFailure { error ->
             _followInfoUiState.update { FollowInfoUiState.Error(error) }
         }
