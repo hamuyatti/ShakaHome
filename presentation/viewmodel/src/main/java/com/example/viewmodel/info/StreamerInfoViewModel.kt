@@ -15,9 +15,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StreamerInfoViewModel @Inject constructor(
-    private val baseInfoUseCase: FetchStreamerBaseInfoUseCase,
-    private val followInfoUseCase: FetchFollowInfoUseCase,
-    private val moreFollowInfoUseCase: FetchMoreFollowInfoUseCase,
+    private val fetchBaseInfoUseCase: FetchStreamerBaseInfoUseCase,
+    private val fetchFollowInfoUseCase: FetchFollowInfoUseCase,
+    private val fetchMoreFollowInfoUseCase: FetchMoreFollowInfoUseCase,
     private val sortFollowListUseCase: SortFollowListUseCase
 ) : ViewModel() {
 
@@ -55,21 +55,22 @@ class StreamerInfoViewModel @Inject constructor(
 
     fun onToggled(isByNew: Boolean) {
         val uiState = _followInfoUiState.value
-        if (uiState is FollowInfoUiState.Success) {
-            if (uiState.followInfo.cursor == null) {
-                _followInfoUiState.update {
-                    FollowInfoUiState.Success(
-                        sortFollowListUseCase(followInfo = uiState.followInfo, isByNew = isByNew)
-                    )
-                }
-            } else {
-                _followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
-                viewModelScope.launch {
-                    fetchMoreFollowInfoWithSort(
-                        uiState.followInfo.cursor ?: return@launch,
-                        isByNew = isByNew
-                    )
-                }
+        if (uiState !is FollowInfoUiState.Success) return
+        if (uiState.followInfo.cursor == null) {
+            _followInfoUiState.update {
+                FollowInfoUiState.Success(
+                    sortFollowListUseCase(followInfo = uiState.followInfo, isByNew = isByNew)
+                )
+            }
+        } else {
+            // まだ取得しきれてない内容がある場合fetchしてからソートをかける。
+            // 今のところのフォロー総数がfetch二回分で取得できるからこの処理の仕方でできるけど、増えていったら変えないとなぁ
+            _followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
+            viewModelScope.launch {
+                fetchMoreFollowInfoWithSort(
+                    uiState.followInfo.cursor ?: return@launch,
+                    isByNew = isByNew
+                )
             }
         }
     }
@@ -84,7 +85,7 @@ class StreamerInfoViewModel @Inject constructor(
     private suspend fun fetchBaseInfo() {
         _baseInfoUiState.update { StreamerBaseInfoUiState.Loading }
         runCatching {
-            baseInfoUseCase()
+            fetchBaseInfoUseCase()
         }.onSuccess { info ->
             _baseInfoUiState.update { StreamerBaseInfoUiState.Success(info) }
         }.onFailure { error ->
@@ -94,9 +95,8 @@ class StreamerInfoViewModel @Inject constructor(
 
     private suspend fun fetchFollowInfo() {
         _followInfoUiState.update { FollowInfoUiState.Loading }
-        followInfoUseCase()
         runCatching {
-            followInfoUseCase()
+            fetchFollowInfoUseCase()
         }.onSuccess { info ->
             _followInfoUiState.update { FollowInfoUiState.Success(info) }
         }.onFailure { error ->
@@ -106,7 +106,7 @@ class StreamerInfoViewModel @Inject constructor(
 
     private suspend fun fetchMoreFollowInfo(nextCursor: String) {
         runCatching {
-            moreFollowInfoUseCase(nextCursor)
+            fetchMoreFollowInfoUseCase(nextCursor)
         }.onSuccess { info ->
             _followInfoUiState.update { FollowInfoUiState.Success(info) }
         }.onFailure { error ->
@@ -116,7 +116,7 @@ class StreamerInfoViewModel @Inject constructor(
 
     private suspend fun fetchMoreFollowInfoWithSort(nextCursor: String, isByNew: Boolean) {
         runCatching {
-            moreFollowInfoUseCase(nextCursor)
+            fetchMoreFollowInfoUseCase(nextCursor)
         }.onSuccess { info ->
             _followInfoUiState.update {
                 FollowInfoUiState.Success(

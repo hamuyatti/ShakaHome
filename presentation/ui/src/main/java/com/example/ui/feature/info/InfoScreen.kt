@@ -251,7 +251,12 @@ private fun LazyListScope.FollowContent(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
-            ToggleSwitch(onToggled = onToggled, description = "新しい順", toggleState = toggleState)
+            ToggleSwitch(
+                onToggled = onToggled,
+                description = stringResource(id = R.string.new_order),
+                toggleState = toggleState,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 
