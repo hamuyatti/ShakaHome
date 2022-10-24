@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.usecase.FetchFollowInfoUseCase
 import com.example.usecase.FetchMoreFollowInfoUseCase
 import com.example.usecase.FetchStreamerBaseInfoUseCase
+import com.example.usecase.SortFollowListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class StreamerInfoViewModel @Inject constructor(
     private val baseInfoUseCase: FetchStreamerBaseInfoUseCase,
     private val followInfoUseCase: FetchFollowInfoUseCase,
-    private val moreFollowInfoUseCase: FetchMoreFollowInfoUseCase
+    private val moreFollowInfoUseCase: FetchMoreFollowInfoUseCase,
+    private val sortFollowListUseCase: SortFollowListUseCase
 ) : ViewModel() {
 
     private val _baseInfoUiState: MutableStateFlow<StreamerBaseInfoUiState> =
@@ -46,6 +48,27 @@ class StreamerInfoViewModel @Inject constructor(
                 _followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
                 viewModelScope.launch {
                     fetchMoreFollowInfo(it)
+                }
+            }
+        }
+    }
+
+    fun onToggled(isByNew: Boolean) {
+        val uiState = _followInfoUiState.value
+        if (uiState is FollowInfoUiState.Success) {
+            if (uiState.followInfo.cursor == null) {
+                _followInfoUiState.update {
+                    FollowInfoUiState.Success(
+                        sortFollowListUseCase(followInfo = uiState.followInfo, isByNew = isByNew)
+                    )
+                }
+            } else {
+                _followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
+                viewModelScope.launch {
+                    fetchMoreFollowInfoWithSort(
+                        uiState.followInfo.cursor ?: return@launch,
+                        isByNew = isByNew
+                    )
                 }
             }
         }
@@ -86,6 +109,23 @@ class StreamerInfoViewModel @Inject constructor(
             moreFollowInfoUseCase(nextCursor)
         }.onSuccess { info ->
             _followInfoUiState.update { FollowInfoUiState.Success(info) }
+        }.onFailure { error ->
+            _followInfoUiState.update { FollowInfoUiState.Error(error) }
+        }
+    }
+
+    private suspend fun fetchMoreFollowInfoWithSort(nextCursor: String, isByNew: Boolean) {
+        runCatching {
+            moreFollowInfoUseCase(nextCursor)
+        }.onSuccess { info ->
+            _followInfoUiState.update {
+                FollowInfoUiState.Success(
+                    sortFollowListUseCase(
+                        followInfo = info,
+                        isByNew = isByNew
+                    )
+                )
+            }
         }.onFailure { error ->
             _followInfoUiState.update { FollowInfoUiState.Error(error) }
         }

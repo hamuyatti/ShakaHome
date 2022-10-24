@@ -4,7 +4,9 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+
 object DateUtil {
+
     fun utcToJtc(utcTime: String): String {
         val dateTime = OffsetDateTime.parse(utcTime)
         val zoneId = ZoneId.of("Asia/Tokyo")

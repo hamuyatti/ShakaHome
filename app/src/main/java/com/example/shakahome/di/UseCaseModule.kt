@@ -45,4 +45,9 @@ object UseCaseModule {
         pastVideosRepository: PastVideosRepository
     ) = FetchPastVideosUseCase(pastVideosRepository)
 
+    @Provides
+    @Singleton
+    fun sortFollowListUseCase() = SortFollowListUseCase()
+
+
 }

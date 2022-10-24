@@ -3,7 +3,6 @@ package com.example.model.response
 import com.example.core.util.DateUtil
 import com.example.core.util.ThumbnailUrlUtil.complementSizeForNowStreamingThumbnail
 import com.example.model.domain.NowStreamingInfo
-import com.example.model.domain.PastVideosInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

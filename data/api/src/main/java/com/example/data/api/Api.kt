@@ -56,7 +56,8 @@ interface Api {
     )
     @GET("videos")
     suspend fun fetchVideos(
-        @Query("user_id") streamerId: Int = 49207184
+        @Query("user_id") streamerId: Int = 49207184,
+        @Query("first") first: Int = 100,
     ): Response<PastVideosResponse>
 
 }

@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.compose.Header
+import com.example.compose.ToggleSwitch
 import com.example.model.CarouselModel
 import com.example.model.domain.FollowInfo
 import com.example.resource.R
@@ -45,6 +46,9 @@ fun ForInfoRoute(
     val followState by viewModel.followInfoUiState.collectAsStateWithLifecycle()
 
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
+
+    var toggleState by remember { mutableStateOf(true) }
+
     InfoScreen(
         onRefresh = viewModel::onSwipeRefresh,
         onReachedBottom = viewModel::onReachBottom,
@@ -52,7 +56,12 @@ fun ForInfoRoute(
         followInfoUiState = followState,
         modifier = modifier,
         isRefreshing = isRefreshing,
-        onSettingIconClick = onSettingIconClick
+        onSettingIconClick = onSettingIconClick,
+        onToggled = {
+            viewModel.onToggled(it)
+            toggleState = it
+        },
+        toggleState = toggleState
     )
 }
 
@@ -65,13 +74,16 @@ fun InfoScreen(
     baseInfoUiState: StreamerBaseInfoUiState,
     followInfoUiState: FollowInfoUiState,
     isRefreshing: Boolean,
-    onSettingIconClick: () -> Unit
+    onSettingIconClick: () -> Unit,
+    onToggled: (Boolean) -> Unit,
+    toggleState: Boolean
 ) {
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
         onRefresh = { onRefresh() },
         indicatorAlignment = Alignment.TopCenter,
-        indicatorPadding = PaddingValues(100.dp)
+        indicatorPadding = PaddingValues(100.dp),
+        modifier = modifier
     ) {
         Scaffold(
             topBar = {
@@ -121,7 +133,9 @@ fun InfoScreen(
                 FollowInfoFeed(
                     uiState = followInfoUiState,
                     context = context,
-                    screenWidth = screenWidth
+                    screenWidth = screenWidth,
+                    onToggled = onToggled,
+                    toggleState = toggleState
                 )
             }
         }
@@ -131,7 +145,6 @@ fun InfoScreen(
 private fun LazyListScope.BaseInfoFeed(
     uiState: StreamerBaseInfoUiState,
     context: Context,
-    modifier: Modifier = Modifier,
 ) {
     when (uiState) {
         is StreamerBaseInfoUiState.Loading -> {}
@@ -147,14 +160,14 @@ private fun LazyListScope.BaseInfoFeed(
                 Text(
                     text = stringResource(id = R.string.name),
                     textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             item {
                 Text(
                     text = uiState.baseInfo.displayName,
                     textAlign = TextAlign.Center,
-                    modifier = modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             item {
@@ -181,7 +194,9 @@ fun LazyListScope.FollowInfoFeed(
     uiState: FollowInfoUiState,
     context: Context,
     modifier: Modifier = Modifier,
-    screenWidth: Int
+    screenWidth: Int,
+    toggleState: Boolean,
+    onToggled: (Boolean) -> Unit,
 ) {
     when (uiState) {
         FollowInfoUiState.Empty -> {}
@@ -191,11 +206,26 @@ fun LazyListScope.FollowInfoFeed(
         }
 
         is FollowInfoUiState.Success -> {
-            FollowContent(followInfo = uiState.followInfo, screenWidth, modifier = modifier)
+            FollowContent(
+                followInfo = uiState.followInfo,
+                screenWidth = screenWidth,
+                modifier = modifier,
+                onToggled = onToggled,
+                toggleState = toggleState
+            )
         }
 
         is FollowInfoUiState.MoreLoading -> {
-            FollowContent(followInfo = uiState.followInfo, screenWidth, modifier = modifier)
+            FollowContent(
+                followInfo = uiState.followInfo,
+                screenWidth,
+                modifier = modifier,
+                onToggled = onToggled,
+                toggleState = toggleState
+            )
+            item {
+                CircularProgressIndicator()
+            }
         }
     }
 }
@@ -203,6 +233,8 @@ fun LazyListScope.FollowInfoFeed(
 private fun LazyListScope.FollowContent(
     followInfo: FollowInfo,
     screenWidth: Int,
+    onToggled: (Boolean) -> Unit,
+    toggleState: Boolean,
     modifier: Modifier = Modifier
 ) {
     Header {
@@ -219,8 +251,9 @@ private fun LazyListScope.FollowContent(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
+            ToggleSwitch(onToggled = onToggled, description = "新しい順", toggleState = toggleState)
         }
     }
 
-    FollowList(followInfo = followInfo.followsInfo, screenWidth = screenWidth, modifier = modifier)
+    FollowList(followInfo = followInfo.followsList, screenWidth = screenWidth, modifier = modifier)
 }
