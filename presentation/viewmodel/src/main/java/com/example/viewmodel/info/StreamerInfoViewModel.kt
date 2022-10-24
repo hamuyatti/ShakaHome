@@ -55,21 +55,22 @@ class StreamerInfoViewModel @Inject constructor(
 
     fun onToggled(isByNew: Boolean) {
         val uiState = _followInfoUiState.value
-        if (uiState is FollowInfoUiState.Success) {
-            if (uiState.followInfo.cursor == null) {
-                _followInfoUiState.update {
-                    FollowInfoUiState.Success(
-                        sortFollowListUseCase(followInfo = uiState.followInfo, isByNew = isByNew)
-                    )
-                }
-            } else {
-                _followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
-                viewModelScope.launch {
-                    fetchMoreFollowInfoWithSort(
-                        uiState.followInfo.cursor ?: return@launch,
-                        isByNew = isByNew
-                    )
-                }
+        if (uiState !is FollowInfoUiState.Success) return
+        if (uiState.followInfo.cursor == null) {
+            _followInfoUiState.update {
+                FollowInfoUiState.Success(
+                    sortFollowListUseCase(followInfo = uiState.followInfo, isByNew = isByNew)
+                )
+            }
+        } else {
+            // まだ取得しきれてない内容がある場合fetchしてからソートをかける。
+            // 今のところのフォロー総数がfetch二回分で取得できるからこの処理の仕方でできるけど、増えていったら変えないとなぁ
+            _followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
+            viewModelScope.launch {
+                fetchMoreFollowInfoWithSort(
+                    uiState.followInfo.cursor ?: return@launch,
+                    isByNew = isByNew
+                )
             }
         }
     }
