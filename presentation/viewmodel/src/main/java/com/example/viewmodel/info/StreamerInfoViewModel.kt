@@ -15,9 +15,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StreamerInfoViewModel @Inject constructor(
-    private val baseInfoUseCase: FetchStreamerBaseInfoUseCase,
-    private val followInfoUseCase: FetchFollowInfoUseCase,
-    private val moreFollowInfoUseCase: FetchMoreFollowInfoUseCase,
+    private val fetchBaseInfoUseCase: FetchStreamerBaseInfoUseCase,
+    private val fetchFollowInfoUseCase: FetchFollowInfoUseCase,
+    private val fetchMoreFollowInfoUseCase: FetchMoreFollowInfoUseCase,
     private val sortFollowListUseCase: SortFollowListUseCase
 ) : ViewModel() {
 
@@ -84,7 +84,7 @@ class StreamerInfoViewModel @Inject constructor(
     private suspend fun fetchBaseInfo() {
         _baseInfoUiState.update { StreamerBaseInfoUiState.Loading }
         runCatching {
-            baseInfoUseCase()
+            fetchBaseInfoUseCase()
         }.onSuccess { info ->
             _baseInfoUiState.update { StreamerBaseInfoUiState.Success(info) }
         }.onFailure { error ->
@@ -94,9 +94,9 @@ class StreamerInfoViewModel @Inject constructor(
 
     private suspend fun fetchFollowInfo() {
         _followInfoUiState.update { FollowInfoUiState.Loading }
-        followInfoUseCase()
+        fetchFollowInfoUseCase()
         runCatching {
-            followInfoUseCase()
+            fetchFollowInfoUseCase()
         }.onSuccess { info ->
             _followInfoUiState.update { FollowInfoUiState.Success(info) }
         }.onFailure { error ->
@@ -106,7 +106,7 @@ class StreamerInfoViewModel @Inject constructor(
 
     private suspend fun fetchMoreFollowInfo(nextCursor: String) {
         runCatching {
-            moreFollowInfoUseCase(nextCursor)
+            fetchMoreFollowInfoUseCase(nextCursor)
         }.onSuccess { info ->
             _followInfoUiState.update { FollowInfoUiState.Success(info) }
         }.onFailure { error ->
@@ -116,7 +116,7 @@ class StreamerInfoViewModel @Inject constructor(
 
     private suspend fun fetchMoreFollowInfoWithSort(nextCursor: String, isByNew: Boolean) {
         runCatching {
-            moreFollowInfoUseCase(nextCursor)
+            fetchMoreFollowInfoUseCase(nextCursor)
         }.onSuccess { info ->
             _followInfoUiState.update {
                 FollowInfoUiState.Success(

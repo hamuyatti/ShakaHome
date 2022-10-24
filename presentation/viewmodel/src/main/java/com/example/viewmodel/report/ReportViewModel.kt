@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReportViewModel @Inject constructor(
-    private val nowStreamingInfoUseCase: FetchNowStreamingInfoUseCase,
-    private val pastVideosUseCase: FetchPastVideosUseCase
+    private val fetchNowStreamingInfoUseCase: FetchNowStreamingInfoUseCase,
+    private val fetchPastVideosUseCase: FetchPastVideosUseCase
 ) : ViewModel() {
 
     private val _nowStreamingInfoUiState: MutableStateFlow<NowStreamingInfoState> =
@@ -47,7 +47,7 @@ class ReportViewModel @Inject constructor(
     private suspend fun fetchNowStreaming() {
         _nowStreamingInfoUiState.update { NowStreamingInfoState.Loading }
         runCatching {
-            nowStreamingInfoUseCase()
+            fetchNowStreamingInfoUseCase()
         }.onSuccess { info ->
 
             info?.also { streamInfo ->
@@ -62,11 +62,9 @@ class ReportViewModel @Inject constructor(
     private suspend fun fetchPastVideos() {
         _pastVideoInfoState.update { PastVideosInfoState.Loading }
         runCatching {
-            pastVideosUseCase()
+            fetchPastVideosUseCase()
         }.onSuccess { info ->
-
             _pastVideoInfoState.update { PastVideosInfoState.Success(info) }
-
         }.onFailure { e ->
             _nowStreamingInfoUiState.update { NowStreamingInfoState.Error(e) }
         }
