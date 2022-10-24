@@ -35,6 +35,7 @@
     <string name="now_streaming">now streaming</string>
     <string name="viewer_count">視聴者数 </string>
     <string name="no_set_image">画像が設定されていません。</string>
+    <string name="new_order">新しい順</string>
 
 
 </resources>

@@ -94,7 +94,6 @@ class StreamerInfoViewModel @Inject constructor(
 
     private suspend fun fetchFollowInfo() {
         _followInfoUiState.update { FollowInfoUiState.Loading }
-        fetchFollowInfoUseCase()
         runCatching {
             fetchFollowInfoUseCase()
         }.onSuccess { info ->
