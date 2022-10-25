@@ -8,7 +8,5 @@ import kotlinx.coroutines.coroutineScope
 class FetchNowStreamingInfoUseCase(
     private val nowStreamingInfoRepository: NowStreamingInfoRepository,
 ) {
-    suspend operator fun invoke(): NowStreamingInfo? = coroutineScope {
-        return@coroutineScope nowStreamingInfoRepository.fetchNowStreamingInfo().asDomainModel()
-    }
+    suspend operator fun invoke(): NowStreamingInfo? = nowStreamingInfoRepository.fetchNowStreamingInfo()
 }
