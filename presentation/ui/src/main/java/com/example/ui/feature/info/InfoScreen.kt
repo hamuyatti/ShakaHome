@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
@@ -34,6 +35,8 @@ import com.example.viewmodel.info.StreamerBaseInfoUiState
 import com.example.viewmodel.info.StreamerInfoViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -49,6 +52,9 @@ fun ForInfoRoute(
 
     var toggleState by remember { mutableStateOf(true) }
 
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
     InfoScreen(
         onRefresh = viewModel::onSwipeRefresh,
         onReachedBottom = viewModel::onReachBottom,
@@ -57,11 +63,15 @@ fun ForInfoRoute(
         modifier = modifier,
         isRefreshing = isRefreshing,
         onSettingIconClick = onSettingIconClick,
+        toggleState = toggleState,
+        listState = listState,
         onToggled = {
             viewModel.onToggled(it)
             toggleState = it
-        },
-        toggleState = toggleState
+            coroutineScope.launch {
+                listState.scrollToItem(0)
+            }
+        }
     )
 }
 
@@ -76,7 +86,8 @@ fun InfoScreen(
     isRefreshing: Boolean,
     onSettingIconClick: () -> Unit,
     onToggled: (Boolean) -> Unit,
-    toggleState: Boolean
+    toggleState: Boolean,
+    listState: LazyListState = rememberLazyListState(),
 ) {
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
@@ -104,7 +115,6 @@ fun InfoScreen(
             }, containerColor = Color.Transparent
         ) { innerPadding ->
             val context = LocalContext.current
-            val listState = rememberLazyListState()
             val currentOnReachedBottom by rememberUpdatedState(onReachedBottom)
             val isReachedBottom by remember {
                 derivedStateOf {
