@@ -66,10 +66,12 @@ class StreamerInfoViewModel @Inject constructor(
                 )
             }
         } else {
-            _followInfoUiState.update {
-                FollowInfoUiState.Success(
-                    sortFollowListUseCase(followInfo = uiState.followInfo, isByNew = isByNew)
-                )
+            viewModelScope.launch {
+                _followInfoUiState.update {
+                    FollowInfoUiState.Success(
+                        sortFollowListUseCase(followInfo = uiState.followInfo, isByNew = isByNew)
+                    )
+                }
             }
         }
     }
