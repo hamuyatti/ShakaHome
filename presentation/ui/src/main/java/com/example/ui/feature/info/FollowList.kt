@@ -23,15 +23,14 @@ import com.google.accompanist.flowlayout.FlowRow
 fun LazyListScope.FollowList(
     followInfo: List<EachFollowInfo>,
     modifier: Modifier = Modifier,
-    screenWidth: Int
+    halfScreenWidth: Int
 ) {
     // sticky headerを使用するために格子状のUIをlazyGridを使わないでflowRow で実現している。
-    val halfWidth = (screenWidth / 2).dp
     item {
         FlowRow(modifier = modifier) {
             followInfo.forEach {
                 Card(modifier = Modifier
-                    .width(halfWidth)
+                    .width(halfScreenWidth.dp)
                     .padding(8.dp)) {
                     Column(
                         verticalArrangement = Arrangement.SpaceEvenly,

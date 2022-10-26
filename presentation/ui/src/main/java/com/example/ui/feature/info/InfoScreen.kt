@@ -58,7 +58,6 @@ fun ForInfoRoute(
     var toggleState by remember { mutableStateOf(true) }
 
     val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
 
     InfoScreen(
         modifier = modifier,
@@ -73,11 +72,7 @@ fun ForInfoRoute(
         onToggled = {
             viewModel.onToggled(it)
             toggleState = it
-            coroutineScope.launch {
-                listState.scrollToItem(0)
-            }
         },
-        coroutineScope = coroutineScope
     )
 }
 
@@ -122,6 +117,7 @@ fun InfoScreen(
             }, containerColor = Color.Transparent
         ) { innerPadding ->
             val context = LocalContext.current
+            val halfScreenWidth = LocalConfiguration.current.screenWidthDp / 2
             val currentOnReachedBottom by rememberUpdatedState(onReachedBottom)
             val isReachedBottom by remember {
                 derivedStateOf {
@@ -137,7 +133,6 @@ fun InfoScreen(
                     }
             }
 
-            val screenWidth = LocalConfiguration.current.screenWidthDp
             LazyColumn(
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -150,7 +145,7 @@ fun InfoScreen(
                 FollowInfoFeed(
                     uiState = followInfoUiState,
                     context = context,
-                    screenWidth = screenWidth,
+                    halfScreenWidth = halfScreenWidth,
                     onToggled = onToggled,
                     toggleState = toggleState
                 )
@@ -223,7 +218,7 @@ fun LazyListScope.FollowInfoFeed(
     uiState: FollowInfoUiState,
     context: Context,
     modifier: Modifier = Modifier,
-    screenWidth: Int,
+    halfScreenWidth: Int,
     toggleState: Boolean,
     onToggled: (Boolean) -> Unit,
 ) {
@@ -237,7 +232,7 @@ fun LazyListScope.FollowInfoFeed(
         is FollowInfoUiState.Success -> {
             FollowContent(
                 followInfo = uiState.followInfo,
-                screenWidth = screenWidth,
+                halfScreenWidth = halfScreenWidth,
                 modifier = modifier,
                 onToggled = onToggled,
                 toggleState = toggleState
@@ -247,7 +242,7 @@ fun LazyListScope.FollowInfoFeed(
         is FollowInfoUiState.MoreLoading -> {
             FollowContent(
                 followInfo = uiState.followInfo,
-                screenWidth,
+                halfScreenWidth,
                 modifier = modifier,
                 onToggled = onToggled,
                 toggleState = toggleState
@@ -261,7 +256,7 @@ fun LazyListScope.FollowInfoFeed(
 
 private fun LazyListScope.FollowContent(
     followInfo: FollowInfo,
-    screenWidth: Int,
+    halfScreenWidth: Int,
     onToggled: (Boolean) -> Unit,
     toggleState: Boolean,
     modifier: Modifier = Modifier
@@ -289,5 +284,9 @@ private fun LazyListScope.FollowContent(
         }
     }
 
-    FollowList(followInfo = followInfo.followsList, screenWidth = screenWidth, modifier = modifier)
+    FollowList(
+        followInfo = followInfo.followsList,
+        halfScreenWidth = halfScreenWidth,
+        modifier = modifier
+    )
 }
