@@ -2,6 +2,9 @@ package com.example.ui.feature.info
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -24,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.compose.Header
+import com.example.compose.SimpleFab
 import com.example.compose.ToggleSwitch
 import com.example.model.CarouselModel
 import com.example.model.domain.FollowInfo
@@ -71,7 +76,8 @@ fun ForInfoRoute(
             coroutineScope.launch {
                 listState.scrollToItem(0)
             }
-        }
+        },
+        coroutineScope = coroutineScope
     )
 }
 
@@ -88,6 +94,7 @@ fun InfoScreen(
     onToggled: (Boolean) -> Unit,
     toggleState: Boolean,
     listState: LazyListState = rememberLazyListState(),
+    coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) {
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
@@ -147,6 +154,18 @@ fun InfoScreen(
                     onToggled = onToggled,
                     toggleState = toggleState
                 )
+            }
+
+            AnimatedVisibility(
+                visible = isReachedBottom,
+                enter = fadeIn(),
+                exit = fadeOut(),
+            ) {
+                SimpleFab(onClick = {
+                    coroutineScope.launch {
+                        listState.scrollToItem(0)
+                    }
+                }, icon = Icons.Filled.ArrowUpward)
             }
         }
     }
