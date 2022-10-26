@@ -56,15 +56,15 @@ fun ForInfoRoute(
     val coroutineScope = rememberCoroutineScope()
 
     InfoScreen(
-        onRefresh = viewModel::onSwipeRefresh,
-        onReachedBottom = viewModel::onReachBottom,
+        modifier = modifier,
         baseInfoUiState = baseInfoState,
         followInfoUiState = followState,
-        modifier = modifier,
-        isRefreshing = isRefreshing,
-        onSettingIconClick = onSettingIconClick,
         toggleState = toggleState,
         listState = listState,
+        isRefreshing = isRefreshing,
+        onSettingIconClick = onSettingIconClick,
+        onRefresh = viewModel::onSwipeRefresh,
+        onReachedBottom = viewModel::onReachBottom,
         onToggled = {
             viewModel.onToggled(it)
             toggleState = it
