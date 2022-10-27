@@ -98,6 +98,13 @@ fun InfoScreen(
         indicatorPadding = PaddingValues(100.dp),
         modifier = modifier
     ) {
+        val isReachedBottom by remember {
+            // flow row使ってgridゴリ押しで作ったらここのロジックぶっ壊れた　泣
+            derivedStateOf {
+                listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size - 1 == listState.layoutInfo.totalItemsCount
+            }
+        }
+
         Scaffold(
             topBar = {
                 ShakaHomeTopAppBar(
@@ -114,16 +121,29 @@ fun InfoScreen(
                     ),
                     onActionClick = onSettingIconClick
                 )
-            }, containerColor = Color.Transparent
+            },
+            containerColor = Color.Transparent,
+            floatingActionButton = {
+                AnimatedVisibility(
+                    visible = isReachedBottom,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    SimpleFab(
+                        onClick = {
+                            coroutineScope.launch {
+                                listState.scrollToItem(0)
+                            }
+                        },
+                        icon = Icons.Filled.ArrowUpward,
+                        tint = Color.Yellow
+                    )
+                }
+            }
         ) { innerPadding ->
             val context = LocalContext.current
             val halfScreenWidth = LocalConfiguration.current.screenWidthDp / 2
             val currentOnReachedBottom by rememberUpdatedState(onReachedBottom)
-            val isReachedBottom by remember {
-                derivedStateOf {
-                    listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
-                }
-            }
             LaunchedEffect(isReachedBottom) {
                 snapshotFlow { isReachedBottom }
                     .collect { isReached ->
@@ -149,18 +169,6 @@ fun InfoScreen(
                     onToggled = onToggled,
                     toggleState = toggleState
                 )
-            }
-
-            AnimatedVisibility(
-                visible = isReachedBottom,
-                enter = fadeIn(),
-                exit = fadeOut(),
-            ) {
-                SimpleFab(onClick = {
-                    coroutineScope.launch {
-                        listState.scrollToItem(0)
-                    }
-                }, icon = Icons.Filled.ArrowUpward)
             }
         }
     }
