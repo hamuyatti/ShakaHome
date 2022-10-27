@@ -1,7 +1,7 @@
 package com.example.irepository
 
-import com.example.model.response.NowStreamingInfoResponse
+import com.example.model.domain.NowStreamingInfo
 
 interface NowStreamingInfoRepository {
-    suspend fun fetchNowStreamingInfo(): NowStreamingInfoResponse
+    suspend fun fetchNowStreamingInfo(): NowStreamingInfo?
 }

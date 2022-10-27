@@ -2,12 +2,17 @@ package com.example.ui.feature.info
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -23,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.compose.Header
+import com.example.compose.SimpleFab
 import com.example.compose.ToggleSwitch
 import com.example.model.CarouselModel
 import com.example.model.domain.FollowInfo
@@ -34,6 +40,8 @@ import com.example.viewmodel.info.StreamerBaseInfoUiState
 import com.example.viewmodel.info.StreamerInfoViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -49,19 +57,22 @@ fun ForInfoRoute(
 
     var toggleState by remember { mutableStateOf(true) }
 
+    val listState = rememberLazyListState()
+
     InfoScreen(
-        onRefresh = viewModel::onSwipeRefresh,
-        onReachedBottom = viewModel::onReachBottom,
+        modifier = modifier,
         baseInfoUiState = baseInfoState,
         followInfoUiState = followState,
-        modifier = modifier,
+        toggleState = toggleState,
+        listState = listState,
         isRefreshing = isRefreshing,
         onSettingIconClick = onSettingIconClick,
+        onRefresh = viewModel::onSwipeRefresh,
+        onReachedBottom = viewModel::onReachBottom,
         onToggled = {
             viewModel.onToggled(it)
             toggleState = it
         },
-        toggleState = toggleState
     )
 }
 
@@ -76,7 +87,9 @@ fun InfoScreen(
     isRefreshing: Boolean,
     onSettingIconClick: () -> Unit,
     onToggled: (Boolean) -> Unit,
-    toggleState: Boolean
+    toggleState: Boolean,
+    listState: LazyListState = rememberLazyListState(),
+    coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) {
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
@@ -85,6 +98,13 @@ fun InfoScreen(
         indicatorPadding = PaddingValues(100.dp),
         modifier = modifier
     ) {
+        val isReachedBottom by remember {
+            // flow row使ってgridゴリ押しで作ったらここのロジックぶっ壊れた　泣
+            derivedStateOf {
+                listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size - 1 == listState.layoutInfo.totalItemsCount
+            }
+        }
+
         Scaffold(
             topBar = {
                 ShakaHomeTopAppBar(
@@ -101,16 +121,29 @@ fun InfoScreen(
                     ),
                     onActionClick = onSettingIconClick
                 )
-            }, containerColor = Color.Transparent
-        ) { innerPadding ->
-            val context = LocalContext.current
-            val listState = rememberLazyListState()
-            val currentOnReachedBottom by rememberUpdatedState(onReachedBottom)
-            val isReachedBottom by remember {
-                derivedStateOf {
-                    listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
+            },
+            containerColor = Color.Transparent,
+            floatingActionButton = {
+                AnimatedVisibility(
+                    visible = isReachedBottom,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    SimpleFab(
+                        onClick = {
+                            coroutineScope.launch {
+                                listState.scrollToItem(0)
+                            }
+                        },
+                        icon = Icons.Filled.ArrowUpward,
+                        tint = Color.Yellow
+                    )
                 }
             }
+        ) { innerPadding ->
+            val context = LocalContext.current
+            val halfScreenWidth = LocalConfiguration.current.screenWidthDp / 2
+            val currentOnReachedBottom by rememberUpdatedState(onReachedBottom)
             LaunchedEffect(isReachedBottom) {
                 snapshotFlow { isReachedBottom }
                     .collect { isReached ->
@@ -120,7 +153,6 @@ fun InfoScreen(
                     }
             }
 
-            val screenWidth = LocalConfiguration.current.screenWidthDp
             LazyColumn(
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -133,7 +165,7 @@ fun InfoScreen(
                 FollowInfoFeed(
                     uiState = followInfoUiState,
                     context = context,
-                    screenWidth = screenWidth,
+                    halfScreenWidth = halfScreenWidth,
                     onToggled = onToggled,
                     toggleState = toggleState
                 )
@@ -194,7 +226,7 @@ fun LazyListScope.FollowInfoFeed(
     uiState: FollowInfoUiState,
     context: Context,
     modifier: Modifier = Modifier,
-    screenWidth: Int,
+    halfScreenWidth: Int,
     toggleState: Boolean,
     onToggled: (Boolean) -> Unit,
 ) {
@@ -208,7 +240,7 @@ fun LazyListScope.FollowInfoFeed(
         is FollowInfoUiState.Success -> {
             FollowContent(
                 followInfo = uiState.followInfo,
-                screenWidth = screenWidth,
+                halfScreenWidth = halfScreenWidth,
                 modifier = modifier,
                 onToggled = onToggled,
                 toggleState = toggleState
@@ -218,7 +250,7 @@ fun LazyListScope.FollowInfoFeed(
         is FollowInfoUiState.MoreLoading -> {
             FollowContent(
                 followInfo = uiState.followInfo,
-                screenWidth,
+                halfScreenWidth,
                 modifier = modifier,
                 onToggled = onToggled,
                 toggleState = toggleState
@@ -232,7 +264,7 @@ fun LazyListScope.FollowInfoFeed(
 
 private fun LazyListScope.FollowContent(
     followInfo: FollowInfo,
-    screenWidth: Int,
+    halfScreenWidth: Int,
     onToggled: (Boolean) -> Unit,
     toggleState: Boolean,
     modifier: Modifier = Modifier
@@ -260,5 +292,9 @@ private fun LazyListScope.FollowContent(
         }
     }
 
-    FollowList(followInfo = followInfo.followsList, screenWidth = screenWidth, modifier = modifier)
+    FollowList(
+        followInfo = followInfo.followsList,
+        halfScreenWidth = halfScreenWidth,
+        modifier = modifier
+    )
 }

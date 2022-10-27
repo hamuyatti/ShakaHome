@@ -7,7 +7,5 @@ import kotlinx.coroutines.coroutineScope
 class FetchFollowInfoUseCase(
     private val followInfoRepository: StreamerFollowInfoRepository
 ) {
-    suspend operator fun invoke() : FollowInfo = coroutineScope {
-        followInfoRepository.fetchStreamerFollowInfo()
-    }
+    suspend operator fun invoke() : FollowInfo = followInfoRepository.fetchStreamerFollowInfo()
 }

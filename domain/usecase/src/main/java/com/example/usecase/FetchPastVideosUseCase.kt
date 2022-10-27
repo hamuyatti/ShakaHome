@@ -8,7 +8,6 @@ import kotlinx.coroutines.coroutineScope
 class FetchPastVideosUseCase(
     private val pastVideosRepository: PastVideosRepository
 ) {
-    suspend operator fun invoke(): PastVideosInfo = coroutineScope {
-        return@coroutineScope pastVideosRepository.fetchPastVideos().asDomainModel()
-    }
+    suspend operator fun invoke(): PastVideosInfo =
+        pastVideosRepository.fetchPastVideos()
 }
