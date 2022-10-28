@@ -80,6 +80,8 @@ class StreamerInfoViewModel @Inject constructor(
     private fun fetch() {
         viewModelScope.launch {
             fetchBaseInfo()
+        }
+        viewModelScope.launch {
             fetchFollowInfo()
         }
     }

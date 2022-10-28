@@ -40,6 +40,8 @@ class ReportViewModel @Inject constructor(
     private fun fetch() {
         viewModelScope.launch {
             fetchNowStreaming()
+        }
+        viewModelScope.launch {
             fetchPastVideos()
         }
     }
