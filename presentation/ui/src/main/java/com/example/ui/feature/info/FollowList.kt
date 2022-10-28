@@ -26,26 +26,28 @@ fun LazyListScope.FollowList(
     halfScreenWidth: Int
 ) {
     // sticky headerを使用するために格子状のUIをlazyGridを使わないでflowRow で実現している。
-    item {
-        FlowRow(modifier = modifier) {
-            followInfo.forEach {
-                Card(modifier = Modifier
-                    .width(halfScreenWidth.dp)
-                    .padding(8.dp)) {
-                    Column(
-                        verticalArrangement = Arrangement.SpaceEvenly,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = it.toName,
-                            textAlign = TextAlign.Center,
-                            fontFamily = FontFamily.SansSerif,
-                            fontWeight = FontWeight.Black
-                        )
-                        Text(
-                            text = it.followedAt,
-                            textAlign = TextAlign.Center,
-                        )
+    followInfo.chunked(2).forEach {
+        item {
+            FlowRow(modifier = modifier) {
+                it.forEach {
+                    Card(modifier = Modifier
+                        .width(halfScreenWidth.dp)
+                        .padding(8.dp)) {
+                        Column(
+                            verticalArrangement = Arrangement.SpaceEvenly,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = it.toName,
+                                textAlign = TextAlign.Center,
+                                fontFamily = FontFamily.SansSerif,
+                                fontWeight = FontWeight.Black
+                            )
+                            Text(
+                                text = it.followedAt,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
                     }
                 }
             }

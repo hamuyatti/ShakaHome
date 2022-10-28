@@ -99,9 +99,8 @@ fun InfoScreen(
         modifier = modifier
     ) {
         val isReachedBottom by remember {
-            // flow row使ってgridゴリ押しで作ったらここのロジックぶっ壊れた　泣
             derivedStateOf {
-                listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size - 1 == listState.layoutInfo.totalItemsCount
+                listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size  == listState.layoutInfo.totalItemsCount
             }
         }
 
