@@ -98,6 +98,7 @@ fun InfoScreen(
         indicatorPadding = PaddingValues(100.dp),
         modifier = modifier
     ) {
+        // flow rowとかsticky header使ってからここの結果が変わっている　泣
         val isReachedBottom by remember {
             derivedStateOf {
                 listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size  == listState.layoutInfo.totalItemsCount

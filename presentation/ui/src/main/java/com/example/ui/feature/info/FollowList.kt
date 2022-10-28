@@ -26,13 +26,16 @@ fun LazyListScope.FollowList(
     halfScreenWidth: Int
 ) {
     // sticky headerを使用するために格子状のUIをlazyGridを使わないでflowRow で実現している。
-    followInfo.chunked(2).forEach {
+    // パフォーマンス向上のためにfollowInfoを二つ区切りで区切ってitemに突っ込んでいる。
+    followInfo.chunked(2).forEach { twoFollowList ->
         item {
             FlowRow(modifier = modifier) {
-                it.forEach {
-                    Card(modifier = Modifier
-                        .width(halfScreenWidth.dp)
-                        .padding(8.dp)) {
+                twoFollowList.forEach {
+                    Card(
+                        modifier = Modifier
+                            .width(halfScreenWidth.dp)
+                            .padding(8.dp)
+                    ) {
                         Column(
                             verticalArrangement = Arrangement.SpaceEvenly,
                             modifier = Modifier.fillMaxWidth()
