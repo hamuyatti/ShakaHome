@@ -36,6 +36,7 @@ import com.example.resource.R
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.ui.utils.ImageCarousel
 import com.example.viewmodel.info.FollowInfoUiState
+import com.example.viewmodel.info.InfoScreenUiState
 import com.example.viewmodel.info.StreamerBaseInfoUiState
 import com.example.viewmodel.info.StreamerInfoViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -55,20 +56,40 @@ fun ForInfoRoute(
 
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
+    val feedState by viewModel.feedState.collectAsStateWithLifecycle()
+
     var toggleState by remember { mutableStateOf(true) }
 
     val listState = rememberLazyListState()
+
+    // flow rowとかsticky header使ってからここの結果が変わっている　泣
+    val isReachedBottom by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
+        }
+    }
+
+    val currentOnReachedBottom by rememberUpdatedState(viewModel::onReachBottom)
+    LaunchedEffect(isReachedBottom) {
+        snapshotFlow { isReachedBottom }
+            .collect { isReached ->
+                if (isReached) {
+                    currentOnReachedBottom()
+                }
+            }
+    }
 
     InfoScreen(
         modifier = modifier,
         baseInfoUiState = baseInfoState,
         followInfoUiState = followState,
+        feedState = feedState,
         toggleState = toggleState,
         listState = listState,
         isRefreshing = isRefreshing,
+        isReachedBottom = isReachedBottom,
         onSettingIconClick = onSettingIconClick,
         onRefresh = viewModel::onSwipeRefresh,
-        onReachedBottom = viewModel::onReachBottom,
         onToggled = {
             viewModel.onToggled(it)
             toggleState = it
@@ -81,7 +102,8 @@ fun ForInfoRoute(
 fun InfoScreen(
     modifier: Modifier = Modifier,
     onRefresh: () -> Unit,
-    onReachedBottom: () -> Unit,
+    feedState: InfoScreenUiState,
+    isReachedBottom: Boolean,
     baseInfoUiState: StreamerBaseInfoUiState,
     followInfoUiState: FollowInfoUiState,
     isRefreshing: Boolean,
@@ -98,12 +120,6 @@ fun InfoScreen(
         indicatorPadding = PaddingValues(100.dp),
         modifier = modifier
     ) {
-        // flow rowとかsticky header使ってからここの結果が変わっている　泣
-        val isReachedBottom by remember {
-            derivedStateOf {
-                listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size  == listState.layoutInfo.totalItemsCount
-            }
-        }
 
         Scaffold(
             topBar = {
@@ -143,21 +159,12 @@ fun InfoScreen(
         ) { innerPadding ->
             val context = LocalContext.current
             val halfScreenWidth = LocalConfiguration.current.screenWidthDp / 2
-            val currentOnReachedBottom by rememberUpdatedState(onReachedBottom)
-            LaunchedEffect(isReachedBottom) {
-                snapshotFlow { isReachedBottom }
-                    .collect { isReached ->
-                        if (isReached) {
-                            currentOnReachedBottom()
-                        }
-                    }
-            }
-
             LazyColumn(
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.padding(innerPadding)
             ) {
+
                 BaseInfoFeed(
                     uiState = baseInfoUiState,
                     context = context,
