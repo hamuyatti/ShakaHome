@@ -7,12 +7,20 @@ import com.example.usecase.FetchMoreFollowInfoUseCase
 import com.example.usecase.FetchStreamerBaseInfoUseCase
 import com.example.usecase.SortFollowListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class StreamerInfoViewModel @Inject constructor(
     private val fetchBaseInfoUseCase: FetchStreamerBaseInfoUseCase,
@@ -32,6 +40,23 @@ class StreamerInfoViewModel @Inject constructor(
     private val _isRefreshing: MutableStateFlow<Boolean> =
         MutableStateFlow(_followInfoUiState.value is FollowInfoUiState.Loading && _baseInfoUiState.value is StreamerBaseInfoUiState.Loading)
     val isRefreshing = _isRefreshing.asStateFlow()
+
+    val feedState: StateFlow<InfoScreenUiState> = combine(
+        _baseInfoUiState,
+        _followInfoUiState,
+    ) { baseInfoUiState: StreamerBaseInfoUiState, followInfoUiState: FollowInfoUiState ->
+        InfoScreenUiState(
+            streamerBaseInfoState = baseInfoUiState,
+            followInfoState = followInfoUiState,
+            isRefreshing = baseInfoUiState is StreamerBaseInfoUiState.Loading || followInfoUiState is FollowInfoUiState.Loading
+        )
+    }.flatMapLatest {
+        flowOf(it)
+    }.stateIn(
+        scope = viewModelScope,
+        initialValue = InfoScreenUiState(),
+        started = SharingStarted.WhileSubscribed()
+    )
 
     init {
         fetch()
