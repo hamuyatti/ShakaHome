@@ -51,15 +51,8 @@ fun ForInfoRoute(
     viewModel: StreamerInfoViewModel = hiltViewModel(),
     onSettingIconClick: () -> Unit
 ) {
-    val baseInfoState by viewModel.baseInfoUiState.collectAsStateWithLifecycle()
-    val followState by viewModel.followInfoUiState.collectAsStateWithLifecycle()
-
-    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
-
     val feedState by viewModel.feedState.collectAsStateWithLifecycle()
-
     var toggleState by remember { mutableStateOf(true) }
-
     val listState = rememberLazyListState()
 
     // flow rowとかsticky header使ってからここの結果が変わっている　泣
@@ -81,12 +74,9 @@ fun ForInfoRoute(
 
     InfoScreen(
         modifier = modifier,
-        baseInfoUiState = baseInfoState,
-        followInfoUiState = followState,
         feedState = feedState,
         toggleState = toggleState,
         listState = listState,
-        isRefreshing = isRefreshing,
         isReachedBottom = isReachedBottom,
         onSettingIconClick = onSettingIconClick,
         onRefresh = viewModel::onSwipeRefresh,
@@ -104,9 +94,6 @@ fun InfoScreen(
     onRefresh: () -> Unit,
     feedState: InfoScreenUiState,
     isReachedBottom: Boolean,
-    baseInfoUiState: StreamerBaseInfoUiState,
-    followInfoUiState: FollowInfoUiState,
-    isRefreshing: Boolean,
     onSettingIconClick: () -> Unit,
     onToggled: (Boolean) -> Unit,
     toggleState: Boolean,
@@ -114,13 +101,12 @@ fun InfoScreen(
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ) {
     SwipeRefresh(
-        state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+        state = rememberSwipeRefreshState(isRefreshing = feedState.isRefreshing),
         onRefresh = { onRefresh() },
         indicatorAlignment = Alignment.TopCenter,
         indicatorPadding = PaddingValues(100.dp),
         modifier = modifier
     ) {
-
         Scaffold(
             topBar = {
                 ShakaHomeTopAppBar(
@@ -164,13 +150,12 @@ fun InfoScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.padding(innerPadding)
             ) {
-
                 BaseInfoFeed(
-                    uiState = baseInfoUiState,
+                    uiState = feedState.streamerBaseInfoState,
                     context = context,
                 )
                 FollowInfoFeed(
-                    uiState = followInfoUiState,
+                    uiState = feedState.followInfoState,
                     context = context,
                     halfScreenWidth = halfScreenWidth,
                     onToggled = onToggled,

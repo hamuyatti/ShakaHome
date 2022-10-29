@@ -29,21 +29,15 @@ class StreamerInfoViewModel @Inject constructor(
     private val sortFollowListUseCase: SortFollowListUseCase
 ) : ViewModel() {
 
-    private val _baseInfoUiState: MutableStateFlow<StreamerBaseInfoUiState> =
+    private val baseInfoUiState: MutableStateFlow<StreamerBaseInfoUiState> =
         MutableStateFlow(StreamerBaseInfoUiState.Empty)
-    val baseInfoUiState = _baseInfoUiState.asStateFlow()
 
-    private val _followInfoUiState: MutableStateFlow<FollowInfoUiState> =
+    private val followInfoUiState: MutableStateFlow<FollowInfoUiState> =
         MutableStateFlow(FollowInfoUiState.Empty)
-    val followInfoUiState = _followInfoUiState.asStateFlow()
-
-    private val _isRefreshing: MutableStateFlow<Boolean> =
-        MutableStateFlow(_followInfoUiState.value is FollowInfoUiState.Loading && _baseInfoUiState.value is StreamerBaseInfoUiState.Loading)
-    val isRefreshing = _isRefreshing.asStateFlow()
 
     val feedState: StateFlow<InfoScreenUiState> = combine(
-        _baseInfoUiState,
-        _followInfoUiState,
+        baseInfoUiState,
+        followInfoUiState,
     ) { baseInfoUiState: StreamerBaseInfoUiState, followInfoUiState: FollowInfoUiState ->
         InfoScreenUiState(
             streamerBaseInfoState = baseInfoUiState,
@@ -67,10 +61,10 @@ class StreamerInfoViewModel @Inject constructor(
     }
 
     fun onReachBottom() {
-        val uiState = _followInfoUiState.value
+        val uiState = followInfoUiState.value
         if (uiState !is FollowInfoUiState.Success) return
         uiState.followInfo.cursor?.let {
-            _followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
+            followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
             viewModelScope.launch {
                 fetchMoreFollowInfo(it)
             }
@@ -78,13 +72,13 @@ class StreamerInfoViewModel @Inject constructor(
     }
 
     fun onToggled(isByNew: Boolean) {
-        val uiState = _followInfoUiState.value
+        val uiState = followInfoUiState.value
         if (uiState !is FollowInfoUiState.Success) return
-        _followInfoUiState.update { FollowInfoUiState.Loading }
+        followInfoUiState.update { FollowInfoUiState.Loading }
         if (uiState.followInfo.hasCursor) {
             // まだ取得しきれてない内容がある場合fetchしてからソートをかける。
             // 今のところのフォロー総数がfetch二回分で取得できるからこの処理の仕方でできるけど、増えていったら変えないとなぁ
-            _followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
+            followInfoUiState.update { FollowInfoUiState.MoreLoading(uiState.followInfo) }
             viewModelScope.launch {
                 fetchMoreFollowInfoWithSort(
                     uiState.followInfo.cursor ?: return@launch,
@@ -93,7 +87,7 @@ class StreamerInfoViewModel @Inject constructor(
             }
         } else {
             viewModelScope.launch {
-                _followInfoUiState.update {
+                followInfoUiState.update {
                     FollowInfoUiState.Success(
                         sortFollowListUseCase(followInfo = uiState.followInfo, isByNew = isByNew)
                     )
@@ -112,24 +106,24 @@ class StreamerInfoViewModel @Inject constructor(
     }
 
     private suspend fun fetchBaseInfo() {
-        _baseInfoUiState.update { StreamerBaseInfoUiState.Loading }
+        baseInfoUiState.update { StreamerBaseInfoUiState.Loading }
         runCatching {
             fetchBaseInfoUseCase()
         }.onSuccess { info ->
-            _baseInfoUiState.update { StreamerBaseInfoUiState.Success(info) }
+            baseInfoUiState.update { StreamerBaseInfoUiState.Success(info) }
         }.onFailure { error ->
-            _baseInfoUiState.update { StreamerBaseInfoUiState.Error(error) }
+            baseInfoUiState.update { StreamerBaseInfoUiState.Error(error) }
         }
     }
 
     private suspend fun fetchFollowInfo() {
-        _followInfoUiState.update { FollowInfoUiState.Loading }
+        followInfoUiState.update { FollowInfoUiState.Loading }
         runCatching {
             fetchFollowInfoUseCase()
         }.onSuccess { info ->
-            _followInfoUiState.update { FollowInfoUiState.Success(info) }
+            followInfoUiState.update { FollowInfoUiState.Success(info) }
         }.onFailure { error ->
-            _followInfoUiState.update { FollowInfoUiState.Error(error) }
+            followInfoUiState.update { FollowInfoUiState.Error(error) }
         }
     }
 
@@ -137,9 +131,9 @@ class StreamerInfoViewModel @Inject constructor(
         runCatching {
             fetchMoreFollowInfoUseCase(nextCursor)
         }.onSuccess { info ->
-            _followInfoUiState.update { FollowInfoUiState.Success(info) }
+            followInfoUiState.update { FollowInfoUiState.Success(info) }
         }.onFailure { error ->
-            _followInfoUiState.update { FollowInfoUiState.Error(error) }
+            followInfoUiState.update { FollowInfoUiState.Error(error) }
         }
     }
 
@@ -147,7 +141,7 @@ class StreamerInfoViewModel @Inject constructor(
         runCatching {
             fetchMoreFollowInfoUseCase(nextCursor)
         }.onSuccess { info ->
-            _followInfoUiState.update {
+            followInfoUiState.update {
                 FollowInfoUiState.Success(
                     sortFollowListUseCase(
                         followInfo = info,
@@ -156,7 +150,7 @@ class StreamerInfoViewModel @Inject constructor(
                 )
             }
         }.onFailure { error ->
-            _followInfoUiState.update { FollowInfoUiState.Error(error) }
+            followInfoUiState.update { FollowInfoUiState.Error(error) }
         }
     }
 
