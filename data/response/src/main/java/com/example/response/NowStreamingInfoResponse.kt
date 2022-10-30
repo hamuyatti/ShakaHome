@@ -1,8 +1,5 @@
-package com.example.model.response
+package com.example.response
 
-import com.example.core.util.DateUtil
-import com.example.core.util.ThumbnailUrlUtil.complementSizeForNowStreamingThumbnail
-import com.example.model.domain.NowStreamingInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -34,23 +31,3 @@ data class NowStreamingInfoContent(
 data class NowStreamingInfoPagination(
     val cursor: String? = null
 )
-
-fun NowStreamingInfoResponse.asDomainModel(): NowStreamingInfo? {
-    val info = this.data?.getOrNull(0) ?: return null
-    return NowStreamingInfo(
-        gameId = info.gameId,
-        gameName = info.gameName,
-        id = info.id,
-        isMature = info.isMature,
-        language = info.language,
-        startedAt = "${DateUtil.utcToJtc(info.startedAt)}~",
-        tagIds = info.tagIds ?: listOf(),
-        thumbnailUrl = complementSizeForNowStreamingThumbnail(info.thumbnailUrl),
-        title = info.title,
-        userId = info.userId,
-        userLogin = info.userLogin,
-        userName = info.userName,
-        viewerCount = info.viewerCount,
-        type = info.type
-    )
-}

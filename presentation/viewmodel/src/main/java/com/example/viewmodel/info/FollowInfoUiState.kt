@@ -1,6 +1,6 @@
 package com.example.viewmodel.info
 
-import com.example.model.domain.FollowInfo
+import com.example.entity.FollowInfo
 
 sealed interface FollowInfoUiState {
     object Empty : FollowInfoUiState

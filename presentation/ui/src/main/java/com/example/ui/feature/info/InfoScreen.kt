@@ -30,8 +30,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.compose.Header
 import com.example.compose.SimpleFab
 import com.example.compose.ToggleSwitch
-import com.example.model.CarouselModel
-import com.example.model.domain.FollowInfo
+import com.example.ui.uimodel.CarouselModel
+import com.example.entity.FollowInfo
 import com.example.resource.R
 import com.example.ui.ShakaHomeTopAppBar
 import com.example.ui.utils.ImageCarousel

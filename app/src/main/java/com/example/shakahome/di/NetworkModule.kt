@@ -1,7 +1,6 @@
 package com.example.shakahome.di
 
 import com.example.data.api.*
-import com.example.model.domain.PastVideosInfo
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides

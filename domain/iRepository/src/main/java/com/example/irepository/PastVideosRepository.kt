@@ -1,7 +1,7 @@
 package com.example.irepository
 
-import com.example.model.domain.PastVideosInfo
+import com.example.response.PastVideosResponse
 
 interface PastVideosRepository {
-    suspend fun fetchPastVideos(): PastVideosInfo
+    suspend fun fetchPastVideos(): PastVideosResponse
 }

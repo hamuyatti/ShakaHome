@@ -1,6 +1,6 @@
 package com.example.viewmodel.report
 
-import com.example.model.domain.PastVideosInfo
+import com.example.entity.PastVideosInfo
 
 interface PastVideosInfoState {
     object Empty : PastVideosInfoState

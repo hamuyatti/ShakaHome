@@ -1,4 +1,4 @@
-package com.example.model
+package com.example.ui.uimodel
 
 data class CarouselModel(
     val imageUrl: String,

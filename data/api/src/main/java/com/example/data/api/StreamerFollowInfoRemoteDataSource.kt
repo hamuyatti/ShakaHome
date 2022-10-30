@@ -1,6 +1,7 @@
 package com.example.data.api
 
-import com.example.model.response.FollowInfoResponse
+import com.example.response.FollowInfoResponse
+
 
 class StreamerFollowInfoRemoteDataSource(
     private val api: Api

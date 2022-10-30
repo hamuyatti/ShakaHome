@@ -1,6 +1,6 @@
 package com.example.data.api
 
-import com.example.model.response.PastVideosResponse
+import com.example.response.PastVideosResponse
 
 class PastVideosDataSource(
     private val api: Api

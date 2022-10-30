@@ -1,9 +1,9 @@
 package com.example.irepository
 
-import com.example.model.domain.FollowInfo
+import com.example.response.FollowInfoResponse
 
 interface StreamerFollowInfoRepository {
-    suspend fun fetchStreamerFollowInfo(): FollowInfo
+    suspend fun fetchStreamerFollowInfo(): FollowInfoResponse
 
-    suspend fun fetchMoreFollowInfo(nextCursor : String) : FollowInfo
+    suspend fun fetchMoreFollowInfo(nextCursor : String) : FollowInfoResponse
 }

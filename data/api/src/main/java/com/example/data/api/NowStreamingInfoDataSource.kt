@@ -1,6 +1,7 @@
 package com.example.data.api
 
-import com.example.model.response.NowStreamingInfoResponse
+import com.example.response.NowStreamingInfoResponse
+
 
 class NowStreamingInfoDataSource(
     private val api: Api

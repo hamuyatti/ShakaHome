@@ -110,7 +110,10 @@ class StreamerInfoViewModel @Inject constructor(
         runCatching {
             fetchBaseInfoUseCase()
         }.onSuccess { info ->
-            baseInfoUiState.update { StreamerBaseInfoUiState.Success(info) }
+
+            info?.also {notNulInfo ->
+                baseInfoUiState.update { StreamerBaseInfoUiState.Success(notNulInfo) }
+            } ?: baseInfoUiState.update { StreamerBaseInfoUiState.Empty }
         }.onFailure { error ->
             baseInfoUiState.update { StreamerBaseInfoUiState.Error(error) }
         }

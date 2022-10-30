@@ -1,7 +1,7 @@
 package com.example.usecase
 
-import com.example.model.domain.EachFollowInfo
-import com.example.model.domain.FollowInfo
+import com.example.entity.EachFollowInfo
+import com.example.entity.FollowInfo
 
 class SortFollowListUseCase {
     operator fun invoke(followInfo: FollowInfo, isByNew: Boolean): FollowInfo {
