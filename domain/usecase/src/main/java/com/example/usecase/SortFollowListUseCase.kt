@@ -2,8 +2,9 @@ package com.example.usecase
 
 import com.example.entity.EachFollowInfo
 import com.example.entity.FollowInfo
+import javax.inject.Inject
 
-class SortFollowListUseCase {
+class SortFollowListUseCase @Inject constructor(){
     operator fun invoke(followInfo: FollowInfo, isByNew: Boolean): FollowInfo {
         return followInfo.copy(
             followsList = if (isByNew) {
