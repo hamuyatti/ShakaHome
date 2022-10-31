@@ -5,11 +5,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.ui.navigation.ReportDestination
-import com.example.ui.navigation.infoGraph
-import com.example.ui.navigation.reportGraph
-import com.example.ui.navigation.settingGraph
-import com.example.ui.navigation.tmpGraph
+import com.example.feature_drawer.navigation.settingGraph
+import com.example.feature_drawer.navigation.tmpGraph
+import com.example.feature_info.navigation.infoGraph
+import com.example.feature_report.navigation.ReportDestination
+import com.example.feature_report.navigation.reportGraph
 
 
 @Composable

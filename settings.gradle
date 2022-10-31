@@ -14,8 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "shakaHome"
 include ':app'
-include ':presentation:ui'
-include ':presentation:viewmodel'
 include ':domain:usecase'
 include ':domain:iRepository'
 include ':domain:entity'
@@ -26,4 +24,6 @@ include ':data:response'
 include ':core'
 include ':common:resource'
 include ':common:compose'
-include ':feature-info'
+include ':presentation:feature-info'
+include ':presentation:feature-report'
+include ':presentation:feature-drawer'

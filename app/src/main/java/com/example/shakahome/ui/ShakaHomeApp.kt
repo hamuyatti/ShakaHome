@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.example.core.LocalIntentManager
 import com.example.shakahome.impl.IntentManagerImpl
 import com.example.shakahome.navigation.ShakaHomeNavHost
-import com.example.ui.thema.ShakaHomeTheme
+import com.example.compose.thema.ShakaHomeTheme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable

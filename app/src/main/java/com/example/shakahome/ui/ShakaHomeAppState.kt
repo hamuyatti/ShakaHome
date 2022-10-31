@@ -15,11 +15,10 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.feature_info.navigation.InfoNavigation
+import com.example.feature_report.navigation.ReportDestination
 import com.example.resource.R
 import com.example.shakahome.navigation.TopLevelDestination
-import com.example.ui.navigation.InfoNavigation
-import com.example.ui.navigation.ReportDestination
-import com.example.ui.navigation.SettingsNavigation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -90,7 +89,7 @@ class ShakaHomeAppState(
     }
 
     fun onClickSettingIcon() {
-        navController.navigate(SettingsNavigation.route)
+        navController.navigate(com.example.feature_drawer.navigation.SettingsNavigation.route)
     }
 
     val TOP_LEVEL_DESTINATIONS = listOf(
