@@ -1,4 +1,4 @@
-package com.example.ui.feature.info
+package com.example.feature_info
 
 import android.content.Context
 import android.widget.Toast
@@ -34,10 +34,7 @@ import com.example.compose.uimodel.CarouselModel
 import com.example.entity.FollowInfo
 import com.example.resource.R
 import com.example.compose.ShakaHomeTopAppBar
-import com.example.feature_info.FollowInfoUiState
-import com.example.feature_info.InfoScreenUiState
-import com.example.feature_info.StreamerBaseInfoUiState
-import com.example.feature_info.StreamerInfoViewModel
+import com.example.ui.feature.info.FollowList
 import com.example.ui.utils.ImageCarousel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState

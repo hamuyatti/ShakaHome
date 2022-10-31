@@ -28,6 +28,7 @@ class StreamerInfoViewModel @Inject constructor(
     private val sortFollowListUseCase: SortFollowListUseCase
 ) : ViewModel() {
 
+
     private val baseInfoUiState: MutableStateFlow<StreamerBaseInfoUiState> =
         MutableStateFlow(StreamerBaseInfoUiState.Empty)
 

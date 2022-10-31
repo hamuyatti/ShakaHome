@@ -37,16 +37,12 @@ fun ForReportRoute(
     modifier: Modifier = Modifier,
     viewModel: ReportViewModel = hiltViewModel(),
 ) {
-    val nowStreamInfoState by viewModel.nowStreamingInfoUiState.collectAsStateWithLifecycle()
-    val pastVideosInfoState by viewModel.pastVideosInfoState.collectAsStateWithLifecycle()
-    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
+    val feedState: ReportScreenUiState by viewModel.feedState.collectAsStateWithLifecycle()
 
     ReportScreen(
         modifier = modifier,
-        isRefreshing = isRefreshing,
-        onRefreshing = viewModel::onSwipeRefresh,
-        nowStreamingInfoUiState = nowStreamInfoState,
-        pastVideosInfoState = pastVideosInfoState,
+        feedState = feedState,
+        onRefreshing = viewModel::onSwipeRefresh
     )
 }
 
@@ -54,15 +50,13 @@ fun ForReportRoute(
 @Composable
 fun ReportScreen(
     modifier: Modifier = Modifier,
-    isRefreshing: Boolean,
-    onRefreshing: () -> Unit,
-    nowStreamingInfoUiState: NowStreamingInfoState,
-    pastVideosInfoState: PastVideosInfoState,
+    feedState: ReportScreenUiState,
+    onRefreshing: () -> Unit
 ) {
     SwipeRefresh(
         modifier = modifier.fillMaxHeight(),
-        state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
-        onRefresh = { onRefreshing.invoke() },
+        state = rememberSwipeRefreshState(isRefreshing = feedState.isRefreshing),
+        onRefresh = { onRefreshing() },
         indicatorAlignment = Alignment.TopCenter,
         indicatorPadding = PaddingValues(
             100.dp
@@ -89,11 +83,11 @@ fun ReportScreen(
                     .padding(innerPadding)
             ) {
                 NowStreamingInfo(
-                    uiState = nowStreamingInfoUiState,
+                    uiState = feedState.nowStreamingInfoState,
                     context = context,
                 )
                 PastVideosInfo(
-                    uiState = pastVideosInfoState,
+                    uiState = feedState.pastVideosInfoState,
                 )
             }
         }
