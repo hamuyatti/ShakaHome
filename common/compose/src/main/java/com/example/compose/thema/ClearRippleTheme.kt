@@ -1,4 +1,4 @@
-package com.example.compose
+package com.example.compose.thema
 
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme

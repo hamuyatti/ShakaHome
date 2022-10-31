@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.example.shakahome.navigation.TopLevelDestination
-import com.example.compose.ClearRippleTheme
+import com.example.compose.thema.ClearRippleTheme
 
 @Composable
 fun ShakaHomeBottomBar(
