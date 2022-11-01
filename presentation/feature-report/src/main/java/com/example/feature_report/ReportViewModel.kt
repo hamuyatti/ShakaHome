@@ -34,13 +34,15 @@ class ReportViewModel @Inject constructor(
         nowStreamingInfoUiState,
         pastVideoInfoState
     ) { nowStreamingInfoState, pastVideosInfoState ->
-        ReportScreenUiState(
-            nowStreamingInfoState = nowStreamingInfoState,
-            pastVideosInfoState = pastVideosInfoState,
-            isRefreshing = nowStreamingInfoState is NowStreamingInfoState.Loading || pastVideosInfoState is PastVideosInfoState.Loading
+        flowOf(
+            ReportScreenUiState(
+                nowStreamingInfoState = nowStreamingInfoState,
+                pastVideosInfoState = pastVideosInfoState,
+                isRefreshing = nowStreamingInfoState is NowStreamingInfoState.Loading || pastVideosInfoState is PastVideosInfoState.Loading
+            )
         )
     }.flatMapLatest {
-        flowOf(it)
+        it
     }.stateIn(
         scope = viewModelScope,
         initialValue = ReportScreenUiState(),

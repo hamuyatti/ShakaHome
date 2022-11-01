@@ -28,7 +28,6 @@ class StreamerInfoViewModel @Inject constructor(
     private val sortFollowListUseCase: SortFollowListUseCase
 ) : ViewModel() {
 
-
     private val baseInfoUiState: MutableStateFlow<StreamerBaseInfoUiState> =
         MutableStateFlow(StreamerBaseInfoUiState.Empty)
 
@@ -39,13 +38,13 @@ class StreamerInfoViewModel @Inject constructor(
         baseInfoUiState,
         followInfoUiState,
     ) { baseInfoUiState: StreamerBaseInfoUiState, followInfoUiState: FollowInfoUiState ->
-        InfoScreenUiState(
+        flowOf(InfoScreenUiState(
             streamerBaseInfoState = baseInfoUiState,
             followInfoState = followInfoUiState,
             isRefreshing = baseInfoUiState is StreamerBaseInfoUiState.Loading || followInfoUiState is FollowInfoUiState.Loading
-        )
+        ))
     }.flatMapLatest {
-        flowOf(it)
+        it
     }.stateIn(
         scope = viewModelScope,
         initialValue = InfoScreenUiState(),
