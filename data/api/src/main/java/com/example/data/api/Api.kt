@@ -9,8 +9,10 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
+// local propertiesに移動せねば
 const val authorization = "Authorization: Bearer ig8t6eujfxl5swgszhrtlbhs9eecsh"
 const val clientId = "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
+const val shakaSanId = 49207184
 
 interface Api {
 
@@ -20,7 +22,7 @@ interface Api {
     )
     @GET("users")
     suspend fun fetchStreamerBaseInfo(
-        @Query("id") streamerId: Int = 49207184
+        @Query("id") streamerId: Int = shakaSanId
     ): Response<StreamerBaseInfoResponse>
 
     @Headers(
@@ -29,7 +31,7 @@ interface Api {
     )
     @GET("users/follows")
     suspend fun fetchStreamerFollowInfo(
-        @Query("from_id") streamerId: Int = 49207184,
+        @Query("from_id") streamerId: Int = shakaSanId,
         @Query("first") first: Int = 100
     ): Response<FollowInfoResponse>
 
@@ -39,7 +41,7 @@ interface Api {
     )
     @GET("users/follows")
     suspend fun fetchStreamerFollowInfoWithCursor(
-        @Query("from_id") streamerId: Int = 49207184,
+        @Query("from_id") streamerId: Int = shakaSanId,
         @Query("first") first: Int = 100,
         @Query("after") after: String
     ): Response<FollowInfoResponse>
@@ -50,7 +52,7 @@ interface Api {
     )
     @GET("streams")
     suspend fun fetchNowStreamingInfo(
-        @Query("user_id") streamerId: Int = 49207184
+        @Query("user_id") streamerId: Int = shakaSanId
     ): Response<NowStreamingInfoResponse>
 
     @Headers(
@@ -59,7 +61,7 @@ interface Api {
     )
     @GET("videos")
     suspend fun fetchVideos(
-        @Query("user_id") streamerId: Int = 49207184,
+        @Query("user_id") streamerId: Int = shakaSanId,
         @Query("first") first: Int = 100,
     ): Response<PastVideosResponse>
 
