@@ -33,9 +33,9 @@ android {
 
 dependencies {
     implementation project(":domain:iRepository")
-    implementation project(":model")
     implementation project(":data:api")
     implementation project(":data:db")
+    implementation project(':data:response')
 
     //timber
     implementation 'com.jakewharton.timber:timber:5.0.1'

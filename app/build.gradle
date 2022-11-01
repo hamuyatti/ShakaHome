@@ -41,17 +41,17 @@ android {
 }
 
 dependencies {
-    implementation project(':presentation:ui')
-    implementation project(':presentation:viewmodel')
     implementation project(':domain:usecase')
     implementation project(':domain:iRepository')
-    implementation project(':model')
     implementation project(':data:db')
     implementation project(':data:api')
     implementation project(':data:repository')
     implementation project(':core')
     implementation project(':common:resource')
     implementation project(':common:compose')
+    implementation project(':presentation:feature-info')
+    implementation project(':presentation:feature-report')
+    implementation project(':presentation:feature-drawer')
 
 
     implementation "com.google.dagger:hilt-android:2.38.1"

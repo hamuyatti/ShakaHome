@@ -1,7 +1,7 @@
 package com.example.irepository
 
-import com.example.model.domain.StreamerBaseInfo
+import com.example.response.StreamerBaseInfoResponse
 
 interface StreamerBaseInfoRepository {
-    suspend fun fetchStreamerBaseInfo(): StreamerBaseInfo
+    suspend fun fetchStreamerBaseInfo(): StreamerBaseInfoResponse
 }

@@ -1,6 +1,6 @@
 package com.example.data.api
 
-import com.example.model.response.StreamerBaseInfoResponse
+import com.example.response.StreamerBaseInfoResponse
 
 
 class StreamerInfoRemoteDataSource(

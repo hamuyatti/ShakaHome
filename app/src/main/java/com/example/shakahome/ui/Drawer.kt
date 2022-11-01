@@ -19,8 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.core.LocalIntentManager
 import com.example.resource.R
-import com.example.ui.navigation.SettingsNavigation
-import com.example.ui.navigation.TmpNavigation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,12 +85,12 @@ enum class DrawerItem(
     Settings(
         titleStringRes = R.string.drawer_menu_setting,
         icon = Icons.Outlined.Settings,
-        navRoute = SettingsNavigation.route
+        navRoute = com.example.feature_drawer.navigation.SettingsNavigation.route
     ),
     Tmp(
         titleStringRes = R.string.drawer_menu_tmp,
         icon = Icons.Outlined.Done,
-        navRoute = TmpNavigation.route
+        navRoute = com.example.feature_drawer.navigation.TmpNavigation.route
     )
 }
 

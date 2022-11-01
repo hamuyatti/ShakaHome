@@ -34,8 +34,8 @@ android {
 }
 
 dependencies {
-    implementation project(':model')
     implementation project(':domain:iRepository')
+    implementation project(':data:response')
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.3.0'

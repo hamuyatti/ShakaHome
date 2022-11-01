@@ -1,13 +1,13 @@
 package com.example.usecase
 
+import com.example.entity.PastVideosInfo
 import com.example.irepository.PastVideosRepository
-import com.example.model.domain.PastVideosInfo
-import com.example.model.response.asDomainModel
-import kotlinx.coroutines.coroutineScope
+import javax.inject.Inject
 
-class FetchPastVideosUseCase(
+class FetchPastVideosUseCase @Inject constructor(
     private val pastVideosRepository: PastVideosRepository
 ) {
-    suspend operator fun invoke(): PastVideosInfo =
-        pastVideosRepository.fetchPastVideos()
+    suspend operator fun invoke(): PastVideosInfo {
+        return PastVideosInfo.from(pastVideosRepository.fetchPastVideos())
+    }
 }

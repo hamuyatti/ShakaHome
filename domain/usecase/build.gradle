@@ -33,7 +33,8 @@ android {
 
 dependencies {
     implementation project(":domain:iRepository")
-    implementation project(":model")
+    implementation project(":domain:entity")
+    implementation project(':data:response')
     implementation project(":core")
 
     //timber
@@ -51,4 +52,9 @@ dependencies {
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
 
+
+    implementation "com.google.dagger:hilt-android:2.38.1"
+    kapt "com.google.dagger:hilt-compiler:2.38.1"
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
 }

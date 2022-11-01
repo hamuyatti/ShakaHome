@@ -1,14 +1,14 @@
 package com.example.db
 
-import com.example.model.domain.FollowInfo
-import com.example.model.response.FollowInfoPagination
+import com.example.response.FollowInfoResponse
+
 
 class FollowLocalDataSource {
 
-    var followInfoCache : FollowInfo ? = null
+    var followInfoCache : FollowInfoResponse? = null
     private set
 
-    fun updateFollowInfoCache(followList : FollowInfo){
+    fun updateFollowInfoCache(followList : FollowInfoResponse){
         followInfoCache = followList
     }
 }

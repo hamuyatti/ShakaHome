@@ -2,30 +2,26 @@ package com.example.repository
 
 import com.example.data.api.StreamerFollowInfoRemoteDataSource
 import com.example.db.FollowLocalDataSource
+import com.example.response.FollowInfoResponse
 import com.example.irepository.StreamerFollowInfoRepository
-import com.example.model.domain.FollowInfo
-import com.example.model.response.asDomainModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class StreamerFollowInfoRepositoryImpl(
     private val remoteDataSource: StreamerFollowInfoRemoteDataSource,
     private val localDataSource: FollowLocalDataSource
 ) : StreamerFollowInfoRepository {
-    override suspend fun fetchStreamerFollowInfo(): FollowInfo =
-        withContext(Dispatchers.IO) {
-            val followList = remoteDataSource.fetchStreamerFollowInfo().asDomainModel()
-            localDataSource.updateFollowInfoCache(followList)
-            return@withContext followList
-        }
+    override suspend fun fetchStreamerFollowInfo(): FollowInfoResponse {
+        val followList = remoteDataSource.fetchStreamerFollowInfo()
+        localDataSource.updateFollowInfoCache(followList)
+        return followList
+    }
 
-    override suspend fun fetchMoreFollowInfo(nextCursor: String): FollowInfo
-     = withContext(Dispatchers.IO){
-        val followList = remoteDataSource.fetchStreamerMoreFollowInfo(nextCursor).asDomainModel()
+
+    override suspend fun fetchMoreFollowInfo(nextCursor: String): FollowInfoResponse {
+        val followList = remoteDataSource.fetchStreamerMoreFollowInfo(nextCursor)
         val newFollowList = followList.copy(
-            followsList = localDataSource.followInfoCache?.followsList!! + followList.followsList
+            data = localDataSource.followInfoCache?.data!! + followList.data
         )
         localDataSource.updateFollowInfoCache(newFollowList)
-        return@withContext newFollowList
+        return newFollowList
     }
 }
