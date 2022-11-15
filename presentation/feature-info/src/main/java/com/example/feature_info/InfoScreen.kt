@@ -36,6 +36,9 @@ import com.example.resource.R
 import com.example.compose.ShakaHomeTopAppBar
 import com.example.ui.feature.info.FollowList
 import com.example.compose.ImageCarousel
+import com.example.feature_info.uiState.FollowInfoUiState
+import com.example.feature_info.uiState.InfoScreenUiState
+import com.example.feature_info.uiState.StreamerBaseInfoUiState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.CoroutineScope

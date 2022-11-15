@@ -2,6 +2,9 @@ package com.example.feature_report
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.feature_report.uiState.NowStreamingInfoState
+import com.example.feature_report.uiState.PastVideosInfoState
+import com.example.feature_report.uiState.ReportScreenUiState
 import com.example.usecase.FetchNowStreamingInfoUseCase
 import com.example.usecase.FetchPastVideosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

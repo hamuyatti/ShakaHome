@@ -2,6 +2,9 @@ package com.example.feature_info
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.feature_info.uiState.FollowInfoUiState
+import com.example.feature_info.uiState.InfoScreenUiState
+import com.example.feature_info.uiState.StreamerBaseInfoUiState
 import com.example.usecase.FetchFollowInfoUseCase
 import com.example.usecase.FetchMoreFollowInfoUseCase
 import com.example.usecase.FetchStreamerBaseInfoUseCase
@@ -38,11 +41,13 @@ class StreamerInfoViewModel @Inject constructor(
         baseInfoUiState,
         followInfoUiState,
     ) { baseInfoUiState: StreamerBaseInfoUiState, followInfoUiState: FollowInfoUiState ->
-        flowOf(InfoScreenUiState(
+        flowOf(
+            InfoScreenUiState(
             streamerBaseInfoState = baseInfoUiState,
             followInfoState = followInfoUiState,
             isRefreshing = baseInfoUiState is StreamerBaseInfoUiState.Loading || followInfoUiState is FollowInfoUiState.Loading
-        ))
+        )
+        )
     }.flatMapLatest {
         it
     }.stateIn(

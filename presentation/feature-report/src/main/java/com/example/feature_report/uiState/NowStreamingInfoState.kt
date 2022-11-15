@@ -1,4 +1,4 @@
-package com.example.feature_report
+package com.example.feature_report.uiState
 
 import com.example.entity.NowStreamingInfo
 

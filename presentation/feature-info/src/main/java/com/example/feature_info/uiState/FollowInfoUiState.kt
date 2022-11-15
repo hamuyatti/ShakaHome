@@ -1,4 +1,4 @@
-package com.example.feature_info
+package com.example.feature_info.uiState
 
 import com.example.entity.FollowInfo
 

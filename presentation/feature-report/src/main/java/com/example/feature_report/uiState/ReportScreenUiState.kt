@@ -1,4 +1,7 @@
-package com.example.feature_report
+package com.example.feature_report.uiState
+
+import com.example.feature_report.uiState.NowStreamingInfoState
+import com.example.feature_report.uiState.PastVideosInfoState
 
 data class ReportScreenUiState(
     val nowStreamingInfoState: NowStreamingInfoState = NowStreamingInfoState.Loading,

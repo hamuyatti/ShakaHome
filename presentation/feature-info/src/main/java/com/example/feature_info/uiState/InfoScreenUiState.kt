@@ -1,4 +1,4 @@
-package com.example.feature_info
+package com.example.feature_info.uiState
 
 data class InfoScreenUiState(
     val followInfoState: FollowInfoUiState = FollowInfoUiState.Loading,
