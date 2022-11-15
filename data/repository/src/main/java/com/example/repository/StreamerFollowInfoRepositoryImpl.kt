@@ -1,7 +1,7 @@
 package com.example.repository
 
-import com.example.data.api.StreamerFollowInfoRemoteDataSource
-import com.example.db.FollowLocalDataSource
+import com.example.data.remote.StreamerFollowInfoRemoteDataSource
+import com.example.local.FollowLocalDataSource
 import com.example.response.FollowInfoResponse
 import com.example.irepository.StreamerFollowInfoRepository
 

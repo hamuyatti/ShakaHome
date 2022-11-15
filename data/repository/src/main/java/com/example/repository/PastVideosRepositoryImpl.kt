@@ -1,6 +1,6 @@
 package com.example.repository
 
-import com.example.data.api.PastVideosDataSource
+import com.example.data.remote.PastVideosDataSource
 import com.example.response.PastVideosResponse
 import com.example.irepository.PastVideosRepository
 

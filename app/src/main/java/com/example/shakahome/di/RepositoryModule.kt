@@ -1,10 +1,10 @@
 package com.example.shakahome.di
 
-import com.example.data.api.NowStreamingInfoDataSource
-import com.example.data.api.PastVideosDataSource
-import com.example.data.api.StreamerFollowInfoRemoteDataSource
-import com.example.data.api.StreamerInfoRemoteDataSource
-import com.example.db.FollowLocalDataSource
+import com.example.data.remote.NowStreamingInfoDataSource
+import com.example.data.remote.PastVideosDataSource
+import com.example.data.remote.StreamerFollowInfoRemoteDataSource
+import com.example.data.remote.StreamerInfoRemoteDataSource
+import com.example.local.FollowLocalDataSource
 import com.example.irepository.NowStreamingInfoRepository
 import com.example.irepository.PastVideosRepository
 import com.example.irepository.StreamerFollowInfoRepository

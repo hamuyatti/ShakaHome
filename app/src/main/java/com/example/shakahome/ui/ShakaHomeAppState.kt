@@ -15,6 +15,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.feature_drawer.navigation.SettingsNavigation
 import com.example.feature_info.navigation.InfoNavigation
 import com.example.feature_report.navigation.ReportDestination
 import com.example.resource.R
@@ -71,7 +72,7 @@ class ShakaHomeAppState(
         }
     }
 
-    fun onClickBottomItem(destination: TopLevelDestination) {
+    fun onClickBottomBarItem(destination: TopLevelDestination) {
         navController.navigate(destination.route) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
@@ -89,7 +90,7 @@ class ShakaHomeAppState(
     }
 
     fun onClickSettingIcon() {
-        navController.navigate(com.example.feature_drawer.navigation.SettingsNavigation.route)
+        navController.navigate(SettingsNavigation.route)
     }
 
     val TOP_LEVEL_DESTINATIONS = listOf(

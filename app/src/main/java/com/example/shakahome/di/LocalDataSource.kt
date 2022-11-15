@@ -1,6 +1,6 @@
 package com.example.shakahome.di
 
-import com.example.db.FollowLocalDataSource
+import com.example.local.FollowLocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -2,11 +2,12 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'kotlinx-serialization'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
     compileSdk 33
+    namespace 'com.example.local'
 
     defaultConfig {
         minSdk 26
@@ -32,13 +33,8 @@ android {
 }
 
 dependencies {
-    implementation project(":domain:iRepository")
-    implementation project(':data:remote')
-    implementation project(':data:local')
+    implementation project(":domain:entity")
     implementation project(':data:response')
-
-    //timber
-    implementation 'com.jakewharton.timber:timber:5.0.1'
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.3.0'
@@ -47,8 +43,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
-
-    //kotlinx-serialization
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
+    //hilt
+    implementation "com.google.dagger:hilt-android:2.38.1"
+    kapt "com.google.dagger:hilt-compiler:2.38.1"
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
 }

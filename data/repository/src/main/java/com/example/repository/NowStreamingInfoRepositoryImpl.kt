@@ -1,6 +1,6 @@
 package com.example.repository
 
-import com.example.data.api.NowStreamingInfoDataSource
+import com.example.data.remote.NowStreamingInfoDataSource
 import com.example.response.NowStreamingInfoContent
 import com.example.response.NowStreamingInfoResponse
 import com.example.irepository.NowStreamingInfoRepository

@@ -1,6 +1,11 @@
 package com.example.shakahome.di
 
-import com.example.data.api.*
+import com.example.data.remote.*
+import com.example.data.remote.Api
+import com.example.data.remote.NowStreamingInfoDataSource
+import com.example.data.remote.PastVideosDataSource
+import com.example.data.remote.StreamerFollowInfoRemoteDataSource
+import com.example.data.remote.StreamerInfoRemoteDataSource
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides

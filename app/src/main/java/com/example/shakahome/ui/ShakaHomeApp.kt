@@ -54,7 +54,7 @@ fun ShakaHomeApp(
                             if (appState.isShowBottomBar.not()) return@Scaffold
                             ShakaHomeBottomBar(
                                 destinations = appState.TOP_LEVEL_DESTINATIONS,
-                                onClickBottomBar = appState::onClickBottomItem,
+                                onClickBottomBar = appState::onClickBottomBarItem,
                                 currentDestination = appState.currentDestination,
                             )
                         }) { padding ->

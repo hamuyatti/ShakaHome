@@ -1,6 +1,6 @@
 package com.example.repository
 
-import com.example.data.api.StreamerInfoRemoteDataSource
+import com.example.data.remote.StreamerInfoRemoteDataSource
 import com.example.response.StreamerBaseInfoResponse
 import com.example.response.StreamerBaseInfoResponseContent
 import com.example.irepository.StreamerBaseInfoRepository
