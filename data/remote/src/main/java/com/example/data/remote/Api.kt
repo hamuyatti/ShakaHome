@@ -10,7 +10,7 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 // local propertiesに移動せねば
-const val authorization = "Authorization: Bearer ig8t6eujfxl5swgszhrtlbhs9eecsh"
+const val authorization = "Authorization: Bearer fweq5p27fq9j5yfmg5okuz0n11pu2m"
 const val clientId = "Client-Id:x24r8nw8hd6arlvf1hhjuic2n154fl"
 const val shakaSanId = 49207184
 
