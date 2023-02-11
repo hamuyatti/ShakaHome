@@ -36,6 +36,7 @@ dependencies {
     implementation project(':data:remote')
     implementation project(':data:local')
     implementation project(':data:response')
+    implementation project(':core')
 
     //timber
     implementation 'com.jakewharton.timber:timber:5.0.1'
