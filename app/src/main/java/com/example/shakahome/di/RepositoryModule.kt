@@ -72,4 +72,8 @@ object RepositoryModule {
             coroutineDispatcherProvider = coroutineDispatcherProvider
         )
     }
+
+    @Provides
+    @Singleton
+    fun providesCoroutineDispatcherProvider() = CoroutineDispatcherProvider()
 }
