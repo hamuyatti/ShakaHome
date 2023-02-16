@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ReportViewModel @Inject constructor(
     private val fetchNowStreamingInfoUseCase: FetchNowStreamingInfoUseCase,
@@ -35,8 +34,6 @@ class ReportViewModel @Inject constructor(
             pastVideosInfoState = pastVideosInfoState,
             isRefreshing = nowStreamingInfoState is NowStreamingInfoState.Loading || pastVideosInfoState is PastVideosInfoState.Loading
         )
-    }.flatMapLatest {
-        flowOf(it)
     }.stateIn(
         scope = viewModelScope,
         initialValue = ReportScreenUiState(),

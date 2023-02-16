@@ -55,10 +55,15 @@ fun ForInfoRoute(
     var toggleState by remember { mutableStateOf(true) }
     val listState = rememberLazyListState()
 
-    // flow rowとかsticky header使ってからここの結果が変わっている　泣
     val isReachedBottom by remember {
         derivedStateOf {
             listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
+        }
+    }
+
+    val isNotTop by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex >= 10
         }
     }
 
@@ -77,7 +82,7 @@ fun ForInfoRoute(
         feedState = feedState,
         toggleState = toggleState,
         listState = listState,
-        isReachedBottom = isReachedBottom,
+        isNotTop = isNotTop,
         onSettingIconClick = onSettingIconClick,
         onRefresh = viewModel::onSwipeRefresh,
         onToggled = {
@@ -93,7 +98,7 @@ fun InfoScreen(
     modifier: Modifier = Modifier,
     onRefresh: () -> Unit,
     feedState: InfoScreenUiState,
-    isReachedBottom: Boolean,
+    isNotTop: Boolean,
     onSettingIconClick: () -> Unit,
     onToggled: (Boolean) -> Unit,
     toggleState: Boolean,
@@ -127,7 +132,7 @@ fun InfoScreen(
             containerColor = Color.Transparent,
             floatingActionButton = {
                 AnimatedVisibility(
-                    visible = isReachedBottom,
+                    visible = isNotTop,
                     enter = fadeIn(),
                     exit = fadeOut(),
                 ) {
@@ -242,7 +247,7 @@ fun LazyListScope.FollowInfoFeed(
         is FollowInfoUiState.MoreLoading -> {
             FollowContent(
                 followInfo = uiState.followInfo,
-                halfScreenWidth,
+                halfScreenWidth = halfScreenWidth,
                 modifier = modifier,
                 onToggled = onToggled,
                 toggleState = toggleState
