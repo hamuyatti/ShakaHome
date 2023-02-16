@@ -1,5 +1,6 @@
 package com.example.shakahome.di
 
+import com.example.core.CoroutineDispatcherProvider
 import com.example.data.remote.NowStreamingInfoDataSource
 import com.example.data.remote.PastVideosDataSource
 import com.example.data.remote.StreamerFollowInfoRemoteDataSource
@@ -25,33 +26,54 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideStreamerInfoRepository(
-        remoteDataSource: StreamerInfoRemoteDataSource
+        remoteDataSource: StreamerInfoRemoteDataSource,
+        coroutineDispatcherProvider: CoroutineDispatcherProvider
     ): StreamerBaseInfoRepository {
-        return StreamerBaseInfoRepositoryImpl(remoteDataSource)
+        return StreamerBaseInfoRepositoryImpl(
+            dataSource = remoteDataSource,
+            coroutineDispatcherProvider = coroutineDispatcherProvider
+        )
     }
 
     @Provides
     @Singleton
     fun providesStreamerFollowInfoRepository(
         remoteDataSource: StreamerFollowInfoRemoteDataSource,
-        localDataSource: FollowLocalDataSource
+        localDataSource: FollowLocalDataSource,
+        coroutineDispatcherProvider: CoroutineDispatcherProvider
     ): StreamerFollowInfoRepository {
-        return StreamerFollowInfoRepositoryImpl(remoteDataSource, localDataSource)
+        return StreamerFollowInfoRepositoryImpl(
+            remoteDataSource = remoteDataSource,
+            localDataSource = localDataSource,
+            coroutineDispatcherProvider = coroutineDispatcherProvider
+        )
     }
 
     @Provides
     @Singleton
     fun providesNowStreamingInfoRepository(
-        remoteDataSource: NowStreamingInfoDataSource
+        remoteDataSource: NowStreamingInfoDataSource,
+        coroutineDispatcherProvider: CoroutineDispatcherProvider
     ): NowStreamingInfoRepository {
-        return NowStreamingInfoRepositoryImpl(remoteDataSource)
+        return NowStreamingInfoRepositoryImpl(
+            dataSource = remoteDataSource,
+            coroutineDispatcher = coroutineDispatcherProvider
+        )
     }
 
     @Provides
     @Singleton
     fun providesPastVideosRepository(
-        dataSource: PastVideosDataSource
+        dataSource: PastVideosDataSource,
+        coroutineDispatcherProvider: CoroutineDispatcherProvider
     ): PastVideosRepository {
-        return PastVideosRepositoryImpl(dataSource)
+        return PastVideosRepositoryImpl(
+            dataSource = dataSource,
+            coroutineDispatcherProvider = coroutineDispatcherProvider
+        )
     }
+
+    @Provides
+    @Singleton
+    fun providesCoroutineDispatcherProvider() = CoroutineDispatcherProvider()
 }

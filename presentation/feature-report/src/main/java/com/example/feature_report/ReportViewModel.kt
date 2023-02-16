@@ -9,14 +9,7 @@ import com.example.usecase.FetchNowStreamingInfoUseCase
 import com.example.usecase.FetchPastVideosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ReportViewModel @Inject constructor(
     private val fetchNowStreamingInfoUseCase: FetchNowStreamingInfoUseCase,
-    private val fetchPastVideosUseCase: FetchPastVideosUseCase
+    private val fetchPastVideosUseCase: FetchPastVideosUseCase,
 ) : ViewModel() {
 
     private val nowStreamingInfoUiState: MutableStateFlow<NowStreamingInfoState> =
@@ -37,22 +30,20 @@ class ReportViewModel @Inject constructor(
         nowStreamingInfoUiState,
         pastVideoInfoState
     ) { nowStreamingInfoState, pastVideosInfoState ->
-        flowOf(
-            ReportScreenUiState(
-                nowStreamingInfoState = nowStreamingInfoState,
-                pastVideosInfoState = pastVideosInfoState,
-                isRefreshing = nowStreamingInfoState is NowStreamingInfoState.Loading || pastVideosInfoState is PastVideosInfoState.Loading
-            )
+        ReportScreenUiState(
+            nowStreamingInfoState = nowStreamingInfoState,
+            pastVideosInfoState = pastVideosInfoState,
+            isRefreshing = nowStreamingInfoState is NowStreamingInfoState.Loading || pastVideosInfoState is PastVideosInfoState.Loading
         )
     }.flatMapLatest {
-        it
+        flowOf(it)
     }.stateIn(
         scope = viewModelScope,
         initialValue = ReportScreenUiState(),
         started = SharingStarted.WhileSubscribed()
     )
 
-    init {
+    fun init(){
         fetch()
     }
 
@@ -91,7 +82,7 @@ class ReportViewModel @Inject constructor(
         }.onSuccess { info ->
             pastVideoInfoState.update { PastVideosInfoState.Success(info) }
         }.onFailure { e ->
-            nowStreamingInfoUiState.update { NowStreamingInfoState.Error(e) }
+            pastVideoInfoState.update { PastVideosInfoState.Error(e) }
         }
 
     }

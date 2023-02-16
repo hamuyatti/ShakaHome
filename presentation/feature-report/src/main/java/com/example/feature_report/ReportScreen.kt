@@ -41,6 +41,7 @@ fun ForReportRoute(
     viewModel: ReportViewModel = hiltViewModel(),
 ) {
     val feedState: ReportScreenUiState by viewModel.feedState.collectAsStateWithLifecycle()
+    viewModel.init()
 
     ReportScreen(
         modifier = modifier,
