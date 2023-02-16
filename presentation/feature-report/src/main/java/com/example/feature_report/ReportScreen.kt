@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +42,10 @@ fun ForReportRoute(
     viewModel: ReportViewModel = hiltViewModel(),
 ) {
     val feedState: ReportScreenUiState by viewModel.feedState.collectAsStateWithLifecycle()
-    viewModel.init()
+
+    LaunchedEffect(Unit){
+        viewModel.init()
+    }
 
     ReportScreen(
         modifier = modifier,

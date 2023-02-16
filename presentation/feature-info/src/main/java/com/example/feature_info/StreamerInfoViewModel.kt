@@ -41,15 +41,11 @@ class StreamerInfoViewModel @Inject constructor(
         baseInfoUiState,
         followInfoUiState,
     ) { baseInfoUiState: StreamerBaseInfoUiState, followInfoUiState: FollowInfoUiState ->
-        flowOf(
-            InfoScreenUiState(
+        InfoScreenUiState(
             streamerBaseInfoState = baseInfoUiState,
             followInfoState = followInfoUiState,
             isRefreshing = baseInfoUiState is StreamerBaseInfoUiState.Loading || followInfoUiState is FollowInfoUiState.Loading
         )
-        )
-    }.flatMapLatest {
-        it
     }.stateIn(
         scope = viewModelScope,
         initialValue = InfoScreenUiState(),
