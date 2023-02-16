@@ -43,7 +43,7 @@ class ReportViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed()
     )
 
-    init {
+    fun init(){
         fetch()
     }
 
@@ -82,7 +82,7 @@ class ReportViewModel @Inject constructor(
         }.onSuccess { info ->
             pastVideoInfoState.update { PastVideosInfoState.Success(info) }
         }.onFailure { e ->
-            nowStreamingInfoUiState.update { NowStreamingInfoState.Error(e) }
+            pastVideoInfoState.update { PastVideosInfoState.Error(e) }
         }
 
     }
