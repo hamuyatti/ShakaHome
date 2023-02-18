@@ -50,7 +50,7 @@ dependencies {
     implementation project(':common:resource')
     implementation project(':common:compose')
     implementation project(':presentation:feature-info')
-    implementation project(':presentation:feature-report')
+    implementation project(':presentation:feature-streaming')
     implementation project(':presentation:feature-drawer')
 
 
