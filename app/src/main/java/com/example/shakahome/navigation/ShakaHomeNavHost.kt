@@ -9,6 +9,7 @@ import com.example.feature_drawer.navigation.settingGraph
 import com.example.feature_drawer.navigation.tmpGraph
 import com.example.feature_info.navigation.infoGraph
 import com.example.feature_report.navigation.StreamingDestination
+import com.example.feature_report.navigation.reportGraph
 import com.example.feature_report.navigation.streamingGraph
 
 
@@ -26,6 +27,7 @@ fun ShakaHomeNavHost(
     ) {
         streamingGraph()
         infoGraph(onSettingIconClick)
+        reportGraph()
         settingGraph()
         tmpGraph()
     }
