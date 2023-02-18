@@ -3,6 +3,7 @@
     <string name="app_name">shakaHome</string>
     <string name="report">report</string>
     <string name="info">info</string>
+    <string name="streaming">streaming</string>
     <string name="top_app_bar_action_button_content_desc">settings</string>
     <string name="error_notice">エラーです</string>
     <string name="action_icon">action_icon</string>

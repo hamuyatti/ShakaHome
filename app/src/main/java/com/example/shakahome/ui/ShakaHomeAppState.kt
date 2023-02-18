@@ -2,9 +2,9 @@ package com.example.shakahome.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Grid3x3
-import androidx.compose.material.icons.filled.Upcoming
+import androidx.compose.material.icons.filled.Stream
 import androidx.compose.material.icons.outlined.Grid3x3
-import androidx.compose.material.icons.outlined.Upcoming
+import androidx.compose.material.icons.outlined.Stream
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,6 +17,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.feature_drawer.navigation.SettingsNavigation
 import com.example.feature_info.navigation.InfoNavigation
+import com.example.feature_report.navigation.ReportNavigation
 import com.example.feature_report.navigation.StreamingDestination
 import com.example.resource.R
 import com.example.shakahome.navigation.TopLevelDestination
@@ -95,17 +96,23 @@ class ShakaHomeAppState(
 
     val TOP_LEVEL_DESTINATIONS = listOf(
         TopLevelDestination(
+            route = ReportNavigation.route,
+            selectedIcon = Icons.Filled.Grid3x3,
+            unselectedIcon = Icons.Outlined.Grid3x3,
+            iconTextId = R.string.info
+        ),
+        TopLevelDestination(
             route = StreamingDestination.route,
-            selectedIcon = Icons.Filled.Upcoming,
-            unselectedIcon = Icons.Outlined.Upcoming,
-            iconTextId = R.string.report
+            selectedIcon = Icons.Filled.Stream,
+            unselectedIcon = Icons.Outlined.Stream,
+            iconTextId = R.string.streaming
         ),
         TopLevelDestination(
             route = InfoNavigation.route,
             selectedIcon = Icons.Filled.Grid3x3,
             unselectedIcon = Icons.Outlined.Grid3x3,
             iconTextId = R.string.info
-        )
+        ),
     )
 
 }
