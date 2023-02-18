@@ -11,8 +11,6 @@ import com.google.common.truth.Truth
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.test.*
 import org.junit.After
@@ -23,7 +21,7 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class ReportViewModelTest {
+class StreamingViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
@@ -39,12 +37,12 @@ class ReportViewModelTest {
     @MockK
     private lateinit var pastVideosState: PastVideosInfo
 
-    private lateinit var viewModel: ReportViewModel
+    private lateinit var viewModel: StreamingViewModel
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        viewModel = ReportViewModel(
+        viewModel = StreamingViewModel(
             fetchNowStreamingInfoUseCase = fetchNowStreamingInfoUseCase,
             fetchPastVideosUseCase = fetchPastVideosUseCase,
         )

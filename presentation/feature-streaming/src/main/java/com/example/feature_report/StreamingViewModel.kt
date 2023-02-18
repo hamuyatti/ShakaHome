@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ReportViewModel @Inject constructor(
+class StreamingViewModel @Inject constructor(
     private val fetchNowStreamingInfoUseCase: FetchNowStreamingInfoUseCase,
     private val fetchPastVideosUseCase: FetchPastVideosUseCase,
 ) : ViewModel() {

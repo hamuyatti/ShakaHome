@@ -17,7 +17,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.feature_drawer.navigation.SettingsNavigation
 import com.example.feature_info.navigation.InfoNavigation
-import com.example.feature_report.navigation.ReportDestination
+import com.example.feature_report.navigation.StreamingDestination
 import com.example.resource.R
 import com.example.shakahome.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
@@ -95,7 +95,7 @@ class ShakaHomeAppState(
 
     val TOP_LEVEL_DESTINATIONS = listOf(
         TopLevelDestination(
-            route = ReportDestination.route,
+            route = StreamingDestination.route,
             selectedIcon = Icons.Filled.Upcoming,
             unselectedIcon = Icons.Outlined.Upcoming,
             iconTextId = R.string.report
