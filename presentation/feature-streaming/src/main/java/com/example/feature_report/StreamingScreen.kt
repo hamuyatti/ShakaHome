@@ -36,13 +36,13 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun ForReportRoute(
+fun ForStreamingRoute(
     modifier: Modifier = Modifier,
-    viewModel: ReportViewModel = hiltViewModel(),
+    viewModel: StreamingViewModel = hiltViewModel(),
 ) {
     val feedState: ReportScreenUiState by viewModel.feedState.collectAsStateWithLifecycle()
 
-    ReportScreen(
+    StreamingScreen(
         modifier = modifier,
         feedState = feedState,
         onRefreshing = viewModel::onSwipeRefresh
@@ -51,7 +51,7 @@ fun ForReportRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReportScreen(
+fun StreamingScreen(
     modifier: Modifier = Modifier,
     feedState: ReportScreenUiState,
     onRefreshing: () -> Unit
