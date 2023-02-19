@@ -63,12 +63,10 @@ lifecycle = [
 ]
 
 hilt = [
-    "androidx-hilt-hilt-compiler",
     "androidx-hilt-hilt-lifecycle-viewmodel",
     "androidx-hilt-hilt-navigation",
     "com-google-dagger-hilt-android",
     "com-google-dagger-hilt-android-gradle-plugin",
-    "com-google-dagger-hilt-compiler"
 ]
 
 network = [
@@ -113,6 +111,7 @@ androidx-activity-activity-compose = { module = "androidx.activity:activity-comp
 androidx-compose-animation = { module = "androidx.compose.animation:animation", version.ref = "androidx-compose-animation" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose-foundation" }
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidx-compose-material" }
+androidx-compose-material-material-icons-core = {module = "androidx.compose.material:material-icons-core", version.ref = "androidx-compose-material"}
 androidx-compose-material-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidx-compose-material" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "androidx-compose-material3" }
 androidx-compose-material3-material3-window-size-compose = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "androidx-compose-material3" }
