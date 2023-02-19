@@ -37,6 +37,6 @@ dependencies {
     implementation project(':data:response')
 
     implementation libs.bundles.hilt
-    kapt "androidx.hilt:hilt-compiler:1.0.0"
-    kapt "com.google.dagger:hilt-compiler:2.38.1"
+    kapt libs.androidx.hilt.hilt.compiler
+    kapt libs.com.google.dagger.hilt.compiler
 }
