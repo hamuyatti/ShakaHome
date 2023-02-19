@@ -1,4 +1,4 @@
-package com.example.feature_report
+package com.example.feature_streaming
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,4 +1,4 @@
-package com.example.feature_report
+package com.example.feature_streaming
 
 import android.content.Context
 import android.widget.Toast
@@ -28,9 +28,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.compose.ShakaHomeTopAppBar
 import com.example.core.LocalIntentManager
-import com.example.feature_report.uiState.NowStreamingInfoState
-import com.example.feature_report.uiState.PastVideosInfoState
-import com.example.feature_report.uiState.ReportScreenUiState
+import com.example.feature_streaming.uiState.NowStreamingInfoState
+import com.example.feature_streaming.uiState.PastVideosInfoState
+import com.example.feature_streaming.uiState.ReportScreenUiState
 import com.example.resource.R
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState

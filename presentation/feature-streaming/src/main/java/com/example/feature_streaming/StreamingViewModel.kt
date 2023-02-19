@@ -1,14 +1,13 @@
-package com.example.feature_report
+package com.example.feature_streaming
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.feature_report.uiState.NowStreamingInfoState
-import com.example.feature_report.uiState.PastVideosInfoState
-import com.example.feature_report.uiState.ReportScreenUiState
+import com.example.feature_streaming.uiState.NowStreamingInfoState
+import com.example.feature_streaming.uiState.PastVideosInfoState
+import com.example.feature_streaming.uiState.ReportScreenUiState
 import com.example.usecase.FetchNowStreamingInfoUseCase
 import com.example.usecase.FetchPastVideosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject

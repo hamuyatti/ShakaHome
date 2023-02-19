@@ -1,9 +1,9 @@
-package com.example.feature_report.navigation
+package com.example.feature_streaming.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.compose.navigation.ShakaHomeNavigationDestination
-import com.example.feature_report.ForReportRoute
+import com.example.feature_streaming.ForReportRoute
 
 object ReportNavigation : ShakaHomeNavigationDestination {
     override val route: String = "info_route"

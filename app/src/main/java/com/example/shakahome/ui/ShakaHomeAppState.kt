@@ -17,8 +17,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.feature_drawer.navigation.SettingsNavigation
 import com.example.feature_info.navigation.InfoNavigation
-import com.example.feature_report.navigation.ReportNavigation
-import com.example.feature_report.navigation.StreamingDestination
+import com.example.feature_streaming.navigation.ReportNavigation
+import com.example.feature_streaming.navigation.StreamingDestination
 import com.example.resource.R
 import com.example.shakahome.navigation.TopLevelDestination
 import kotlinx.coroutines.CoroutineScope
