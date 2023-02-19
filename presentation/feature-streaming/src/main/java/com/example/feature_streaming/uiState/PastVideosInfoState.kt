@@ -1,4 +1,4 @@
-package com.example.feature_report.uiState
+package com.example.feature_streaming.uiState
 
 import com.example.entity.PastVideosInfo
 
