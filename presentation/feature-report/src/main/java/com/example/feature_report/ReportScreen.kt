@@ -6,7 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun ForReportRoute(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     viewModel: ReportViewModel = hiltViewModel()
 ) {
     ReportScreen(

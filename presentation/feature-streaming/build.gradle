@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.feature_report'
+    namespace 'com.example.feature_streaming'
     compileSdk 33
 
     defaultConfig {

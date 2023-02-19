@@ -5,11 +5,30 @@ pluginManagement {
         mavenCentral()
     }
 }
-dependencyResolutionManagement {
+enableFeaturePreview("VERSION_CATALOGS")
+dependencyResolutionManagement{
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
+        versionCatalogs {
+            libs {
+                version("lifecycle", "2.4.0")
+                alias("lifecycle-viewModel")
+                        .to("androidx.lifecycle", "lifecycle-viewmodel-ktx")
+                        .versionRef("lifecycle")
+                alias("junit-base").to("junit:junit:4.13.2")
+                alias("junit-ext").to("androidx.test.ext:junit:1.1.5")
+                alias("junit-compose").to("androidx.compose.ui:ui-test-junit4:1.3.3")
+                alias("espresso").to("androidx.test.espresso:espresso-core:3.5.1")
+                alias("mockk").to("io.mockk:mockk:1.12.0")
+                alias("turbine").to("app.cash.turbine:turbine:0.12.1")
+                alias("coroutine-test").to("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6")
+                alias("turbine").to("com.google.truth:truth:1.1.3")
+
+                bundle("test", ["junit-base","junit-ext","junit-compose","espresso","mockk","turbine","coroutine-test","turbine"])
+            }
+        }
     }
 }
 rootProject.name = "shakaHome"
