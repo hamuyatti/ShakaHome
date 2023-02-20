@@ -6,7 +6,7 @@ import com.example.compose.navigation.ShakaHomeNavigationDestination
 import com.example.feature_streaming.ForReportRoute
 
 object ReportNavigation : ShakaHomeNavigationDestination {
-    override val route: String = "info_route"
+    override val route: String = "report_route"
 }
 
 fun NavGraphBuilder.reportGraph(){
