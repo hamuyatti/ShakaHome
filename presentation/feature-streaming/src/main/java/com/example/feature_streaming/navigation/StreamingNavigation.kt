@@ -6,7 +6,7 @@ import com.example.compose.navigation.ShakaHomeNavigationDestination
 import com.example.feature_streaming.ForStreamingRoute
 
 object StreamingDestination : ShakaHomeNavigationDestination {
-    override val route: String = "report_route"
+    override val route: String = "stream_route"
 }
 
 fun NavGraphBuilder.streamingGraph() {
